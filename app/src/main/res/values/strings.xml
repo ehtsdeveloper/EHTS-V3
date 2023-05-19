@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">EHTS</string>
+    <string name="login">LOGIN</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="Reset">Reset Now</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="LoginNow">Already Have an Account? Login Now</string>
+</resources>
