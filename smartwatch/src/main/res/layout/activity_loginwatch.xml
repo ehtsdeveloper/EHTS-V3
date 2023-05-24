@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.wear.widget.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/DarkGray"
+    tools:context=".loginwatch"
+
+    tools:deviceIds="wear"
+>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/inner_frame_layout_padding"
+            app:layout_boxedEdges="all">
+
+
+                <EditText
+                    android:id="@+id/emailAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_gravity="center_horizontal|top"
+                    android:gravity="center_vertical|start"
+                    android:inputType="textEmailAddress"
+                    android:hint="@string/EmailAddress" />
+
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="40dp"
+                    android:gravity="center_vertical|start"
+                    android:inputType="textPassword"
+                    android:hint="Password  " />
+
+
+                <Button
+                    android:id="@+id/login"
+                    android:layout_width="80dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:background="@drawable/redbutton"
+                    android:text="@string/login"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+        </FrameLayout>
+
+
+</androidx.wear.widget.BoxInsetLayout>

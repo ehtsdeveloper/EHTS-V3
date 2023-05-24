@@ -14,3 +14,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "EHTS-V1"
 include ':app'
+include ':smartwatch'
