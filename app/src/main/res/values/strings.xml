@@ -5,4 +5,12 @@
     <string name="Reset">Reset Now</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="LoginNow">Already Have an Account? Login Now</string>
+    <string name="logout">LOGOUT</string>
+    <string name="bluetooth">Bluetooth Settings</string>
+    <string name="Close">Close Menu</string>
+    <string name="Open">Open Menu</string>
+    <string name="HelloUser">Hello, </string>
+
+    <string name="EMPLOYEES">EMPLOYEES</string>
+    <string name="BleSettings">Bluetooth Settings</string>
 </resources>

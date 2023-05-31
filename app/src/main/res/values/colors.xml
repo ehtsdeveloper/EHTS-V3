@@ -6,6 +6,8 @@
     <color name="DarkGray">#BBBCBE</color>
     <color name="red">#AD2424</color>
     <color name="blue">#2463AF</color>
+    <color name="DarkHeaderGray">#414141</color>
+
 
 
 </resources>
