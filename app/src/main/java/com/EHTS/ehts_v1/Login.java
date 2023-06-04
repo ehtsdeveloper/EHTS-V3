@@ -24,7 +24,7 @@ public class Login extends AppCompatActivity {
     //create objects
     TextInputEditText editEmail, editPassword;
     Button bt_Login;
-    Button bt_SignUP;
+    TextView bt_SignUP;
     FirebaseAuth mAuth;
     ProgressBar progressBar;
     TextView forgotpassword;
@@ -51,7 +51,7 @@ public class Login extends AppCompatActivity {
         editEmail = findViewById(R.id.emailAddress);
         editPassword = findViewById(R.id.password);
         bt_Login = findViewById(R.id.login);
-        bt_SignUP = findViewById(R.id.SignUpACC);
+        bt_SignUP = findViewById(R.id.GoToSignUp);
         progressBar = findViewById(R.id.progressBar);
         forgotpassword = findViewById(R.id.forgotPassword);
 

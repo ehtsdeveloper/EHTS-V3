@@ -12,23 +12,18 @@
     tools:openDrawer="start"
     tools:context=".TopNavBar"
     >
-
-<include layout = "@layout/maintoolbar"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    />
-<com.google.android.material.navigation.NavigationView
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:layout_gravity="start"
-    android:id="@+id/navigationView"
-    android:fitsSystemWindows="true"
-    tools:ignore="MissingDefaultResource"
-    app:headerLayout="@layout/headerlay"
-
-    app:menu="@menu/settingsmenu"
-
-/>
-
-
+    <include layout = "@layout/maintoolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:id="@+id/navigationView"
+        android:fitsSystemWindows="true"
+        tools:ignore="MissingDefaultResource"
+        app:headerLayout="@layout/headerlay"
+        app:menu="@menu/settingsmenu"
+        />
 </androidx.drawerlayout.widget.DrawerLayout>

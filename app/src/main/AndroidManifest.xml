@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -19,7 +20,8 @@
             android:label="@string/EMPLOYEES"
             android:textStyle="bold"
             android:textColor="@color/DarkHeaderGray"
-            android:textSize="35dp"
+            android:gravity="center"
+            android:textSize="40dp"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,6 +47,20 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+
+        <activity
+            android:name=".Upload_Profile"
+            android:exported="true"
+            android:label="Upload Profile" />
+        <activity
+            android:name=".BluetoothSettings"
+            android:label="Bluetooth Settings"
+            android:exported="true" />
+        <activity
+            android:name=".Home_Employee"
+            android:label="@string/EMPLOYEES"
+            android:exported="true" />
+
     </application>
 
 </manifest>

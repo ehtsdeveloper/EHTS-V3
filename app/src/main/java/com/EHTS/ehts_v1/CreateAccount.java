@@ -18,10 +18,13 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class CreateAccount extends AppCompatActivity {
-    //create objects
-    TextInputEditText editEmail, editPassword;
+    // Create objects
+    TextInputEditText  editEmail, editFullName, editPassword;
     Button bt_createACC;
     FirebaseAuth mAuth;
     ProgressBar progressBar;
@@ -32,7 +35,7 @@ public class CreateAccount extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
+        if (currentUser != null) {
             Intent intent = new Intent(getApplicationContext(), TopNavBar.class);
             startActivity(intent);
             finish();
@@ -44,9 +47,11 @@ public class CreateAccount extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
 
-        //initialize
+        // Initialize
         mAuth = FirebaseAuth.getInstance();
+
         editEmail = findViewById(R.id.emailAddress);
+        editFullName = findViewById(R.id.fullName);
         editPassword = findViewById(R.id.password);
         bt_createACC = findViewById(R.id.SignUp);
         progressBar = findViewById(R.id.progressBar);
@@ -61,22 +66,28 @@ public class CreateAccount extends AppCompatActivity {
             }
         });
 
-
         bt_createACC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 progressBar.setVisibility(View.VISIBLE);
-                String email, password;
+                String  email, fullName, password;
                 email = String.valueOf(editEmail.getText());
+                fullName = String.valueOf(editFullName.getText());
                 password = String.valueOf(editPassword.getText());
 
-                //check if email/password is empty
-                if (TextUtils.isEmpty(email)){
+                // Check if email/password is empty
+
+                if (TextUtils.isEmpty(email)) {
                     Toast.makeText(CreateAccount.this, "Please Enter Email", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (TextUtils.isEmpty(password)){
-                    Toast.makeText(CreateAccount.this, "Please Enter Email", Toast.LENGTH_SHORT).show();
+
+                if (TextUtils.isEmpty(fullName)) {
+                    Toast.makeText(CreateAccount.this, "Please Enter Full Name", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(password)) {
+                    Toast.makeText(CreateAccount.this, "Please Enter Password", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -87,26 +98,42 @@ public class CreateAccount extends AppCompatActivity {
                                 progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
-                                    Toast.makeText(CreateAccount.this, "Account Created",
-                                            Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(), TopNavBar.class);
-                                    startActivity(intent);
-                                    finish();
-                                   // Log.d(TAG, "createUserWithEmail:success");
-                                  //  FirebaseUser user = mAuth.getCurrentUser();
-                                   // updateUI(user);
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    if (user != null) {
+                                        // Save user profile data to Realtime Database
+                                        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
+                                        String userId = user.getUid();
+                                        String modifiedEmail = email.replace(".", "_").replace("@", "_");
+                                        User userProfile = new User(fullName, email);
+                                        usersRef.child(userId).child(modifiedEmail).setValue(userProfile);
+                                        // Update user profile with full name
+                                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                .setDisplayName(fullName)
+                                                .build();
+
+                                        user.updateProfile(profileUpdates)
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
+                                                            Toast.makeText(CreateAccount.this, "Account Created", Toast.LENGTH_SHORT).show();
+                                                            Intent intent = new Intent(getApplicationContext(), TopNavBar.class);
+                                                            startActivity(intent);
+                                                            finish();
+                                                        } else {
+                                                            Toast.makeText(CreateAccount.this, "Failed to update profile", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                });
+                                    }
                                 } else {
                                     // If sign in fails, display a message to the user.
-                                  //  Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(CreateAccount.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-                                   // updateUI(null);
+                                    Toast.makeText(CreateAccount.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
 
             }
         });
-
     }
 }
