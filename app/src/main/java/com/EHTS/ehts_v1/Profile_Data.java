@@ -10,6 +10,7 @@ public class Profile_Data {
     private int dataWeight;
     private String dataDeviceID;
     private String dataImage;
+    private String key;
 
     public Profile_Data(String dataName, String dataEmpID, int dataAge, int dataHeight, int dataWeight, String dataDeviceID, String dataImage) {
         this.dataName = dataName;
@@ -21,19 +22,14 @@ public class Profile_Data {
         this.dataImage = dataImage;
 
     }
-    /*
-    public Profile_Data(String dataName, String dataEmpID, int dataAge, int dataHeight, int dataWeight, String dataDeviceID, Uri dataImage) {
-        this.dataName = dataName;
-        this.dataEmpID = dataEmpID;
-        this.dataAge = dataAge;
-        this.dataHeight = dataHeight;
-        this.dataWeight = dataWeight;
-        this.dataDeviceID = dataDeviceID;
-        this.dataImage = dataImage;
+
+    public Profile_Data() {
+
+
     }
 
 
-     */
+
     public String getDataName() {
         return dataName;
     }
@@ -61,9 +57,14 @@ public class Profile_Data {
     public String getDataImage() {
         return dataImage;
     }
+    public String getKey() {return key;}
 
     public void setDataImage(String dataImage) {
         this.dataImage = dataImage;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }
 

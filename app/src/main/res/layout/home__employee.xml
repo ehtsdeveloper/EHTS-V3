@@ -19,23 +19,25 @@
         android:layout_below="@id/toolbar"
       >
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="Home"
-                android:textColor="@color/DarkHeaderGray"
-                android:textSize="30dp"
-                android:textStyle="bold" />
+          <androidx.recyclerview.widget.RecyclerView
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:id="@+id/recyclerview"
+              android:scrollbars="vertical">
 
-        </LinearLayout>
+
+
+
+
+          </androidx.recyclerview.widget.RecyclerView>
+
+        </RelativeLayout>
 
     </ScrollView>
 </RelativeLayout>

@@ -15,7 +15,7 @@
     <string name="BleSettings">Bluetooth Settings</string>
 
     <string name="height">Height (Inches)</string>
-    <string name="upload_employee_info">Upload Employee Info</string>
+    <string name="ADD_employee_info">Add Employee Info</string>
     <string name="employee_full_name">Employee Full Name</string>
     <string name="employee_id">Employee ID</string>
     <string name="age">Age</string>

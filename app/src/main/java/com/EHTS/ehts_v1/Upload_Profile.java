@@ -11,11 +11,14 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +48,8 @@ public class Upload_Profile extends AppCompatActivity {
 
     Uri selectedImageUri;
 
+    ProgressBar progressLayout;
+
     private ActivityResultLauncher<Intent> galleryLauncher;
 
     @Override
@@ -53,7 +58,8 @@ public class Upload_Profile extends AppCompatActivity {
         setContentView(R.layout.upload_profile);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
-
+        progressLayout = findViewById(R.id.progressLayout);
+        progressLayout.setVisibility(View.GONE);
         ImageButton backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,13 +85,13 @@ public class Upload_Profile extends AppCompatActivity {
 
         dataImage = findViewById(R.id.uploadImage);
         textView = findViewById(R.id.textviewUpload);
-        saveButton = findViewById(R.id.updateButton);
-        dataName = findViewById(R.id.updateName);
-        dataEmpID = findViewById(R.id.updateEmpID);
-        dataAge = findViewById(R.id.updateAge);
-        dataHeight = findViewById(R.id.updateHeight);
-        dataWeight = findViewById(R.id.updateWeight);
-        dataDeviceID = findViewById(R.id.updateDeviceID);
+        saveButton = findViewById(R.id.uploadButton);
+        dataName = findViewById(R.id.uploadName);
+        dataEmpID = findViewById(R.id.uploadEmpID);
+        dataAge = findViewById(R.id.uploadAge);
+        dataHeight = findViewById(R.id.uploadHeight);
+        dataWeight = findViewById(R.id.uploadWeight);
+        dataDeviceID = findViewById(R.id.uploadDeviceID);
 
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +105,9 @@ public class Upload_Profile extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 saveData();
+
             }
         });
     }
@@ -126,16 +134,19 @@ public class Upload_Profile extends AppCompatActivity {
             String imageFileName = UUID.randomUUID().toString(); // Generate a unique filename for the image
             StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("images/" + imageFileName);
 
+            // Show the progress bar
+            progressLayout.setVisibility(View.VISIBLE);
+
             // Upload the image to Firebase Storage
             storageReference.putFile(selectedImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
                             // Get the download URL of the uploaded image
                             storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri downloadUri) {
+
                                     // Create a new Profile_Data object with the download URL and other data
                                     Profile_Data data = new Profile_Data(name, empId, age, height, weight, deviceID, downloadUri.toString());
 
@@ -143,10 +154,11 @@ public class Upload_Profile extends AppCompatActivity {
                                     String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                                     // Assuming you have a "profiles" node in your database
                                     databaseReference.child("users").child(userId).child("employees").child(dataEmpID.getText().toString()).setValue(data)
-                                    //databaseReference.child("profiles").push().setValue(data)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
+                                                    // Hide the progress bar
+                                                    progressLayout.setVisibility(View.GONE);
                                                     Toast.makeText(Upload_Profile.this, "Saved", Toast.LENGTH_SHORT).show();
                                                     // Reset input fields and image
                                                     dataName.setText("");
@@ -161,6 +173,8 @@ public class Upload_Profile extends AppCompatActivity {
                                             .addOnFailureListener(new OnFailureListener() {
                                                 @Override
                                                 public void onFailure(@NonNull Exception e) {
+                                                    // Hide the progress bar
+                                                    progressLayout.setVisibility(View.GONE);
                                                     Toast.makeText(Upload_Profile.this, "Failed to save data", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
@@ -178,5 +192,7 @@ public class Upload_Profile extends AppCompatActivity {
             Toast.makeText(Upload_Profile.this, "Please select an image", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
 }

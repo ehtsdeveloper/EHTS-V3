@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -14,15 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
         tools:targetApi="31">
+
         <activity
             android:name=".TopNavBar"
             android:exported="true"
-            android:label="@string/EMPLOYEES"
-            android:textStyle="bold"
-            android:textColor="@color/DarkHeaderGray"
             android:gravity="center"
+            android:label="@string/EMPLOYEES"
+            android:textColor="@color/DarkHeaderGray"
             android:textSize="40dp"
-            >
+            android:textStyle="bold">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,20 +47,22 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
-
         <activity
             android:name=".Upload_Profile"
             android:exported="true"
             android:label="Upload Profile" />
         <activity
             android:name=".BluetoothSettings"
-            android:label="Bluetooth Settings"
-            android:exported="true" />
+            android:exported="true"
+            android:label="Bluetooth Settings" />
         <activity
             android:name=".Home_Employee"
-            android:label="@string/EMPLOYEES"
-            android:exported="true" />
-
+            android:exported="true"
+            android:label="@string/EMPLOYEES" />
+        <activity
+            android:name=".EmployeeRecord"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>
