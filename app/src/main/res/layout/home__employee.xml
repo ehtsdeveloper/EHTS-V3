@@ -8,15 +8,14 @@
     android:background="@color/lightGrayBG"
     tools:context=".Home_Employee">
 
-    <!-- Include the topbarnav layout -->
-    <include layout="@layout/pagestoolbar_backbtn" />
+<include layout="@layout/hometoolbar"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="66dp"
         android:fillViewport="true"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@+id/toolbar"
       >
 
         <RelativeLayout

@@ -26,7 +26,7 @@ public class EmployeeRecord extends AppCompatActivity {
     TextView empNameRec, empIddata, agedata, heightdata, weightdata, deviceIDdata;
     ImageView imageRec;
 
-    TextView  editProfile;
+   // TextView  editProfile;
     Button deleteProfile;
 
     String key = "";
@@ -51,7 +51,7 @@ public class EmployeeRecord extends AppCompatActivity {
         profileCard = findViewById(R.id.profileCard);
 
         deleteProfile = findViewById(R.id.deleteProfile);
-        editProfile = findViewById(R.id.EditProfile);
+       // editProfile = findViewById(R.id.EditProfile);
 
         backButton = findViewById(R.id.backButton);
 
@@ -67,13 +67,14 @@ public class EmployeeRecord extends AppCompatActivity {
 
 
              key = bundle.getString("Key");
-            imageUrl = bundle.getString("Image");
-            Glide.with(this).load(bundle.getString("Image")).into(imageRec);
+            imageUrl = bundle.getString("images/");
+            Glide.with(this).load(bundle.getString("images/")).into(imageRec);
         }
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+               // startActivity(new Intent(getApplicationContext(), Home_Employee.class));
                 onBackPressed(); // Go back to the previous page
             }
         });
@@ -83,9 +84,11 @@ public class EmployeeRecord extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final DatabaseReference reference;
-                //final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Employee Data");
+
                 String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                reference = FirebaseDatabase.getInstance().getReference("users").child(userId).child("employees");
+               reference = FirebaseDatabase.getInstance().getReference("users").child(userId).child("employees");
+
+
                 FirebaseStorage storage = FirebaseStorage.getInstance();
 
                 StorageReference storageReference = storage.getReferenceFromUrl(imageUrl);
@@ -95,8 +98,8 @@ public class EmployeeRecord extends AppCompatActivity {
                     public void onSuccess(Void unused) {
                         reference.child(key).removeValue();
                         Toast.makeText(EmployeeRecord.this, "Deleted", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getApplicationContext(), Home_Employee.class));
-                        finish();
+
+                        onBackPressed(); // Go back to the previous activity
                     }
                 });
             }
@@ -104,18 +107,20 @@ public class EmployeeRecord extends AppCompatActivity {
 
 
 
-        /*
+/*
+didnt get this feature to work
+
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(EmployeeRecord.this, Update_Profile.class)
-                        .putExtra("Image", imageUrl)
+                        .putExtra("images/", imageUrl)
                         .putExtra("Employee Name", empNameRec.getText().toString())
-                        .putExtra("Employee ID", empIdRec.getText().toString())
-                        .putExtra("Age", ageRec.getText().toString())
-                        .putExtra("Height", heightRec.getText().toString())
-                        .putExtra("Weight", weightRec.getText().toString())
-                        .putExtra("Device ID", deviceIDRec.getText().toString())
+                        .putExtra("Employee ID", empIddata.getText().toString())
+                        .putExtra("Age", agedata.getText().toString())
+                        .putExtra("Height (in)", heightdata.getText().toString())
+                        .putExtra("Weight (lb)", weightdata.getText().toString())
+                        .putExtra("Device ID", deviceIDdata.getText().toString())
                         .putExtra("Key", key);
 
 
@@ -123,7 +128,9 @@ public class EmployeeRecord extends AppCompatActivity {
             }
         });
 
-         */
+
+ */
+
     }
 }
 

@@ -58,16 +58,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
             public void onClick(View view) {
 
                 Intent intent = new Intent(context, EmployeeRecord.class);
-                intent.putExtra("Image", dataList.get(holder.getAdapterPosition()).getDataImage());
+                intent.putExtra("images/", dataList.get(holder.getAdapterPosition()).getDataImage());
                 intent.putExtra("Employee Name", dataList.get(holder.getAdapterPosition()).getDataName());
                 intent.putExtra("Employee ID", dataList.get(holder.getAdapterPosition()).getDataEmpID());
                 intent.putExtra("Age", age);
                 intent.putExtra("Height (in)", height);
                 intent.putExtra("Weight (lb)", weight);
                 intent.putExtra("Device ID", dataList.get(holder.getAdapterPosition()).getDataDeviceID());
-
                 intent.putExtra("Key",dataList.get(holder.getAdapterPosition()).getKey());
-               // context.startActivity(intent);
+
+                 // context.startActivity(intent);
                 //intent.putExtra("Key",dataList.get(holder.getAdapterPosition()).getKey());
 
 
@@ -124,6 +124,7 @@ class MyViewHolder extends RecyclerView.ViewHolder {
     TextView recName, recEmpID, recAge, recheight, recweight, deviceIDData;;
     CardView recCard;
     ImageButton goTobtn;
+
 
     public MyViewHolder(@NonNull View itemView) {
         super(itemView);

@@ -32,6 +32,8 @@ import com.google.firebase.storage.UploadTask;
 import com.google.firebase.auth.FirebaseAuth;
 
 
+import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.UUID;
 
 public class Upload_Profile extends AppCompatActivity {
@@ -150,9 +152,19 @@ public class Upload_Profile extends AppCompatActivity {
                                     // Create a new Profile_Data object with the download URL and other data
                                     Profile_Data data = new Profile_Data(name, empId, age, height, weight, deviceID, downloadUri.toString());
 
+                                    //We are changing the child from empid to currentDate, (may have an issue here comeback!!!!)
+                                    // because we will be updating empid as well and it may affect child value.
+                                  //  String currentDate = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+
+
                                     // Retrieve the current user's ID
                                     String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                                    // Assuming you have a "profiles" node in your database
+                                    // Get the employee ID
+                                    String employeeId = dataEmpID.getText().toString();
+
+                                    // references "employees" node in database
+                                   // databaseReference.child("users").child(userId).child("employees").child(employeeId).child(currentDate).setValue(data)
+
                                     databaseReference.child("users").child(userId).child("employees").child(dataEmpID.getText().toString()).setValue(data)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override

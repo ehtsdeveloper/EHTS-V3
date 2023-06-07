@@ -19,7 +19,7 @@
             android:name=".TopNavBar"
             android:exported="true"
             android:gravity="center"
-            android:label="@string/EMPLOYEES"
+            android:label="@string/app_name"
             android:textColor="@color/DarkHeaderGray"
             android:textSize="40dp"
             android:textStyle="bold">
@@ -55,12 +55,13 @@
             android:name=".BluetoothSettings"
             android:exported="true"
             android:label="Bluetooth Settings" />
-        <activity
-            android:name=".Home_Employee"
-            android:exported="true"
-            android:label="@string/EMPLOYEES" />
+
         <activity
             android:name=".EmployeeRecord"
+            android:exported="true"/>
+
+        <activity
+            android:name=".Home_Employee"
             android:exported="true">
         </activity>
     </application>

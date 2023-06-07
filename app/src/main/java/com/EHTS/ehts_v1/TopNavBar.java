@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ public class TopNavBar extends AppCompatActivity {
     FirebaseAuth auth;
     TextView textView;
     FirebaseUser user;
+    boolean isDrawerLocked = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,10 +43,66 @@ public class TopNavBar extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.Open, R.string.Close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN); // Disable drawer closing
+
+        // Add a listener to the drawer layout
+        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+                // No action needed
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+                // No action needed
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+                // Check if the drawer should remain locked
+                if (isDrawerLocked) {
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+                }
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                // Check if the drawer is idle
+                if (newState == DrawerLayout.STATE_IDLE) {
+                    // Check if the drawer should remain locked
+                    if (isDrawerLocked) {
+                        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+                    } else {
+                        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                    }
+                }
+            }
+        });
+
+        // Set the flag to keep the drawer locked
+        isDrawerLocked = true;
+
+        // when logging in, take the user to the home page
+        Intent homeIntent = new Intent(TopNavBar.this, Home_Employee.class);
+        loadActivity(homeIntent);
+
+        /*
+        //allow open close menu
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this,  drawerLayout, toolbar, R.string.Open, R.string.Close);
 
         drawerLayout.addDrawerListener(toggle);
+
+        //when logging in take user to the home page
+        Intent homeIntent = new Intent(TopNavBar.this, Home_Employee.class);
+        loadActivity(homeIntent);
         toggle.syncState();
+         */
+
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -52,15 +110,11 @@ public class TopNavBar extends AppCompatActivity {
                int id = item. getItemId();
 
                if(id == R.id.home) {
+                 //  Toast.makeText(TopNavBar.this, "Home", Toast.LENGTH_SHORT).show();
+                   //Home_Employee homeFragment = new Home_Employee();
+                  // loadFragment(homeFragment);
                    Toast.makeText(TopNavBar.this, "Home", Toast.LENGTH_SHORT).show();
-                   /*
-                    // Write a message to the database Test
-                   FirebaseDatabase database = FirebaseDatabase.getInstance();
-                   DatabaseReference myRef = database.getReference("message");
 
-                   myRef.setValue("Hello, World!");
-
-                    */
                    Intent homeIntent = new Intent(TopNavBar.this, Home_Employee.class);
                    loadActivity(homeIntent);
 
@@ -116,17 +170,21 @@ public class TopNavBar extends AppCompatActivity {
     private void loadActivity(Intent intent) {
         startActivity(intent);
     }
-/*
-    private void loadFragement(Fragment fragment) {
+
+    /*
+    private void loadFragment(Fragment fragment) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-
-        ft.add(R.id.container, fragment);
+        ft.replace(R.id.container, fragment);
         ft.commit();
     }
 
 
- */
+
+     */
+
+
+
     private void logoutUser() {
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(getApplicationContext(), Login.class);

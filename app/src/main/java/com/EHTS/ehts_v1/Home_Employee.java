@@ -1,10 +1,12 @@
 package com.EHTS.ehts_v1;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import com.google.firebase.database.DataSnapshot;
@@ -26,7 +29,7 @@ import java.util.List;
 
 public class Home_Employee extends AppCompatActivity {
 
-    ImageButton backButton;
+    ImageButton menubutton, addEmployeeButton;
     RecyclerView recyclerView;
     DatabaseReference databaseReference;
     ValueEventListener eventListener;
@@ -39,7 +42,9 @@ public class Home_Employee extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home__employee);
 
-        backButton = findViewById(R.id.backButton);
+        menubutton = findViewById(R.id.backButton);
+
+        addEmployeeButton = findViewById(R.id.addEmployeeButton);
         recyclerView = findViewById(R.id.recyclerview);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(Home_Employee.this, 1);
@@ -56,12 +61,13 @@ public class Home_Employee extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
 
-       // databaseReference = FirebaseDatabase.getInstance().getReference("employees");
+        // databaseReference = FirebaseDatabase.getInstance().getReference("employees");
         // Get the user ID
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId).child("employees");
+
         dialog.show();
-       // dialog.show();
+        // dialog.show();
 
 
         eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
@@ -86,14 +92,24 @@ public class Home_Employee extends AppCompatActivity {
         });
 
 
-        backButton.setOnClickListener(new View.OnClickListener() {
+        menubutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed(); // Go back to the previous page
             }
         });
+        addEmployeeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle add employee button click
+                Intent addEmployeeIntent = new Intent(Home_Employee.this, Upload_Profile.class);
+                startActivity(addEmployeeIntent);
+            }
+        });
+
+
+
     }
 
 
 }
-
