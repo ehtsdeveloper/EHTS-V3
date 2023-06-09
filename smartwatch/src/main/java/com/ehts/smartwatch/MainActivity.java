@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
     Button logoutbtn;
     TextView textView;
+    //Button gotoHr;
     FirebaseUser user;
 
     @Override
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         logoutbtn = findViewById(R.id.logoutbtn);
         textView= findViewById(R.id.userdetails);
+       // gotoHr = findViewById(R.id.gotoHr);
 
         user = auth.getCurrentUser();
 
@@ -40,6 +42,18 @@ public class MainActivity extends AppCompatActivity {
             textView.setText(user.getEmail());
         }
 
+
+   /*
+        gotoHr.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), HeartRate_Monitor.class);
+                startActivity(intent);
+            }
+        });
+
+ */
         logoutbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

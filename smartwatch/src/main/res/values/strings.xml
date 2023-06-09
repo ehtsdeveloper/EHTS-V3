@@ -21,6 +21,7 @@
     <string name="hello_world">Hello Square World!</string>
     <string name="title_activity_presentation.home_employee">presentation.home_employee</string>
     <string name="title_activity_home_employee">home_employee</string>
+    <string name="title_activity_heart_rate_monitor">HeartRate_Monitor</string>
 
 
 </resources>

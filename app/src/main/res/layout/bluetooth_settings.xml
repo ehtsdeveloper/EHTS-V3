@@ -7,7 +7,7 @@
     android:background="@color/lightGrayBG"
     tools:context=".BluetoothSettings">
 
-    <include layout="@layout/pagestoolbar_backbtn" />
+    <include layout="@layout/bluetooth_toolbar" />
 
 
     <ScrollView
@@ -21,19 +21,71 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center|top"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:id="@+id/statusBluetoothTv"
                 android:gravity="center"
-                android:text="@string/BleSettings"
+                android:text="Bluetooth Status:"
                 android:textColor="@color/DarkHeaderGray"
                 android:textSize="30dp"
                 android:textStyle="bold" />
 
+            <!--Bluetooth icon (on/off)-->
+            <ImageView
+                android:id="@+id/bluetoothIv"
+                android:src="@drawable/baseline_bluetooth_24"
+                android:layout_width="150dp"
+                android:layout_height="150dp" />
+
+            <!--On Button-->
+            <Button
+                android:id="@+id/onButn"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="200dp"
+                android:text="Turn On" />
+
+            <!--Off Button-->
+            <Button
+                android:id="@+id/offButn"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="200dp"
+                android:text="Turn Off" />
+
+            <Button
+                android:id="@+id/discoverableBtn"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="200dp"
+                android:text="Discoverable" />
+
+            <!--Get list of paired device button-->
+            <Button
+                android:id="@+id/PairedBtn"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="200dp"
+                android:text="Get Paired Device" />
+
+            <!--Show Paired Device here-->
+            <TextView
+                android:id="@+id/pairTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minWidth="200dp"
+                android:text=""
+                android:textColor="#000" />
         </LinearLayout>
 
     </ScrollView>
