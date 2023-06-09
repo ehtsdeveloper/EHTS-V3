@@ -4,18 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/DarkGray"
+    android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+    android:background="@color/black"
     tools:context=".loginwatch"
-
     tools:deviceIds="wear"
 >
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/inner_frame_layout_padding"
+
             app:layout_boxedEdges="all">
-
-
                 <EditText
                     android:id="@+id/emailAddress"
                     android:layout_width="wrap_content"
@@ -23,18 +21,29 @@
 
                     android:layout_gravity="center_horizontal|top"
                     android:gravity="center_vertical|start"
+                    android:padding="5dp"
                     android:inputType="textEmailAddress"
-                    android:hint="@string/EmailAddress" />
+                    android:textColorHint="@color/black"
+                    android:background="@color/white"
+                    android:textColor="@color/DarkGray"
+                    android:hint="@string/EmailAddress"
+                    />
 
                 <EditText
                     android:id="@+id/password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:padding="5dp"
+                    android:paddingLeft="14dp"
+
+                    android:textColorHint="@color/black"
+                    android:background="@color/white"
+                    android:textColor="@color/DarkGray"
                     android:layout_marginTop="40dp"
                     android:gravity="center_vertical|start"
                     android:inputType="textPassword"
-                    android:hint="Password  " />
+                    android:hint=" Password      " />
 
 
                 <Button

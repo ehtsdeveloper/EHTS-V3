@@ -2,9 +2,11 @@
 <androidx.wear.widget.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/DarkGray"
+
+    android:background="@color/black"
     android:padding="@dimen/box_inset_layout_padding"
     tools:context=".MainActivity"
     tools:deviceIds="wear">
@@ -12,21 +14,38 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:padding="@dimen/inner_frame_layout_padding"
         app:layout_boxedEdges="all">
+
+
+
+        <TextView
+            android:id="@+id/hello"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|top"
+            android:text="Hello, "
+            android:textColorHint="@color/white"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            />
 
         <TextView
             android:id="@+id/userdetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|top"
-            android:textColor="@android:color/black"
+            android:layout_gravity="center_horizontal|center"
+
+            android:hint="USERNAME"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/white"
             android:textSize="15sp"
-             />
+            android:paddingBottom="6dp"/>
 
         <Button
             android:id="@+id/logoutbtn"
-            android:layout_width="90dp"
+            android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_gravity="center_horizontal|bottom"
             android:background="@drawable/redbutton"
@@ -36,4 +55,5 @@
             android:textStyle="bold" />
 
     </FrameLayout>
+
 </androidx.wear.widget.BoxInsetLayout>

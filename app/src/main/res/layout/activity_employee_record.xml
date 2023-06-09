@@ -14,7 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="60dp"
+
         android:layout_below="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -49,9 +56,6 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:scaleType="fitXY"/>
-
-
-
 
             <TextView
                 android:layout_width="wrap_content"
@@ -176,7 +180,275 @@
 
 
     </androidx.cardview.widget.CardView>
+            <TextView
+               android:id="@+id/hrtextview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
 
+                android:gravity="start|center_vertical"
+                android:text="HEARTRATE RESULTS FROM LAST TEST: "
+                android:padding="15dp"
+                android:layout_marginBottom="-25dp"
+                android:textColor="@color/DarkHeaderGray"
+                android:textStyle="bold"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="190dp"
+                android:id="@+id/HeartRateCard"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:backgroundTint="@color/NavyBlue"
+                app:cardElevation="20dp"
+                android:paddingBottom="150dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/circles">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/yellowcircle"
+                        android:layout_below="@id/hrTestReslut">
+
+                        <ImageView
+                            android:layout_width="130dp"
+                            android:layout_height="110dp"
+                            android:paddingTop="6dp"
+                            android:id="@+id/imageyellow"
+                            android:src="@drawable/baseline_circle_yellow" />
+
+                        <TextView
+                            android:id="@+id/zeronum"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="30dp"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="40dp"
+                            android:textStyle="bold" />
+
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/greencircle"
+                        android:layout_below="@id/hrTestReslut">
+
+                        <ImageView
+                            android:layout_width="130dp"
+                            android:layout_height="110dp"
+                            android:paddingTop="6dp"
+                            android:src="@drawable/baseline_circle_24" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginEnd="30dp"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="40dp"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/redcircle"
+                        android:layout_below="@id/hrTestReslut">
+
+                        <ImageView
+                            android:layout_width="130dp"
+                            android:layout_height="110dp"
+                            android:paddingTop="6dp"
+                            android:src="@drawable/baseline_circle_red" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:layout_marginEnd="30dp"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="40dp"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="30dp"
+                    android:id="@+id/labels"
+                    android:layout_below="@id/circles"
+                    android:layout_gravity="center">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/low">
+
+                        <TextView
+                            android:id="@+id/lowHr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginEnd="35dp"
+                            android:layout_marginBottom="-15dp"
+                            android:gravity="start|center_vertical"
+                            android:padding="15dp"
+                            android:text="LOW"
+                            android:textSize="18dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/RestingHr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/lowHr"
+                            android:layout_marginEnd="1dp"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginBottom="-15dp"
+                            android:gravity="start|center_vertical"
+                            android:padding="15dp"
+                            android:paddingLeft="25dp"
+                            android:text="RESTING"
+                            android:textSize="18dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/MaxHr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/RestingHr"
+                            android:layout_marginEnd="25dp"
+                            android:layout_marginStart="21dp"
+                            android:layout_marginBottom="-5dp"
+                            android:gravity="start|center_vertical"
+                            android:padding="15dp"
+                            android:text="MAX"
+                            android:textSize="18dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="70dp"
+                    android:layout_marginStart="3dp"
+                    android:id="@+id/bpm"
+                    android:layout_below="@id/labels"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:id="@+id/bpmhr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+
+                        android:layout_marginBottom="-10dp"
+                        android:gravity="center"
+
+                        android:padding="15dp"
+                        android:text="Beats Per Minute (BPM)"
+                        android:textSize="14dp"
+                        android:textColor="@color/DarkGray"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/hrTestReslut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+
+                android:gravity="start|center_vertical"
+                android:text="LATEST TEST RESULTS: "
+                android:padding="15dp"
+                android:layout_marginBottom="-25dp"
+                android:textColor="@color/DarkHeaderGray"
+                android:textStyle="bold"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/testresult"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:backgroundTint="@color/NavyBlue"
+                app:cardElevation="20dp"
+                android:paddingBottom="280dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/PASSFAIL">
+
+                    <TextView
+                        android:id="@+id/passfailresult"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+
+                        android:layout_marginBottom="-10dp"
+                        android:gravity="center"
+
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+                        android:text="Waiting For Test Results..."
+                        android:textSize="21dp"
+                        android:textColor="@color/DarkGray"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:id="@+id/padding"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/testresult"
+
+            android:layout_toRightOf="@+id/imagelayout"
+            android:orientation="vertical">
+        </LinearLayout>
+
+        </LinearLayout>
 
     </ScrollView>
 

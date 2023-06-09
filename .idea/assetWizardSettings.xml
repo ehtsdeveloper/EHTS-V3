@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:$USER_HOME$/Library/Android/sdk/icons/material/materialicons/menu/baseline_menu_24.xml" />
+                                      <entry key="url" value="file:$USER_HOME$/Library/Android/sdk/icons/material/materialicons/circle/baseline_circle_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,8 +28,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="808080" />
-                            <entry key="outputName" value="baseline_menu_24" />
+                            <entry key="color" value="ad2424" />
+                            <entry key="outputName" value="baseline_circle_red" />
                           </map>
                         </option>
                       </PersistentState>
