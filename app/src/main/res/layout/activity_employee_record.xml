@@ -297,10 +297,11 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="30dp"
+
                     android:id="@+id/labels"
                     android:layout_below="@id/circles"
                     android:layout_gravity="center">
@@ -308,18 +309,18 @@
                     <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="6"
                         android:id="@+id/low">
 
                         <TextView
                             android:id="@+id/lowHr"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="25dp"
-                            android:layout_marginEnd="35dp"
+                            android:layout_marginStart="-12dp"
+                            android:layout_marginEnd="38dp"
                             android:layout_marginBottom="-15dp"
                             android:gravity="start|center_vertical"
-                            android:padding="15dp"
+                            android:padding="14dp"
                             android:text="LOW"
                             android:textSize="18dp"
                             android:textColor="@color/white"
@@ -330,14 +331,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_toEndOf="@id/lowHr"
-                            android:layout_marginEnd="1dp"
-                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="6dp"
+                            android:layout_marginStart="1dp"
                             android:layout_marginBottom="-15dp"
                             android:gravity="start|center_vertical"
-                            android:padding="15dp"
-                            android:paddingLeft="25dp"
+                            android:padding="14dp"
+                            android:paddingLeft="17dp"
                             android:text="RESTING"
-                            android:textSize="18dp"
+                            android:textSize="16dp"
                             android:textColor="@color/white"
                             android:textStyle="bold" />
 
@@ -346,13 +347,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_toEndOf="@id/RestingHr"
-                            android:layout_marginEnd="25dp"
+                            android:layout_marginEnd="-1dp"
                             android:layout_marginStart="21dp"
                             android:layout_marginBottom="-5dp"
                             android:gravity="start|center_vertical"
+                            android:paddingLeft="10dp"
                             android:padding="15dp"
                             android:text="MAX"
-                            android:textSize="18dp"
+                            android:textSize="15dp"
                             android:textColor="@color/white"
                             android:textStyle="bold" />
 
