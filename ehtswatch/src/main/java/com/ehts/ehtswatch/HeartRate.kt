@@ -19,6 +19,9 @@ import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -42,7 +45,7 @@ class HeartRate : Activity(), SensorEventListener {
     private lateinit var goBackButton: Button
     private lateinit var stopButton: Button
     private lateinit var textHeartRate: TextView
-
+    private lateinit var databaseReference: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_heart_rate)
@@ -141,6 +144,14 @@ class HeartRate : Activity(), SensorEventListener {
 
             // Get the timestamp of the recording
             val recordingTimestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+
+            // Store the heart rate data in your database
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+            val databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId!!)
+            val heartRateNode = databaseReference.child("heartRateData")
+            val heartRateEntry = heartRateNode.push()
+            heartRateEntry.child("timestamp").setValue(recordingTimestamp)
+            heartRateEntry.child("data").setValue(heartRateData)
 
             // Print the heart rate metrics and recording timestamp
             val heartRateText = "Heart Rate\nResting: %.1f\nLow: %.1f\nMax: %.1f\nRecording Timestamp: %s".format(restingHeartRate, lowHeartRate, maxHeartRate, recordingTimestamp)

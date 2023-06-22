@@ -62,8 +62,8 @@ class Employees_home : Activity() {
             databaseReference.addValueEventListener(eventListener)
         }
 
-        override fun onDestroy() {
-            super.onDestroy()
-            databaseReference.removeEventListener(eventListener)
-        }
+     //   override fun onDestroy() {
+    ///        super.onDestroy()
+         //   databaseReference.removeEventListener(eventListener)
+       // }
 }

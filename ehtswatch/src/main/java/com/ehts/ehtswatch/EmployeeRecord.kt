@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import com.ehts.ehtswatch.databinding.ActivityEmployeeRecordBinding
+
 
 class EmployeeRecord : Activity() {
 
@@ -19,10 +19,10 @@ class EmployeeRecord : Activity() {
     private lateinit var deviceIDdata: TextView
    // private lateinit var imageRec: ImageView
   //  private lateinit var deleteProfile: Button
-    private lateinit var profileCard: CardView
+   // private lateinit var profileCard: CardView
 
     private var key: String = ""
-    private var imageUrl: String = ""
+    //private var imageUrl: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +35,7 @@ class EmployeeRecord : Activity() {
     //    heightdata = findViewById(R.id.heightData)
     //    weightdata = findViewById(R.id.weightData)
         deviceIDdata = findViewById(R.id.DeviceIdData)
-      //  profileCard = findViewById(R.id.profileCard)
+   //  profileCard = findViewById(R.id.recCard)
      //   deleteProfile = findViewById(R.id.deleteProfile)
         backButton = findViewById(R.id.gobackbtn)
 

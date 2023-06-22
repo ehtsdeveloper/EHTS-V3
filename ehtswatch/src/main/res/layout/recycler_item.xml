@@ -59,7 +59,19 @@
                 android:layout_marginStart="25dp"
                 android:layout_below="@+id/recName"
                 />
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/recDeviceID"
+                android:text="Emp ID: "
+                android:textColor="@color/blackC"
+                android:textSize="9sp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginStart="25dp"
+                android:layout_below="@+id/recEmpID"
+                android:visibility="invisible"
+                />
 
         </RelativeLayout>
 
