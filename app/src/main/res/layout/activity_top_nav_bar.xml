@@ -13,7 +13,7 @@
     tools:context=".TopNavBar"
     >
 
-    <include layout = "@layout/content_main"
+    <include layout = "@layout/home__employee"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

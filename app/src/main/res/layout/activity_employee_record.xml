@@ -33,19 +33,12 @@
         android:backgroundTint="@color/lightGrayBG"
         app:cardElevation="20dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center_horizontal"
-        android:padding="20dp"
-        android:background="@drawable/darkgrayborder">
-
-
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:padding="20dp"
+            android:background="@drawable/darkgrayborder"
             android:id="@+id/imagelayout">
 
             <ImageView
@@ -53,7 +46,7 @@
                 android:layout_height="100dp"
                 android:src="@drawable/baseline_add_a_photo_24"
                 android:id="@+id/ImageData"
-                android:layout_gravity="center"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
                 android:scaleType="fitXY"/>
 
@@ -61,121 +54,225 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/EditProfile"
-                android:paddingStart="19dp"
+                android:paddingStart="9dp"
                 android:text="Edit Profile"
+                android:layout_gravity="center"
                 android:textSize="14sp"
                 android:textColor="@color/blue"
-                android:visibility="invisible"  />
+                android:visibility="invisible"/>
 
-
-        </LinearLayout>
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:id="@+id/EmpNameData"
-            android:backgroundTint="@color/white"
-            android:background="@drawable/darkgrayborder"
-            android:layout_marginTop="10dp"
-            android:padding="10dp"
-            android:hint="@string/employee_full_name"
-            android:layout_toRightOf="@+id/imagelayout"
-            android:layout_marginStart="10dp"
-            android:gravity="start|center_vertical"
-            android:textColor="@color/black" />
-
-
-        <LinearLayout
-            android:id="@+id/empinfoData"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/EmpNameData"
-            android:layout_marginStart="-1dp"
-            android:layout_marginLeft="107dp"
-            android:layout_toRightOf="@+id/imagelayout"
-            android:orientation="vertical">
-
-            <!-- Add your additional TextView elements here -->
-            <TextView
-                android:id="@+id/EmpIDData"
+            <LinearLayout
+                android:id="@+id/NameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/darkgrayborder"
-                android:backgroundTint="@color/white"
-                android:gravity="start|center_vertical"
-                android:hint="Employee ID"
-                android:padding="10dp"
-                android:textColor="@color/black" />
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
 
-            <TextView
-                android:id="@+id/AgeData"
+                <TextView
+                    android:id="@+id/NameLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:paddingStart="5dp"
+                    android:text="Name:   "
+                    android:textColor="@color/black"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <TextView
+                        android:id="@+id/EmpNameData"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/darkgrayborder"
+                        android:backgroundTint="@color/white"
+                        android:padding="10dp"
+                        android:hint="@string/employee_full_name"
+                        android:gravity="start|center_vertical"
+                        android:textColor="@color/black" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/EmpIDLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/darkgrayborder"
-                android:backgroundTint="@color/white"
-                android:gravity="start|center_vertical"
-                android:hint="Age"
-                android:padding="10dp"
-                android:textColor="@color/black" />
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
 
-            <TextView
-                android:id="@+id/heightData"
+                <TextView
+                    android:id="@+id/EmpIDLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:paddingStart="5dp"
+                    android:text="Emp ID: "
+                    android:textColor="@color/black"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <TextView
+                        android:id="@+id/EmpIDData"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/darkgrayborder"
+                        android:backgroundTint="@color/white"
+                        android:padding="10dp"
+                        android:hint="Employee ID"
+                        android:gravity="start|center_vertical"
+                        android:textColor="@color/black" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/AgeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/darkgrayborder"
-                android:backgroundTint="@color/white"
-                android:gravity="start|center_vertical"
-                android:hint="Height (in)"
-                android:padding="10dp"
-                android:textColor="@color/black" />
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
 
-            <TextView
-                android:id="@+id/weightData"
+                <TextView
+                    android:id="@+id/AgeLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:paddingStart="5dp"
+                    android:text="Age:       "
+                    android:textColor="@color/black"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <TextView
+                        android:id="@+id/AgeData"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/darkgrayborder"
+                        android:backgroundTint="@color/white"
+                        android:padding="10dp"
+                        android:hint="Age"
+                        android:gravity="start|center_vertical"
+                        android:textColor="@color/black" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/HeightLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/darkgrayborder"
-                android:backgroundTint="@color/white"
-                android:gravity="start|center_vertical"
-                android:hint="Weight (lb)"
-                android:padding="10dp"
-                android:textColor="@color/black" />
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
 
-            <TextView
-                android:id="@+id/deviceIdData"
+                <TextView
+                    android:id="@+id/HeightLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:paddingStart="5dp"
+                    android:text="Height (IN):  "
+                    android:textColor="@color/black"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <TextView
+                        android:id="@+id/heightData"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/darkgrayborder"
+                        android:backgroundTint="@color/white"
+                        android:padding="10dp"
+                        android:hint="Height (in)"
+                        android:gravity="start|center_vertical"
+                        android:textColor="@color/black" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/WeightLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/darkgrayborder"
-                android:backgroundTint="@color/white"
-                android:gravity="start|center_vertical"
-                android:hint="Device ID"
-                android:padding="10dp"
-                android:textColor="@color/black" />
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/WeightLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:paddingStart="5dp"
+                    android:text="Weight (LB): "
+                    android:textColor="@color/black"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <TextView
+                        android:id="@+id/weightData"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/darkgrayborder"
+                        android:backgroundTint="@color/white"
+                        android:padding="10dp"
+                        android:hint="Weight (lb)"
+                        android:gravity="start|center_vertical"
+                        android:textColor="@color/black" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/DeviceIDLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/DeviceIDLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:paddingStart="5dp"
+                    android:text="Device ID:     "
+                    android:textColor="@color/black"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <TextView
+                        android:id="@+id/deviceIdData"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/darkgrayborder"
+                        android:backgroundTint="@color/white"
+                        android:padding="10dp"
+                        android:hint="Device ID"
+                        android:gravity="start|center_vertical"
+                        android:textColor="@color/black" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/deleteProfile"
                 android:paddingStart="10dp"
                 android:layout_marginTop="50dp"
+                android:layout_gravity="center"
                 android:text="Delete Profile"
                 android:textSize="10sp"
                 android:backgroundTint="@color/red"
                 android:textColor="@color/white"/>
 
-
         </LinearLayout>
 
-    </RelativeLayout>
 
 
 

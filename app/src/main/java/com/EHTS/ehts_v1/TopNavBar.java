@@ -6,9 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+//import androidx.fragment.app.Fragment;
+//import androidx.fragment.app.FragmentManager;
+//import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -119,6 +119,7 @@ public class TopNavBar extends AppCompatActivity {
                    loadActivity(homeIntent);
 
                } else if (id == R.id.addEmployees) {
+
                    Toast.makeText(TopNavBar.this, "Employees", Toast.LENGTH_SHORT).show();
                    Intent employeesIntent = new Intent(TopNavBar.this, Upload_Profile.class);
                    loadActivity(employeesIntent);
