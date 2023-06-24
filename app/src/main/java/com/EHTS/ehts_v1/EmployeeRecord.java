@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+//displaying employees test results and sending over the bluetooth data to this screen to the specific employee that was tested
 public class EmployeeRecord extends AppCompatActivity {
 
     ImageButton backButton;
@@ -108,7 +109,7 @@ public class EmployeeRecord extends AppCompatActivity {
 
 
 /*
-didnt get this feature to work
+didn't get this feature to work - ignore for now
 
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override

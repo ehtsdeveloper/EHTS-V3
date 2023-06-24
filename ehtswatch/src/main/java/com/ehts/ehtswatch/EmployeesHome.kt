@@ -3,14 +3,15 @@ package com.ehts.ehtswatch
 import android.app.Activity
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.FirebaseDatabase
 
-
-class Employees_home : Activity() {
+//THIS IS NOT WORKING NOT ALLOWING ME TO ACCESS EMPLOYEE FROM FIREBASE REALTIME DATABASE
+class EmployeesHome : Activity() {
 
         private lateinit var recyclerView: RecyclerView
         private lateinit var databaseReference: DatabaseReference
@@ -25,21 +26,23 @@ class Employees_home : Activity() {
 
             recyclerView = findViewById(R.id.recyclerView)
 
-            val gridLayoutManager = GridLayoutManager(this@Employees_home, 1)
+            val gridLayoutManager = GridLayoutManager(this@EmployeesHome, 1)
             recyclerView.layoutManager = gridLayoutManager
 
             dataList = ArrayList()
-            adapter = MyAdapterWatch(this@Employees_home, dataList)
+            adapter = MyAdapterWatch(this@EmployeesHome, dataList)
             recyclerView.adapter = adapter
 
             val userId = FirebaseAuth.getInstance().currentUser?.uid
             databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId!!)
                 .child("employees")
 
-            dialog = AlertDialog.Builder(this@Employees_home)
+            dialog = AlertDialog.Builder(this@EmployeesHome)
                 .setMessage("Loading...")
                 .setCancelable(false)
                 .create()
+
+
 
             eventListener = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -60,10 +63,14 @@ class Employees_home : Activity() {
 
             dialog.show()
             databaseReference.addValueEventListener(eventListener)
+
+
+
         }
 
-     //   override fun onDestroy() {
-    ///        super.onDestroy()
-         //   databaseReference.removeEventListener(eventListener)
-       // }
+
+        override fun onDestroy() {
+         super.onDestroy()
+         databaseReference.removeEventListener(eventListener)
+       }
 }

@@ -25,6 +25,8 @@ import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
 import java.util.*
 
+//This class needs to record heart rate continuously with the actual timestamp (ex: 6:00pm)
+//this feature needs to be able to run in the background even when wifi isn't connected without the user knowing whats being recorded
 class HeartRate : Activity(), SensorEventListener {
     private companion object {
         private const val TAG = "HeartRateMonitor"
@@ -146,12 +148,7 @@ class HeartRate : Activity(), SensorEventListener {
             val recordingTimestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
 
             // Store the heart rate data in your database
-            val userId = FirebaseAuth.getInstance().currentUser?.uid
-            val databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId!!)
-            val heartRateNode = databaseReference.child("heartRateData")
-            val heartRateEntry = heartRateNode.push()
-            heartRateEntry.child("timestamp").setValue(recordingTimestamp)
-            heartRateEntry.child("data").setValue(heartRateData)
+
 
             // Print the heart rate metrics and recording timestamp
             val heartRateText = "Heart Rate\nResting: %.1f\nLow: %.1f\nMax: %.1f\nRecording Timestamp: %s".format(restingHeartRate, lowHeartRate, maxHeartRate, recordingTimestamp)

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="@dimen/box_inset_layout_padding"
     android:background="@color/blackC"
-    tools:context=".Employees_home"
+    tools:context=".EmployeesHome"
     tools:deviceIds="wear">
 
     <ScrollView
@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/inner_frame_layout_padding">
 
-            <!-- Your existing views here -->
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"

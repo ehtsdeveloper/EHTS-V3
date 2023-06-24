@@ -7,7 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 
-
+//displays which user we are testing and allows you to start the test specifically for that user
 class EmployeeRecord : Activity() {
 
     private lateinit var backButton: Button
@@ -18,7 +18,7 @@ class EmployeeRecord : Activity() {
    // private lateinit var weightdata: TextView
     private lateinit var deviceIDdata: TextView
    // private lateinit var imageRec: ImageView
-  //  private lateinit var deleteProfile: Button
+    private lateinit var startTestbtn: Button
    // private lateinit var profileCard: CardView
 
     private var key: String = ""
@@ -36,7 +36,7 @@ class EmployeeRecord : Activity() {
     //    weightdata = findViewById(R.id.weightData)
         deviceIDdata = findViewById(R.id.DeviceIdData)
    //  profileCard = findViewById(R.id.recCard)
-     //   deleteProfile = findViewById(R.id.deleteProfile)
+      startTestbtn = findViewById(R.id.startTest)
         backButton = findViewById(R.id.gobackbtn)
 
         val bundle = intent.extras
@@ -52,10 +52,15 @@ class EmployeeRecord : Activity() {
          //   imageUrl = bundle.getString("images/")!!
        //     Glide.with(this).load(bundle.getString("images/")).into(imageRec)
         }
-
-        backButton.setOnClickListener {
+        startTestbtn.setOnClickListener {
             // Navigate back to MainActivity
             val intent = Intent(applicationContext, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        backButton.setOnClickListener {
+            // Navigate to HeartRate Activity
+            val intent = Intent(applicationContext, HeartRate::class.java)
             startActivity(intent)
             finish()
         }

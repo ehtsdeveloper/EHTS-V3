@@ -59,7 +59,7 @@ class MainActivity : Activity() {
             }
             homeBtn?.setOnClickListener {
                 //FirebaseAuth.getInstance().signOut()
-                val intent = Intent(applicationContext, Employees_home::class.java)
+                val intent = Intent(applicationContext, EmployeesHome::class.java)
                 startActivity(intent)
                 finish()
             }

@@ -9,17 +9,22 @@
     tools:context=".EmployeeRecord"
     tools:deviceIds="wear">
 
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_boxedEdges="all">
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
 
-        app:layout_boxedEdges="all">
+        >
         <TextView
             android:id="@+id/EmpNameData"
             android:layout_width="wrap_content"
@@ -64,6 +69,17 @@
             android:gravity="center_vertical|start"
 
             android:hint="Device ID           " />
+        <Button
+            android:id="@+id/startTest"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="3dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:background="@drawable/redbutton"
+            android:text="Start Test"
+            android:textColor="@color/whiteC"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/gobackbtn"
@@ -79,5 +95,6 @@
 
     </LinearLayout>
 
-</ScrollView>
+        </FrameLayout>
+    </ScrollView>
 </androidx.wear.widget.BoxInsetLayout>

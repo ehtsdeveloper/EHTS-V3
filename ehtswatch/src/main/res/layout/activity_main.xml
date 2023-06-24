@@ -12,7 +12,12 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        app:layout_boxedEdges="all">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -76,6 +81,6 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
+        </FrameLayout>
     </ScrollView>
-
 </androidx.wear.widget.BoxInsetLayout>

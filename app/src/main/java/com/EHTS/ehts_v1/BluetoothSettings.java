@@ -5,7 +5,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,13 +18,15 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import java.util.Set;
 
+//this class needs to allow users to connect to a bluetooth device that's nearby the on and off buttons permissions work
+//but pair and make device discoverable are not working need to fix this to allow user to send over the heart rate data
 public class BluetoothSettings extends AppCompatActivity {
 
     private static final int REQUEST_BLUETOOTH_PERMISSION = 1;
