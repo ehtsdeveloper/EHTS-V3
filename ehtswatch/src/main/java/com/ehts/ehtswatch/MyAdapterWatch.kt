@@ -35,15 +35,20 @@ class MyAdapterWatch(private val context: Context, private val dataList: List<Pr
         // holder.recWeight.text = weight
 
         holder.recCard.setOnClickListener {
-            val intent = Intent(context, EmployeeRecord::class.java).apply {
-                //   putExtra("images/", data.dataImage)
-                putExtra("Employee Name", data.dataName)
+//            val intent = Intent(context, EmployeeRecord::class.java).apply {
+//                //   putExtra("images/", data.dataImage)
+//                putExtra("Employee Name", data.dataName)
+//                putExtra("Employee ID", data.dataEmpID)
+//                //  putExtra("Age", age)
+//                //   putExtra("Height (in)", height)
+//                //   putExtra("Weight (lb)", weight)
+//                putExtra("Device ID", data.dataDeviceID)
+//                putExtra("Key", data.key)
+//            }
+//            context.startActivity(intent)
+
+            val intent = Intent(context, HeartRate::class.java).apply {
                 putExtra("Employee ID", data.dataEmpID)
-                //  putExtra("Age", age)
-                //   putExtra("Height (in)", height)
-                //   putExtra("Weight (lb)", weight)
-                putExtra("Device ID", data.dataDeviceID)
-                putExtra("Key", data.key)
             }
             context.startActivity(intent)
         }

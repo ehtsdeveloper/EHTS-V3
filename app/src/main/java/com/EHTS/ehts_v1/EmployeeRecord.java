@@ -1,5 +1,6 @@
 package com.EHTS.ehts_v1;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -15,8 +16,11 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -27,12 +31,18 @@ public class EmployeeRecord extends AppCompatActivity {
     TextView empNameRec, empIddata, agedata, heightdata, weightdata, deviceIDdata;
     ImageView imageRec;
 
+    TextView tvLow, tvResting, tvMax;
+
    // TextView  editProfile;
     Button deleteProfile;
 
     String key = "";
+    String empId = "";
     String imageUrl = "";
     CardView profileCard;
+
+    DatabaseReference databaseReference;
+    ValueEventListener eventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +62,10 @@ public class EmployeeRecord extends AppCompatActivity {
         profileCard = findViewById(R.id.profileCard);
 
         deleteProfile = findViewById(R.id.deleteProfile);
+
+        tvLow = findViewById(R.id.tv_low);
+        tvResting = findViewById(R.id.tv_resting);
+        tvMax = findViewById(R.id.tv_max);
        // editProfile = findViewById(R.id.EditProfile);
 
         backButton = findViewById(R.id.backButton);
@@ -61,6 +75,7 @@ public class EmployeeRecord extends AppCompatActivity {
 
             empNameRec.setText(bundle.getString("Employee Name"));
             empIddata.setText(bundle.getString("Employee ID"));
+            empId = bundle.getString("Employee ID");
             agedata.setText(bundle.getString("Age"));
             heightdata.setText(bundle.getString("Height (in)"));
             weightdata.setText(bundle.getString("Weight (lb)"));
@@ -71,6 +86,8 @@ public class EmployeeRecord extends AppCompatActivity {
             imageUrl = bundle.getString("images/");
             Glide.with(this).load(bundle.getString("images/")).into(imageRec);
         }
+
+        fetchSensorsData();
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,6 +149,74 @@ didn't get this feature to work - ignore for now
 
  */
 
+    }
+
+    private void fetchSensorsData() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId)
+                .child("employees").child(empId).child("sensors_record").child(empId);
+
+        eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                long childrenCount = snapshot.getChildrenCount();
+                int low = 0;
+                int resting = 0;
+                int max = 0;
+
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    // Access the data of each child node
+                    String childKey = childSnapshot.getKey();
+
+                    // Do something with the child data
+                    SensorsData data = childSnapshot.getValue(SensorsData.class);
+                    data.setKey(childKey);
+
+                    // Show Data
+                    if(childrenCount == 1) {
+                        if(data.getLow() != null) {
+                            tvLow.setText(""+data.getLow().intValue());
+                        }
+
+                        if(data.getResting() != null) {
+                            tvResting.setText(""+data.getResting().intValue());
+                        }
+
+                        if(data.getMax() != null) {
+                            tvMax.setText(""+data.getMax().intValue());
+                        }
+                    } else {
+                        if(data.getLow() != null) {
+                            low = low + data.getLow().intValue();
+                        }
+
+                        if(data.getResting() != null) {
+                            resting = resting + data.getResting().intValue();
+                        }
+
+                        if(data.getMax() != null) {
+                            max = max + data.getMax().intValue();
+                        }
+                    }
+                }
+
+                if (low > 0) {
+                    tvLow.setText(""+(low/2));
+                }
+
+                if (resting > 0) {
+                    tvResting.setText(""+(resting/2));
+                }
+
+                if (max > 0) {
+                    tvMax.setText(""+(max/2));
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(EmployeeRecord.this, "Error: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
 

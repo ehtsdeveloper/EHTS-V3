@@ -323,7 +323,7 @@
                             android:src="@drawable/baseline_circle_yellow" />
 
                         <TextView
-                            android:id="@+id/zeronum"
+                            android:id="@+id/tv_low"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
@@ -353,6 +353,7 @@
                             android:src="@drawable/baseline_circle_24" />
 
                         <TextView
+                            android:id="@+id/tv_resting"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
@@ -379,6 +380,7 @@
                             android:src="@drawable/baseline_circle_red" />
 
                         <TextView
+                            android:id="@+id/tv_max"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"

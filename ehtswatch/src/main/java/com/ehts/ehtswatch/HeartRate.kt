@@ -1,8 +1,10 @@
 package com.ehts.ehtswatch
 
 import android.Manifest
-import android.app.*
-import androidx.core.app.*
+import android.app.Activity
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -16,7 +18,7 @@ import android.os.IBinder
 import android.os.SystemClock
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.app.ActivityCompat
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
@@ -48,10 +50,15 @@ class HeartRate : Activity(), SensorEventListener {
     private lateinit var stopButton: Button
     private lateinit var textHeartRate: TextView
     private lateinit var databaseReference: DatabaseReference
+    private var empId: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_heart_rate)
 
+        val bundle = intent.extras
+        if (bundle != null) {
+            empId = bundle.getString("Employee ID")
+        }
         // Initialize sensor manager
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         heartRateSensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE)
@@ -149,10 +156,37 @@ class HeartRate : Activity(), SensorEventListener {
 
             // Store the heart rate data in your database
 
+            //Dummy data
+            //val data = SensorsData(45.0, 35.0, 65.0, recordingTimestamp)
+
+            val data = SensorsData(restingHeartRate, lowHeartRate, maxHeartRate, recordingTimestamp)
+
 
             // Print the heart rate metrics and recording timestamp
             val heartRateText = "Heart Rate\nResting: %.1f\nLow: %.1f\nMax: %.1f\nRecording Timestamp: %s".format(restingHeartRate, lowHeartRate, maxHeartRate, recordingTimestamp)
             textHeartRate.text = heartRateText
+
+
+            // databaseReference = FirebaseDatabase.getInstance().getReference("employees");
+            // Get the user ID
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+            val myRef = FirebaseDatabase.getInstance().reference.child("users").child(userId?:"")
+                .child("employees").child(empId?:"")
+                .child("sensors_record").child(empId?:"")
+            val uniqueKey: String? = myRef.push().key
+            userId?.let {
+                FirebaseDatabase.getInstance().reference.child("users").child(it)
+                    .child("employees").child(empId?:"")
+                    .child("sensors_record").child(empId?:"").child(uniqueKey ?: Random().toString()).setValue(data)
+                    .addOnSuccessListener {
+                        Toast.makeText(this@HeartRate, "Saved", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(this@HeartRate, "Failed to save data", Toast.LENGTH_SHORT).show()
+                    }
+
+            }
+
         }
     }
 

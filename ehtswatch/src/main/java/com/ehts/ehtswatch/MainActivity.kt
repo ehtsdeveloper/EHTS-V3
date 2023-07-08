@@ -42,26 +42,16 @@ class MainActivity : Activity() {
             }
             hrbtn?.setOnClickListener {
               //  FirebaseAuth.getInstance().signOut()
-// Write a message to the database
-                // Retrieve the current user's ID
 
-                // Write a message to the database
-                // Retrieve the current user's ID
-                val userId = FirebaseAuth.getInstance().currentUser!!.uid
-
-                val database = FirebaseDatabase.getInstance()
-                val myRef = database.getReference("users").child(userId).child("employees")
-
-                myRef.setValue("Hello, World!")
-                val intent = Intent(applicationContext, HeartRate::class.java)
+                val intent = Intent(applicationContext, EmployeesHome::class.java)
                 startActivity(intent)
                 finish()
             }
             homeBtn?.setOnClickListener {
                 //FirebaseAuth.getInstance().signOut()
-                val intent = Intent(applicationContext, EmployeesHome::class.java)
-                startActivity(intent)
-                finish()
+//                val intent = Intent(applicationContext, EmployeesHome::class.java)
+//                startActivity(intent)
+//                finish()
             }
             logoutbtn?.setOnClickListener {
                 FirebaseAuth.getInstance().signOut()
