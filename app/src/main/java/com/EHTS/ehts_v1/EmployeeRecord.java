@@ -150,7 +150,87 @@ didn't get this feature to work - ignore for now
  */
 
     }
+    private void fetchSensorsData() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId)
+                .child("employees").child(empId).child("sensors_record").child(empId);
 
+        eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Retrieve the last child node
+                DataSnapshot lastChildSnapshot = null;
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    lastChildSnapshot = childSnapshot;
+                }
+
+                if (lastChildSnapshot != null) {
+                    String childKey = lastChildSnapshot.getKey();
+                    SensorsData data = lastChildSnapshot.getValue(SensorsData.class);
+                    data.setKey(childKey);
+
+                    // Show Data
+                    if (data.getLow() != null) {
+                        tvLow.setText(String.valueOf(data.getLow().intValue()));
+                    }
+
+                    if (data.getResting() != null) {
+                        tvResting.setText(String.valueOf(data.getResting().intValue()));
+                    }
+
+                    if (data.getMax() != null) {
+                        tvMax.setText(String.valueOf(data.getMax().intValue()));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(EmployeeRecord.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /*
+
+     //displays the average of all the tests
+
+    private void fetchSensorsData() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId)
+                .child("employees").child(empId).child("sensors_record").child(empId);
+
+        eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Retrieve the last child node
+                DataSnapshot lastChildSnapshot = snapshot.getChildren().iterator().next();
+                String childKey = lastChildSnapshot.getKey();
+                SensorsData data = lastChildSnapshot.getValue(SensorsData.class);
+                data.setKey(childKey);
+
+                // Show Data
+                if (data.getLow() != null) {
+                    tvLow.setText(String.valueOf(data.getLow().intValue()));
+                }
+
+                if (data.getResting() != null) {
+                    tvResting.setText(String.valueOf(data.getResting().intValue()));
+                }
+
+                if (data.getMax() != null) {
+                    tvMax.setText(String.valueOf(data.getMax().intValue()));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(EmployeeRecord.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }*/
+
+/*
     private void fetchSensorsData() {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId)
@@ -211,12 +291,18 @@ didn't get this feature to work - ignore for now
                 if (max > 0) {
                     tvMax.setText(""+(max/2));
                 }
+
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(EmployeeRecord.this, "Error: "+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
+
+ */
 }
 
