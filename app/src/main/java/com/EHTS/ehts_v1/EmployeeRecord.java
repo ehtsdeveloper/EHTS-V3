@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +33,10 @@ public class EmployeeRecord extends AppCompatActivity {
     ImageView imageRec;
 
     TextView tvLow, tvResting, tvMax;
+    TextView AvgtvLow, AvgtvResting, AvgtvMax;
+
+    TextView tvFinalResult;
+    CardView cardFinalResult;
 
    // TextView  editProfile;
     Button deleteProfile;
@@ -66,6 +71,16 @@ public class EmployeeRecord extends AppCompatActivity {
         tvLow = findViewById(R.id.tv_low);
         tvResting = findViewById(R.id.tv_resting);
         tvMax = findViewById(R.id.tv_max);
+
+
+        AvgtvLow = findViewById(R.id.Avgtv_low);
+        AvgtvResting = findViewById(R.id.Avgtv_resting);
+        AvgtvMax = findViewById(R.id.Avgtv_max);
+
+
+        tvFinalResult = findViewById(R.id.tvFinalResult);
+        cardFinalResult = findViewById(R.id.cardFinalResult);
+
        // editProfile = findViewById(R.id.EditProfile);
 
         backButton = findViewById(R.id.backButton);
@@ -88,7 +103,7 @@ public class EmployeeRecord extends AppCompatActivity {
         }
 
         fetchSensorsData();
-
+        fetchSensorsData2();
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -151,6 +166,7 @@ didn't get this feature to work - ignore for now
 
     }
     private void fetchSensorsData() {
+        //fetch latest test results data of Low, max, and resting hr
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId)
                 .child("employees").child(empId).child("sensors_record").child(empId);
@@ -190,48 +206,7 @@ didn't get this feature to work - ignore for now
             }
         });
     }
-
-    /*
-
-     //displays the average of all the tests
-
-    private void fetchSensorsData() {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId)
-                .child("employees").child(empId).child("sensors_record").child(empId);
-
-        eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // Retrieve the last child node
-                DataSnapshot lastChildSnapshot = snapshot.getChildren().iterator().next();
-                String childKey = lastChildSnapshot.getKey();
-                SensorsData data = lastChildSnapshot.getValue(SensorsData.class);
-                data.setKey(childKey);
-
-                // Show Data
-                if (data.getLow() != null) {
-                    tvLow.setText(String.valueOf(data.getLow().intValue()));
-                }
-
-                if (data.getResting() != null) {
-                    tvResting.setText(String.valueOf(data.getResting().intValue()));
-                }
-
-                if (data.getMax() != null) {
-                    tvMax.setText(String.valueOf(data.getMax().intValue()));
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(EmployeeRecord.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }*/
-
-/*
-    private void fetchSensorsData() {
+    private void fetchSensorsData2() {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId)
                 .child("employees").child(empId).child("sensors_record").child(empId);
@@ -240,69 +215,131 @@ didn't get this feature to work - ignore for now
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 long childrenCount = snapshot.getChildrenCount();
-                int low = 0;
-                int resting = 0;
-                int max = 0;
+                int lowSum = 0;
+                int restingSum = 0;
+                int maxSum = 0;
 
                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                     // Access the data of each child node
-                    String childKey = childSnapshot.getKey();
-
-                    // Do something with the child data
                     SensorsData data = childSnapshot.getValue(SensorsData.class);
-                    data.setKey(childKey);
 
-                    // Show Data
-                    if(childrenCount == 1) {
-                        if(data.getLow() != null) {
-                            tvLow.setText(""+data.getLow().intValue());
+                    // Add heart rate values to the sums
+                    if (data != null) {
+                        if (data.getLow() != null) {
+                            lowSum += data.getLow().intValue();
                         }
 
-                        if(data.getResting() != null) {
-                            tvResting.setText(""+data.getResting().intValue());
+                        if (data.getResting() != null) {
+                            restingSum += data.getResting().intValue();
                         }
 
-                        if(data.getMax() != null) {
-                            tvMax.setText(""+data.getMax().intValue());
-                        }
-                    } else {
-                        if(data.getLow() != null) {
-                            low = low + data.getLow().intValue();
-                        }
-
-                        if(data.getResting() != null) {
-                            resting = resting + data.getResting().intValue();
-                        }
-
-                        if(data.getMax() != null) {
-                            max = max + data.getMax().intValue();
+                        if (data.getMax() != null) {
+                            maxSum += data.getMax().intValue();
                         }
                     }
                 }
 
-                if (low > 0) {
-                    tvLow.setText(""+(low/2));
+                // Calculate and display the averages
+                if (childrenCount > 0) {
+                    int avgLow = lowSum / (int) childrenCount;
+                    int avgResting = restingSum / (int) childrenCount;
+                    int avgMax = maxSum / (int) childrenCount;
+
+                    AvgtvLow.setText(String.valueOf(avgLow));
+                    AvgtvResting.setText(String.valueOf(avgResting));
+                    AvgtvMax.setText(String.valueOf(avgMax));
+
+                    // Determine if the employee passed or failed the EHTS Exam
+                    int age = Integer.parseInt(agedata.getText().toString());
+                    int restingHR = avgResting;
+                    int maxHR = avgMax;
+
+                    // Calculate the target heart rate ranges based on age
+                    int maxAgeRelatedHR = 220 - age;
+                    int moderateIntensityLowerLimit = (int) (maxAgeRelatedHR * 0.64);
+                    int moderateIntensityUpperLimit = (int) (maxAgeRelatedHR * 0.76);
+                    int vigorousIntensityLowerLimit = (int) (maxAgeRelatedHR * 0.77);
+                    int vigorousIntensityUpperLimit = (int) (maxAgeRelatedHR * 0.93);
+
+                    // Check if the resting and max heart rates are within the target ranges
+                    boolean isRestingHRWithinRange = restingHR >= moderateIntensityLowerLimit && restingHR <= moderateIntensityUpperLimit;
+                    boolean isMaxHRWithinRange = maxHR >= vigorousIntensityLowerLimit && maxHR <= vigorousIntensityUpperLimit;
+
+                    // Determine the final result and update the UI accordingly
+                    if (isRestingHRWithinRange && isMaxHRWithinRange) {
+                        tvFinalResult.setText("Employee passed EHTS Exam");
+                        cardFinalResult.setCardBackgroundColor(Color.GREEN);
+                    } else {
+                        tvFinalResult.setText("Employee failed EHTS Exam");
+                        cardFinalResult.setCardBackgroundColor(Color.parseColor("#AD2424"));
+                    }
                 }
-
-                if (resting > 0) {
-                    tvResting.setText(""+(resting/2));
-                }
-
-                if (max > 0) {
-                    tvMax.setText(""+(max/2));
-                }
-
-
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(EmployeeRecord.this, "Error: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(EmployeeRecord.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
+/*
+    private void fetchSensorsData2() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId)
+                .child("employees").child(empId).child("sensors_record").child(empId);
 
+        eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                long childrenCount = snapshot.getChildrenCount();
+                int lowSum = 0;
+                int restingSum = 0;
+                int maxSum = 0;
+
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    // Access the data of each child node
+                    SensorsData data = childSnapshot.getValue(SensorsData.class);
+
+                    // Add heart rate values to the sums
+                    if (data != null) {
+                        if (data.getLow() != null) {
+                            lowSum += data.getLow().intValue();
+                        }
+
+                        if (data.getResting() != null) {
+                            restingSum += data.getResting().intValue();
+                        }
+
+                        if (data.getMax() != null) {
+                            maxSum += data.getMax().intValue();
+                        }
+                    }
+                }
+
+                // Calculate and display the averages
+                if (childrenCount > 0) {
+                    int avgLow = lowSum / (int) childrenCount;
+                    int avgResting = restingSum / (int) childrenCount;
+                    int avgMax = maxSum / (int) childrenCount;
+
+                    AvgtvLow.setText(String.valueOf(avgLow));
+                    AvgtvResting.setText(String.valueOf(avgResting));
+                    AvgtvMax.setText(String.valueOf(avgMax));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(EmployeeRecord.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
  */
+
+
+
+
 }
 

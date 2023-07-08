@@ -488,6 +488,217 @@
 
 
             </androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/Avghrtextview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+
+                android:gravity="start|center_vertical"
+                android:text="AVERAGE HEARTRATE RESULTS FROM ALL TESTS: "
+                android:padding="15dp"
+                android:layout_marginBottom="-25dp"
+                android:textColor="@color/DarkHeaderGray"
+                android:textStyle="bold"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="190dp"
+                android:id="@+id/AvgHeartRateCard"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:backgroundTint="@color/NavyBlue"
+                app:cardElevation="20dp"
+                android:paddingBottom="150dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/Avgcircles">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/Avgyellowcircle"
+                        android:layout_below="@id/hrTestReslut">
+
+                        <ImageView
+                            android:layout_width="130dp"
+                            android:layout_height="110dp"
+                            android:paddingTop="6dp"
+                            android:id="@+id/Avgimageyellow"
+                            android:src="@drawable/baseline_circle_yellow" />
+
+                        <TextView
+                            android:id="@+id/Avgtv_low"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="30dp"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="40dp"
+                            android:textStyle="bold" />
+
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/Avggreencircle"
+                        android:layout_below="@id/hrTestReslut">
+
+                        <ImageView
+                            android:layout_width="130dp"
+                            android:layout_height="110dp"
+                            android:paddingTop="6dp"
+                            android:src="@drawable/baseline_circle_24" />
+
+                        <TextView
+                            android:id="@+id/Avgtv_resting"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginEnd="30dp"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="40dp"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/Avgredcircle"
+                        android:layout_below="@id/hrTestReslut">
+
+                        <ImageView
+                            android:layout_width="130dp"
+                            android:layout_height="110dp"
+                            android:paddingTop="6dp"
+                            android:src="@drawable/baseline_circle_red" />
+
+                        <TextView
+                            android:id="@+id/Avgtv_max"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:layout_marginEnd="30dp"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="40dp"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="30dp"
+
+                    android:id="@+id/Avglabels"
+                    android:layout_below="@id/circles"
+                    android:layout_gravity="center">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:id="@+id/Avglow">
+
+                        <TextView
+                            android:id="@+id/AvglowHr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="-12dp"
+                            android:layout_marginEnd="38dp"
+                            android:layout_marginBottom="-15dp"
+                            android:gravity="start|center_vertical"
+                            android:padding="14dp"
+                            android:text="LOW"
+                            android:textSize="18dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/AvgRestingHr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/AvglowHr"
+                            android:layout_marginEnd="6dp"
+                            android:layout_marginStart="1dp"
+                            android:layout_marginBottom="-15dp"
+                            android:gravity="start|center_vertical"
+                            android:padding="14dp"
+                            android:paddingLeft="17dp"
+                            android:text="RESTING"
+                            android:textSize="16dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/AvgMaxHr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/AvgRestingHr"
+                            android:layout_marginEnd="-1dp"
+                            android:layout_marginStart="21dp"
+                            android:layout_marginBottom="-5dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingLeft="10dp"
+                            android:padding="15dp"
+                            android:text="MAX"
+                            android:textSize="15dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="70dp"
+                    android:layout_marginStart="3dp"
+                    android:id="@+id/Avgbpm"
+                    android:layout_below="@id/labels"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:id="@+id/Avgbpmhr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+
+                        android:layout_marginBottom="-10dp"
+                        android:gravity="center"
+
+                        android:padding="15dp"
+                        android:text="Beats Per Minute (BPM)"
+                        android:textSize="14dp"
+                        android:textColor="@color/DarkGray"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/hrTestReslut"
@@ -497,7 +708,7 @@
                 android:layout_marginTop="10dp"
 
                 android:gravity="start|center_vertical"
-                android:text="LATEST TEST RESULTS: "
+                android:text="Pass/Fail LATEST TEST RESULTS: "
                 android:padding="15dp"
                 android:layout_marginBottom="-25dp"
                 android:textColor="@color/DarkHeaderGray"
@@ -506,11 +717,11 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/testresult"
+                android:id="@+id/cardFinalResult"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginStart="20dp"
-                android:backgroundTint="@color/NavyBlue"
+
                 app:cardElevation="20dp"
                 android:paddingBottom="280dp">
 
@@ -521,7 +732,7 @@
                     android:id="@+id/PASSFAIL">
 
                     <TextView
-                        android:id="@+id/passfailresult"
+                        android:id="@+id/tvFinalResult"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
@@ -533,7 +744,7 @@
                         android:paddingBottom="20dp"
                         android:text="Waiting For Test Results..."
                         android:textSize="21dp"
-                        android:textColor="@color/DarkGray"
+                        android:textColor="@color/black"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -543,7 +754,7 @@
             android:id="@+id/padding"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_below="@id/testresult"
+            android:layout_below="@id/cardFinalResult"
 
             android:layout_toRightOf="@+id/imagelayout"
             android:orientation="vertical">
