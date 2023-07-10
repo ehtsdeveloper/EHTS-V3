@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:$USER_HOME$/Library/Android/sdk/icons/material/materialicons/bluetooth_disabled/baseline_bluetooth_disabled_24.xml" />
+                                      <entry key="url" value="file:$USER_HOME$/Library/Android/sdk/icons/material/materialicons/clear/baseline_clear_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,8 +28,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="4e4e4e" />
-                            <entry key="outputName" value="baseline_bluetooth_disabled_24" />
+                            <entry key="color" value="808080" />
+                            <entry key="outputName" value="baseline_clear_24" />
                           </map>
                         </option>
                       </PersistentState>

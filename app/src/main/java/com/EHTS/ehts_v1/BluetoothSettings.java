@@ -64,9 +64,9 @@ public class BluetoothSettings extends AppCompatActivity {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         if (bluetoothAdapter == null) {
-            mStatusBleTv.setText("Bluetooth is not available");
+            mStatusBleTv.setText("Bluetooth");
         } else {
-            mStatusBleTv.setText("Bluetooth is available");
+            mStatusBleTv.setText("Bluetooth");
 
             if (bluetoothAdapter.isEnabled()) {
                 mBlueIV.setImageResource(R.drawable.baseline_bluetooth_24);
