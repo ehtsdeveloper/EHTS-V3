@@ -27,8 +27,10 @@ import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
 import java.util.*
 
-//This class needs to record heart rate continuously with the actual timestamp (ex: 6:00pm)
-//this feature needs to be able to run in the background even when wifi isn't connected without the user knowing whats being recorded
+//This class records a users heart rate continuously and evaluates the user low, resting, and max hr and records the timestamp
+//User can administer multiple tests
+//this feature runs in the background even when wifi isn't connected without the user knowing whats being recorded
+//after test is over stop action sends the test results to the database
 class HeartRate : Activity(), SensorEventListener {
     private companion object {
         private const val TAG = "HeartRateMonitor"

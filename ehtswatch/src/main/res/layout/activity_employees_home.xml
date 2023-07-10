@@ -12,12 +12,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_boxedEdges="all">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/inner_frame_layout_padding">
+       >
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -26,10 +21,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
                 />
 
-
-        </FrameLayout>
 
     </ScrollView>
 

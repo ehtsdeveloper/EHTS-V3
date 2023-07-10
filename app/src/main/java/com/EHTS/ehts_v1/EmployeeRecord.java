@@ -207,6 +207,8 @@ didn't get this feature to work - ignore for now
         });
     }
     private void fetchSensorsData2() {
+        // retrieves the avg of all test results low, max, and resting also determines pass/fail test
+        //could just make pass/fail results a manual input?
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId)
                 .child("employees").child(empId).child("sensors_record").child(empId);
@@ -249,7 +251,7 @@ didn't get this feature to work - ignore for now
                     AvgtvResting.setText(String.valueOf(avgResting));
                     AvgtvMax.setText(String.valueOf(avgMax));
 
-                    // Determine if the employee passed or failed the EHTS Exam
+                    // Determine if the employee passed or failed the EHTS Exam -- this equation still needs work
                     int age = Integer.parseInt(agedata.getText().toString());
                     int restingHR = avgResting;
                     int maxHR = avgMax;
@@ -284,7 +286,10 @@ didn't get this feature to work - ignore for now
     }
 
 /*
+
     private void fetchSensorsData2() {
+    //only fetches avgs of all test results (displays avg of low, max, resting)
+
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId)
                 .child("employees").child(empId).child("sensors_record").child(empId);

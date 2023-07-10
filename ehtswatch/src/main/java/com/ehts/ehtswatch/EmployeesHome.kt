@@ -10,7 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.FirebaseDatabase
 
-//THIS IS NOT WORKING NOT ALLOWING ME TO ACCESS EMPLOYEE FROM FIREBASE REALTIME DATABASE
+//ACCESS EMPLOYEE FROM FIREBASE REALTIME DATABASE
 class EmployeesHome : Activity() {
 
         private lateinit var recyclerView: RecyclerView
