@@ -12,10 +12,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.os.Build
-import android.os.Bundle
-import android.os.IBinder
-import android.os.SystemClock
+import android.os.*
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -39,20 +36,26 @@ class HeartRate : Activity(), SensorEventListener {
         private const val NOTIFICATION_ID = 1
         private const val SERVICE_ID = 1
         private const val STOP_ACTION = "StopRecordingAction"
+        private const val TIMER_INTERVAL = 1 * 60 * 1000 // 5 minutes in milliseconds
     }
 
     private lateinit var sensorManager: SensorManager
     private var heartRateSensor: Sensor? = null
-    private val heartRateData: MutableList<Double> = ArrayList()
+    private var heartRateData: MutableList<Double> = ArrayList()
     private var recordingStartTime: Long = 0L
+    private var recordingStopTime: Long = 0L
     private var restingHeartRate = 0.0
     private var maxHeartRate = 0.0
     private var lowHeartRate = 0.0
     private lateinit var goBackButton: Button
     private lateinit var stopButton: Button
+    private lateinit var startButton: Button
     private lateinit var textHeartRate: TextView
     private lateinit var databaseReference: DatabaseReference
     private var empId: String? = null
+    private var timerHandler = Handler(Looper.getMainLooper())
+    private var timerRunnable: Runnable? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_heart_rate)
@@ -76,6 +79,7 @@ class HeartRate : Activity(), SensorEventListener {
         textHeartRate = findViewById(R.id.textHeartRate)
         goBackButton = findViewById(R.id.gobackbtn)
         stopButton = findViewById(R.id.stopButton)
+        startButton = findViewById(R.id.startButton)
 
         // Set click listener for the "Go Back" button
         goBackButton.setOnClickListener {
@@ -88,17 +92,26 @@ class HeartRate : Activity(), SensorEventListener {
         // Set click listener for the "Stop" button
         stopButton.setOnClickListener {
             unregisterHeartRateSensorListener()
+
             stopHeartRateRecordingService()
-            calculateHeartRateMetrics()
+         //   calculateHeartRateMetrics()
             stopButton.visibility = Button.INVISIBLE
+            Toast.makeText(this, "Test Ended", Toast.LENGTH_SHORT).show() // Display a toast message
+        }
+
+        // Set click listener for the "Start" button
+        startButton.setOnClickListener {
+            recordingStartTime = System.currentTimeMillis() // Get the start timestamp when the button is clicked
+            startHeartRateRecording()
+            startButton.visibility = Button.INVISIBLE // Hide the start button
+            Toast.makeText(this, "Test started", Toast.LENGTH_SHORT).show() // Display a toast message
+
         }
     }
 
     private fun registerHeartRateSensorListener() {
-        heartRateSensor?.let {
-            sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_NORMAL)
-        }
-        recordingStartTime = SystemClock.elapsedRealtime()
+        sensorManager.registerListener(this, heartRateSensor, SensorManager.SENSOR_DELAY_NORMAL)
+
     }
 
     private fun unregisterHeartRateSensorListener() {
@@ -154,22 +167,33 @@ class HeartRate : Activity(), SensorEventListener {
             maxHeartRate = max
 
             // Get the timestamp of the recording
-            val recordingTimestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+
+            val recordingStartTimestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                .apply {
+                    timeZone = TimeZone.getTimeZone("UTC")
+                }
+                .format(Date(recordingStartTime))
+            val recordingStopTimestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                .apply {
+                    timeZone = TimeZone.getTimeZone("UTC")
+                }
+                .format(Date())
+
+
 
             // Store the heart rate data in your database
 
-            //Dummy data
-            //val data = SensorsData(45.0, 35.0, 65.0, recordingTimestamp)
-
-            val data = SensorsData(restingHeartRate, lowHeartRate, maxHeartRate, recordingTimestamp)
+            val data = SensorsData(restingHeartRate, lowHeartRate, maxHeartRate, recordingStartTimestamp, recordingStopTimestamp)
 
 
             // Print the heart rate metrics and recording timestamp
-            val heartRateText = "Heart Rate\nResting: %.1f\nLow: %.1f\nMax: %.1f\nRecording Timestamp: %s".format(restingHeartRate, lowHeartRate, maxHeartRate, recordingTimestamp)
+            val heartRateText = String.format(
+                Locale.getDefault(),
+                "Heart Rate\nResting: %.1f\nLow: %.1f\nMax: %.1f\nRecording Start Timestamp: %s\nRecording Stop Timestamp: %s",
+                restingHeartRate, lowHeartRate, maxHeartRate, recordingStartTimestamp, recordingStopTimestamp
+            )
             textHeartRate.text = heartRateText
 
-
-            // databaseReference = FirebaseDatabase.getInstance().getReference("employees");
             // Get the user ID
             val userId = FirebaseAuth.getInstance().currentUser?.uid
             val myRef = FirebaseDatabase.getInstance().reference.child("users").child(userId?:"")
@@ -192,9 +216,8 @@ class HeartRate : Activity(), SensorEventListener {
         }
     }
 
-    private fun startHeartRateRecordingService() {
+    private fun startHeartRateRecording() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Create the notification channel for Android Oreo and above
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val channel = NotificationChannel(
                 NOTIFICATION_CHANNEL_ID,
@@ -204,21 +227,41 @@ class HeartRate : Activity(), SensorEventListener {
             notificationManager.createNotificationChannel(channel)
         }
 
-        // Create the notification without content and title
         val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.loginlogo)
             .build()
 
-        // Start the foreground service
         val serviceIntent = Intent(this, HeartRateRecordingService::class.java)
         serviceIntent.putExtra(HeartRateRecordingService.NOTIFICATION_EXTRA, notification)
         ContextCompat.startForegroundService(this, serviceIntent)
+
+        recordingStartTime = System.currentTimeMillis()
+
+        // Delay the calculation of heart rate metrics
+        timerHandler.postDelayed({
+            calculateHeartRateMetrics()
+            startHeartRateRecording()
+        }, TIMER_INTERVAL.toLong())
+
+        startTimer()
     }
 
     private fun stopHeartRateRecordingService() {
         val serviceIntent = Intent(this, HeartRateRecordingService::class.java)
         serviceIntent.action = STOP_ACTION
         stopService(serviceIntent)
+        recordingStopTime = System.currentTimeMillis()
+        timerHandler.removeCallbacks(timerRunnable!!)
+    }
+    private fun startTimer() {
+        timerRunnable = object : Runnable {
+            override fun run() {
+                if (heartRateData.size > 0) {
+                  //  calculateHeartRateMetrics()
+                }
+            }
+        }
+        timerHandler.postDelayed(timerRunnable!!, TIMER_INTERVAL.toLong())
     }
 
     /**

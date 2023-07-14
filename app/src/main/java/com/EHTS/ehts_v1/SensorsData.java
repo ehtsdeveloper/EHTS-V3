@@ -4,32 +4,65 @@ public class SensorsData {
     private Double resting;
     private Double low;
     private Double max;
-    private String recordingTimeStamp;
+    private String recordingStartTimeStamp;
+    private String recordingStopTimeStamp;
     private String key;
 
-    public SensorsData(Double resting, Double low, Double max, String recordingTimeStamp) {
+    public SensorsData(Double resting, Double low, Double max, String recordingStartTimeStamp, String recordingStopTimeStamp) {
         this.resting = resting;
-        this.recordingTimeStamp = recordingTimeStamp;
         this.low = low;
         this.max = max;
+        this.recordingStartTimeStamp = recordingStartTimeStamp;
+        this.recordingStopTimeStamp = recordingStopTimeStamp;
     }
 
-    public SensorsData() {
-
-    }
+    public SensorsData() {}
 
     public Double getResting() {
         return resting;
     }
 
-    public Double getLow() {return low;}
+    public void setResting(Double resting) {
+        this.resting = resting;
+    }
 
-    public Double getMax() {return max;}
+    public Double getLow() {
+        return low;
+    }
 
-    public String getRecordingTimeStamp() {return recordingTimeStamp;}
+    public void setLow(Double low) {
+        this.low = low;
+    }
 
-    public String getKey() {return key;}
+    public Double getMax() {
+        return max;
+    }
 
-    public void setKey(String key) {this.key = key;}
+    public void setMax(Double max) {
+        this.max = max;
+    }
+
+    public String getRecordingStartTimeStamp() {
+        return recordingStartTimeStamp;
+    }
+
+    public void setRecordingStartTimeStamp(String recordingStartTimeStamp) {
+        this.recordingStartTimeStamp = recordingStartTimeStamp;
+    }
+
+    public String getRecordingStopTimeStamp() {
+        return recordingStopTimeStamp;
+    }
+
+    public void setRecordingStopTimeStamp(String recordingStopTimeStamp) {
+        this.recordingStopTimeStamp = recordingStopTimeStamp;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 }
-
