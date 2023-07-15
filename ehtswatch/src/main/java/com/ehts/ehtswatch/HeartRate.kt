@@ -36,7 +36,7 @@ class HeartRate : Activity(), SensorEventListener {
         private const val NOTIFICATION_ID = 1
         private const val SERVICE_ID = 1
         private const val STOP_ACTION = "StopRecordingAction"
-        private const val TIMER_INTERVAL = 1 * 60 * 1000 // 5 minutes in milliseconds
+        private const val TIMER_INTERVAL = 2 * 60 * 1000 // 5 minutes in milliseconds
     }
 
     private lateinit var sensorManager: SensorManager
@@ -151,7 +151,8 @@ class HeartRate : Activity(), SensorEventListener {
     private fun calculateHeartRateMetrics() {
         if (heartRateData.isNotEmpty()) {
             var sum = 0.0
-            var min = heartRateData[0]
+            //var min = heartRateData[0]
+            var min = Double.MAX_VALUE
             var max = heartRateData[0]
             for (heartRate in heartRateData) {
                 sum += heartRate
@@ -166,8 +167,13 @@ class HeartRate : Activity(), SensorEventListener {
             lowHeartRate = min
             maxHeartRate = max
 
-            // Get the timestamp of the recording
+            val recordingStartTimestamp = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault())
+                .format(Date(recordingStartTime))
+            val recordingStopTimestamp = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault())
+                .format(Date())
 
+            // Get the timestamp of the recording
+/*
             val recordingStartTimestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                 .apply {
                     timeZone = TimeZone.getTimeZone("UTC")
@@ -178,6 +184,8 @@ class HeartRate : Activity(), SensorEventListener {
                     timeZone = TimeZone.getTimeZone("UTC")
                 }
                 .format(Date())
+
+ */
 
 
 

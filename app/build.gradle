@@ -45,4 +45,9 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.14.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    // CSV library
+    implementation 'com.opencsv:opencsv:5.5.2'
+    // File storage permission (if not added already)
+    implementation 'com.karumi:dexter:6.2.3'
 }

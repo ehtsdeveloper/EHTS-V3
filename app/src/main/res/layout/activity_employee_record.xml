@@ -277,6 +277,20 @@
 
 
     </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/exportData"
+                android:layout_width="178dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+
+                android:layout_marginTop="10dp"
+                android:padding="15dp"
+                android:text="Export Data to CSV"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:background="@drawable/roundbutton"/>
             <TextView
                android:id="@+id/hrtextview"
                 android:layout_width="match_parent"
@@ -754,7 +768,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
 
                 android:gravity="start|center_vertical"
 
@@ -763,6 +777,28 @@
                 android:layout_marginBottom="-25dp"
                 android:textColor="@color/DarkHeaderGray"
                 android:textStyle="bold"/>
+            <LinearLayout
+                android:id="@+id/padding"
+                android:layout_width="match_parent"
+                android:layout_height="800dp"
+                android:padding="50px"
+                android:layout_below="@id/buttonContainer"
+
+                android:layout_toRightOf="@+id/imagelayout"
+                android:orientation="vertical">
+
+
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+
+
+
+
+            </LinearLayout>
         <LinearLayout
             android:id="@+id/buttonContainer"
             android:layout_width="match_parent"
@@ -775,6 +811,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:visibility="invisible"
                 >
                 <Button
                     android:id="@+id/btnCurrent"
@@ -784,6 +821,7 @@
                     android:layout_marginEnd="5dp"
                     android:textColor="@color/white"
                     android:background="@drawable/roundbutton"
+                    android:visibility="invisible"
                     />
                 <Button
                     android:id="@+id/btnlastSeven"
@@ -794,6 +832,7 @@
                     android:layout_toEndOf="@id/btnCurrent"
                     android:textColor="@color/white"
                     android:background="@drawable/roundbutton"
+                    android:visibility="invisible"
                     />
 
                 <Button
@@ -805,6 +844,7 @@
                     android:layout_marginEnd="5dp"
                     android:textColor="@color/white"
                     android:background="@drawable/roundbutton"
+                    android:visibility="invisible"
                     />
 
                 <Button
@@ -815,6 +855,7 @@
                     android:layout_toEndOf="@id/btnLastThirty"
                     android:textColor="@color/white"
                     android:background="@drawable/roundbutton"
+                    android:visibility="invisible"
                     />
             </RelativeLayout>
 
@@ -837,32 +878,12 @@
                 android:padding="15dp"
                 android:layout_marginBottom="-25dp"
                 android:textColor="@color/DarkHeaderGray"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:visibility="invisible"/>
 
 
         </LinearLayout>
-        <LinearLayout
-                android:id="@+id/padding"
-                android:layout_width="match_parent"
-                android:layout_height="800dp"
-                android:padding="50px"
-                android:layout_below="@id/buttonContainer"
 
-                android:layout_toRightOf="@+id/imagelayout"
-                android:orientation="vertical">
-
-
-
-                <com.github.mikephil.charting.charts.LineChart
-                    android:id="@+id/chart"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    />
-
-
-
-
-        </LinearLayout>
 
 
 

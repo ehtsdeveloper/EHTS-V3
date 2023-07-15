@@ -5,10 +5,12 @@ import static android.provider.Telephony.Mms.Part.FILENAME;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.FileProvider;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +37,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,8 +49,18 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
+import com.opencsv.CSVWriter;
 
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -82,6 +95,7 @@ public class EmployeeRecord extends AppCompatActivity {
 
     LineChart lineChart;
 
+    Button exportData;
  //  BarChart barChart;
     private Button btnToday, btnMonth, btnYear;
     private TextView period;
@@ -129,6 +143,7 @@ public class EmployeeRecord extends AppCompatActivity {
        // btnMonth = findViewById(R.id.btnMonth);
       //  btnYear = findViewById(R.id.btnYear);
         period = findViewById(R.id.period);
+        exportData = findViewById(R.id.exportData);
 
 
         // editProfile = findViewById(R.id.EditProfile);
@@ -188,27 +203,18 @@ public class EmployeeRecord extends AppCompatActivity {
                 });
             }
         });
-        /*
-//save to csv
-        public void saveLogOnClick(View view) {
-            String entry = empNameRec.getText().toString() + "," +
-                    empId.getText().toString() + "," +
-                    agedata.getText().toString() + "\n";
-            try {
-                FileOutputStream out = openFileOutput( FILENAME, Context.MODE_APPEND );
-                out.write( entry.getBytes() );
-                out.close();
-                Toast.makeText(EmployeeRecord.this, "Data Saved", Toast.LENGTH_SHORT).show();
-                btnChart.setEnabled( true );
-            } catch( Exception e ) {
-                e.printStackTrace();
-            }
-        }
 
-         */
+
+        exportData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                exportDataToCSV(view);
+            }
+        });
+
 
 /*
-didn't get this feature to work - ignore for now
+//work in progress - provided the link to the youtube video I followed for this in the design document
 
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -639,17 +645,27 @@ didn't get this feature to work - ignore for now
  */
 
 
-    //LINE GRAPH
+    /*
+    Line Graph
+
+     */
     private void fetchHeartRateData() {
+
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference heartRateRef = FirebaseDatabase.getInstance().getReference("users")
                 .child(userId).child("employees").child(empId).child("sensors_record").child(empId);
+
 
         Query query = heartRateRef.orderByChild("recordingStartTime");
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<Entry> entries = new ArrayList<>();
+                ArrayList<Entry> lowEntries = new ArrayList<>();
+                ArrayList<Entry> restingEntries = new ArrayList<>();
+                ArrayList<Entry> maxEntries = new ArrayList<>();
+
+                long minutesSinceStart;
+                long minutesGraphStart=10160;
 
                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                     String recordingStartTimestamp = childSnapshot.child("recordingStartTime").getValue(String.class);
@@ -658,63 +674,83 @@ didn't get this feature to work - ignore for now
                     Integer resting = childSnapshot.child("resting").getValue(Integer.class);
                     Integer max = childSnapshot.child("max").getValue(Integer.class);
 
-                    if (low != null) {
-                        try {
-                            entries.add(new Entry(convertToHoursSinceCustomEpoch(recordingStartTimestamp), low.intValue()));
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
-                        try {
-                            entries.add(new Entry(convertToHoursSinceCustomEpoch(recordingStopTimestamp), low.intValue()));
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
+                    try {
+                        minutesSinceStart = convertToHoursSinceCustomEpoch(recordingStartTimestamp);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
                     }
 
-                    if (resting != null) {
-                        try {
-                            entries.add(new Entry(convertToHoursSinceCustomEpoch(recordingStartTimestamp), resting.intValue()));
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
-                        try {
-                            entries.add(new Entry(convertToHoursSinceCustomEpoch(recordingStopTimestamp), resting.intValue()));
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
+                    if(minutesSinceStart>=minutesGraphStart) {
+                        if (low != null) {
+                            try {
+                                lowEntries.add(new Entry(minutesSinceStart, low.intValue()));
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
 
-                    if (max != null) {
-                        try {
-                            entries.add(new Entry(convertToHoursSinceCustomEpoch(recordingStartTimestamp), max.intValue()));
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
                         }
-                        try {
-                            entries.add(new Entry(convertToHoursSinceCustomEpoch(recordingStopTimestamp), max.intValue()));
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
+
+                        if (resting != null) {
+                            try {
+                                restingEntries.add(new Entry(minutesSinceStart, resting.intValue()));
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
+
+                        }
+
+                        if (max != null) {
+                            try {
+                                maxEntries.add(new Entry(minutesSinceStart, max.intValue()));
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                     }
                 }
-
                 // Calculate the average resting heart rate
-                float avgRestingHeartRate = calculateAverage(entries);
+                float avgRestingHeartRate = calculateAverage(restingEntries);
 
                 // Create a LimitLine for the average resting heart rate
                 LimitLine avgRestingLine = new LimitLine(avgRestingHeartRate, "Avg Resting HR");
-                avgRestingLine.setLineColor(Color.RED);
+                avgRestingLine.setLineColor(Color.BLUE);
                 avgRestingLine.setLineWidth(2f);
 
-                // Configure the line chart
-                LineDataSet dataSet = new LineDataSet(entries, "Heart Rate (BPM)");
-                dataSet.setColor(Color.BLUE);
-                dataSet.setLineWidth(2f);
+                // Configure the low line chart
+                LineDataSet dataSetLow = new LineDataSet(lowEntries, "Low HR");
+                dataSetLow.setColor(Color.YELLOW);
+                dataSetLow.setLineWidth(2f);
+                LineData lineDataLow = new LineData(dataSetLow);
 
-                LineData lineData = new LineData(dataSet);
+                // Configure the resting line chart
+                LineDataSet dataSetResting = new LineDataSet(restingEntries, "Resting HR");
+                dataSetResting.setColor(Color.GREEN);
+                dataSetResting.setLineWidth(2f);
+                LineData lineDataResting = new LineData(dataSetResting);
 
-                lineChart.setData(lineData);
+                // Configure the Max line chart
+                LineDataSet dataSetMax = new LineDataSet(maxEntries, "Max HR");
+                dataSetMax.setColor(Color.RED);
+                dataSetMax.setLineWidth(2f);
+                LineData lineDataMax = new LineData(dataSetMax);
 
+                //                // Set the data for the line chart
+                //                lineChart.setData(lineDataLow);
+                //                lineChart.setData(lineDataResting);
+                //                lineChart.setData(lineDataMax);
+
+                // Merge the three LineData objects into a single LineData object
+                LineData combinedLineData = new LineData();
+                combinedLineData.addDataSet(dataSetLow);
+                combinedLineData.addDataSet(dataSetResting);
+                combinedLineData.addDataSet(dataSetMax);
+
+                // Set the combined LineData as the data for the line chart
+                lineChart.setData(combinedLineData);
+
+            /*
+            Configure graph axis
+             */
                 YAxis yAxis = lineChart.getAxisLeft();
                 yAxis.setAxisMaximum(0f);
                 yAxis.setAxisMaximum(150f);
@@ -738,6 +774,7 @@ didn't get this feature to work - ignore for now
 
                 lineChart.getXAxis().setGranularity(1f);
                 lineChart.getXAxis().setGranularityEnabled(true);
+
             }
 
             @Override
@@ -746,6 +783,145 @@ didn't get this feature to work - ignore for now
             }
         });
     }
+
+
+
+    //LINE GRAPH
+//    private void fetchHeartRateData() {
+//        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//        DatabaseReference heartRateRef = FirebaseDatabase.getInstance().getReference("users")
+//                .child(userId).child("employees").child(empId).child("sensors_record").child(empId);
+//
+//        Query query = heartRateRef.orderByChild("recordingStartTime");
+//        query.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                ArrayList<Entry> lowEntries = new ArrayList<>();
+//                ArrayList<Entry> restingEntries = new ArrayList<>();
+//                ArrayList<Entry> highEntries = new ArrayList<>();
+//
+//                /*
+//
+//                 */
+//                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+//                    String recordingStartTimestamp = childSnapshot.child("recordingStartTime").getValue(String.class);
+//                    String recordingStopTimestamp = childSnapshot.child("recordingStopTime").getValue(String.class);
+//                    Integer low = childSnapshot.child("low").getValue(Integer.class);
+//                    Integer resting = childSnapshot.child("resting").getValue(Integer.class);
+//                    Integer max = childSnapshot.child("max").getValue(Integer.class);
+//
+//                    if (low != null) {
+//                        try {
+//                            lowEntries.add(new Entry(convertToHoursSinceCustomEpoch(recordingStartTimestamp), low.intValue()));
+//                        } catch (Exception e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                        try {
+//                            lowEntries.add(new Entry(convertToHoursSinceCustomEpoch(recordingStopTimestamp), low.intValue()));
+//                        } catch (Exception e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                    }
+//
+//                    if (resting != null) {
+//                        try {
+//                            restingEntries.add(new Entry(convertToHoursSinceCustomEpoch(recordingStartTimestamp), resting.intValue()));
+//                        } catch (Exception e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                        try {
+//                            restingEntries.add(new Entry(convertToHoursSinceCustomEpoch(recordingStopTimestamp), resting.intValue()));
+//                        } catch (Exception e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                    }
+//
+//                    if (max != null) {
+//                        try {
+//                            highEntries.add(new Entry(convertToHoursSinceCustomEpoch(recordingStartTimestamp), max.intValue()));
+//                        } catch (Exception e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                        try {
+//                            highEntries.add(new Entry(convertToHoursSinceCustomEpoch(recordingStopTimestamp), max.intValue()));
+//                        } catch (Exception e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                    }
+//                }
+//
+//                // Calculate the average resting heart rate
+//                float avgRestingHeartRate = calculateAverage(restingEntries);
+//
+//                // Create a LimitLine for the average resting heart rate
+//                LimitLine avgRestingLine = new LimitLine(avgRestingHeartRate, "Avg Resting HR ");
+//                avgRestingLine.setLineColor(Color.BLUE);
+//                avgRestingLine.setLineWidth(2f);
+//
+//
+//                // Configure the low line chart
+//                LineDataSet dataSet = new LineDataSet(lowEntries, "Low HR ");
+//                dataSet.setColor(Color.YELLOW);
+//                dataSet.setLineWidth(2f);
+//
+//                LineData lineData = new LineData(dataSet);
+//
+//                lineChart.setData(lineData);
+//
+//                // Configure the low line chart
+//                LineDataSet dataSet2 = new LineDataSet(restingEntries, "Resting HR ");
+//                dataSet2.setColor(Color.GREEN);
+//                dataSet2.setLineWidth(2f);
+//
+//                LineData lineData2 = new LineData(dataSet2);
+//                lineChart.setData(lineData2);
+//
+//                // Configure the low line chart
+//                LineDataSet dataSet3 = new LineDataSet(highEntries, "High HR");
+//                dataSet3.setColor(Color.RED);
+//                dataSet3.setLineWidth(2f);
+//
+//                LineData lineData3 = new LineData(dataSet3);
+//                lineChart.setData(lineData3);
+//
+//
+//                /*
+//                Configure graph axis
+//                 */
+//                YAxis yAxis = lineChart.getAxisLeft();
+//                yAxis.setAxisMaximum(0f);
+//                yAxis.setAxisMaximum(150f);
+//                yAxis.setAxisLineWidth(1f);
+//                yAxis.setAxisLineColor(Color.BLACK);
+//                yAxis.setLabelCount(10);
+//
+//                lineChart.getDescription().setEnabled(false);
+//                lineChart.setBackgroundColor(Color.WHITE);
+//                lineChart.getXAxis().setTextColor(Color.BLACK);
+//                lineChart.getAxisLeft().setTextColor(Color.BLACK);
+//                lineChart.getAxisRight().setEnabled(false);
+//
+//                // Add the average resting line to the chart
+//                lineChart.getAxisLeft().addLimitLine(avgRestingLine);
+//
+//                lineChart.invalidate();
+//
+//                lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(getXAxisLabels()));
+//                lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+//
+//                lineChart.getXAxis().setGranularity(1f);
+//                lineChart.getXAxis().setGranularityEnabled(true);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Toast.makeText(EmployeeRecord.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
+
+
+
     public static long convertToHoursSinceCustomEpoch(String dateTime) throws Exception {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
         Date date = format.parse(dateTime);
@@ -754,7 +930,7 @@ didn't get this feature to work - ignore for now
         Date customEpoch = format.parse("2023-07-01 00:00:00");
 
         long diffInMilli = date.getTime() - customEpoch.getTime();
-        long hoursSinceCustomEpoch = diffInMilli / 1000; // / 60 / 60;
+        long hoursSinceCustomEpoch = diffInMilli / 1000 / 60; // / 60;
         return hoursSinceCustomEpoch;
     }
     private String[] getXAxisLabels() {
@@ -985,6 +1161,251 @@ didn't get this feature to work - ignore for now
     }
 
  */
+/*
+csv final
+ */
+
+    public void exportDataToCSV(View view) {
+        // Retrieve the employee data
+        String empName = empNameRec.getText().toString();
+        String empId = empIddata.getText().toString();
+        String age = agedata.getText().toString();
+        String height = heightdata.getText().toString();
+        String weight = weightdata.getText().toString();
+        String deviceId = deviceIDdata.getText().toString();
+
+        // Retrieve the sensor data
+        String low = tvLow.getText().toString();
+        String resting = tvResting.getText().toString();
+        String max = tvMax.getText().toString();
+
+        String avgLow = AvgtvLow.getText().toString();
+        String avgResting = AvgtvResting.getText().toString();
+        String avgMax = AvgtvMax.getText().toString();
+
+        // Determine the pass/fail test result
+        String passFailResult = "Employee Failed E.H.T.S Exam"; // Set the initial result as failed
+        if (cardFinalResult.getCardBackgroundColor().getDefaultColor() == Color.GREEN) {
+            passFailResult = "Employee Passed E.H.T.S Exam";
+        }
+
+        // Create a CSV record using OpenCSV library
+        List<String[]> rows = new ArrayList<>();
+        rows.add(new String[]{"EHTS TEST RESULTS"});
+        rows.add(new String[]{"Employee Name:", empName});
+        rows.add(new String[]{"Employee ID:", empId});
+        rows.add(new String[]{"Age:", age});
+        rows.add(new String[]{"Height (IN):", height});
+        rows.add(new String[]{"Weight (LB):", weight});
+        rows.add(new String[]{"Device ID:", deviceId});
+        rows.add(new String[]{});
+        rows.add(new String[]{"Last Heart Rate Results"});
+        rows.add(new String[]{"Low:", low});
+        rows.add(new String[]{"Resting:", resting});
+        rows.add(new String[]{"Max:", max});
+        rows.add(new String[]{});
+        rows.add(new String[]{"Avg. Heart Rate Results of All Tests"});
+        rows.add(new String[]{"Low:", avgLow});
+        rows.add(new String[]{"Resting:", avgResting});
+        rows.add(new String[]{"Max:", avgMax});
+        rows.add(new String[]{});
+        rows.add(new String[]{"Pass/Fail Test Results:", passFailResult});
+
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference heartRateRef = FirebaseDatabase.getInstance().getReference("users")
+                .child(userId).child("employees").child(empId).child("sensors_record").child(empId);
+
+        Query query = heartRateRef.orderByChild("recordingStartTime");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    int testNo = 1;
+                    rows.add(new String[]{});
+                    rows.add(new String[]{"Timeline Test Results:"});
+                    rows.add(new String[]{"Test No.", "Test Start Time:", "Test End Time:", "Low HR", "Resting HR", "Max HR"});
+                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                        String recordingStartTimestamp = childSnapshot.child("recordingStartTime").getValue(String.class);
+                        String recordingStopTimestamp = childSnapshot.child("recordingStopTime").getValue(String.class);
+                        Integer low = childSnapshot.child("low").getValue(Integer.class);
+                        Integer resting = childSnapshot.child("resting").getValue(Integer.class);
+                        Integer max = childSnapshot.child("max").getValue(Integer.class);
+
+                        rows.add(new String[]{
+                                String.valueOf(testNo),
+                                convertToTimestamp1(recordingStartTimestamp),
+                                convertToTimestamp1(recordingStopTimestamp),
+                                String.valueOf(low),
+                                String.valueOf(resting),
+                                String.valueOf(max)
+                        });
+
+                        testNo++;
+                    }
+
+                    /*
+                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                        String recordingStartTimestamp = childSnapshot.child("recordingStartTime").getValue(String.class);
+                        String recordingStopTimestamp = childSnapshot.child("recordingStopTime").getValue(String.class);
+                        Integer low = childSnapshot.child("low").getValue(Integer.class);
+                        Integer resting = childSnapshot.child("resting").getValue(Integer.class);
+                        Integer max = childSnapshot.child("max").getValue(Integer.class);
+
+                        rows.add(new String[]{
+                                String.valueOf(testNo),
+                                recordingStartTimestamp,
+                                recordingStopTimestamp,
+                                String.valueOf(low),
+                                String.valueOf(resting),
+                                String.valueOf(max)
+                        });
+
+                        testNo++;
+                    }
+
+                     */
+
+                    // Generate a unique filename for the CSV file
+                 //   String filename = "employee_data_" + System.currentTimeMillis() + ".csv";
+
+                    String timestamp = new SimpleDateFormat("yyyy_MM_dd_hh_mm", Locale.US).format(new Date());
+                    String filename = "employee_data_" + timestamp + ".csv";
+
+                    try {
+                        // Create the CSV file in the app's cache directory
+                        File cacheDir = getCacheDir();
+                        File csvFile = new File(cacheDir, filename);
+
+                        // Write the data to the CSV file
+                        FileWriter writer = new FileWriter(csvFile);
+                        CSVWriter csvWriter = new CSVWriter(writer);
+                        csvWriter.writeAll(rows);
+                        csvWriter.close();
+
+                        // Share the CSV file using Intent
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                        shareIntent.setType("text/csv");
+                        Uri fileUri = FileProvider.getUriForFile(EmployeeRecord.this, getPackageName() + ".fileprovider", csvFile);
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+                        startActivity(Intent.createChooser(shareIntent, "Export CSV"));
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(EmployeeRecord.this, "Failed to export data to CSV.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle the error case
+                Toast.makeText(EmployeeRecord.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private String convertToTimestamp(float hoursSinceCustomEpoch) {
+        long milliseconds = (long) (hoursSinceCustomEpoch * 60 * 60 * 1000);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.US);
+        return dateFormat.format(new Date(milliseconds));
+    }
+    private String convertToTimestamp1(String timestamp) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+            Date date = inputFormat.parse(timestamp);
+            SimpleDateFormat outputFormat = new SimpleDateFormat("MM/dd/yy hh:mm a", Locale.US);
+            return outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+
+
+    /*
+public void exportDataToCSV(View view) {
+    // Retrieve the employee data
+    String empName = empNameRec.getText().toString();
+    String empId = empIddata.getText().toString();
+    String age = agedata.getText().toString();
+    String height = heightdata.getText().toString();
+    String weight = weightdata.getText().toString();
+    String deviceId = deviceIDdata.getText().toString();
+
+    // Retrieve the sensor data
+    String low = tvLow.getText().toString();
+    String resting = tvResting.getText().toString();
+    String max = tvMax.getText().toString();
+
+    String avgLow = AvgtvLow.getText().toString();
+    String avgResting = AvgtvResting.getText().toString();
+    String avgMax = AvgtvMax.getText().toString();
+
+    // Determine the pass/fail test result
+    String passFailResult = "Employee Failed E.H.T.S Exam"; // Set the initial result as failed
+    if (cardFinalResult.getCardBackgroundColor().getDefaultColor() == Color.GREEN) {
+        passFailResult = "Employee Passed E.H.T.S Exam";
+    }
+
+    // Create a CSV record using OpenCSV library
+    List<String[]> rows = new ArrayList<>();
+    rows.add(new String[]{"EHTS TEST RESULTS"});
+    rows.add(new String[]{"Employee Name:", empName});
+    rows.add(new String[]{"Employee ID:", empId});
+    rows.add(new String[]{"Age:", age});
+    rows.add(new String[]{"Height (IN):", height});
+    rows.add(new String[]{"Weight (LB):", weight});
+    rows.add(new String[]{"Device ID:", deviceId});
+    rows.add(new String[]{});
+    rows.add(new String[]{"Last Heart Rate Results"});
+    rows.add(new String[]{"Low:", low});
+    rows.add(new String[]{"Resting:", resting});
+    rows.add(new String[]{"Max:", max});
+    rows.add(new String[]{
+,
+    });
+    rows.add(new String[]{"Avg. Heart Rate Results of All Tests"});
+    rows.add(new String[]{"Low:", avgLow});
+    rows.add(new String[]{"Resting:", avgResting});
+    rows.add(new String[]{"Max:", avgMax});
+    rows.add(new String[]{
+,
+
+    });
+    rows.add(new String[]{"Pass/Fail Test Results:", passFailResult});
+
+    // Generate a unique filename for the CSV file
+    String filename = "employee_data_" + System.currentTimeMillis() + ".csv";
+
+    try {
+        // Create the CSV file in the app's cache directory
+        File cacheDir = getCacheDir();
+        File csvFile = new File(cacheDir, filename);
+
+        // Write the data to the CSV file
+        FileWriter writer = new FileWriter(csvFile);
+        CSVWriter csvWriter = new CSVWriter(writer);
+        csvWriter.writeAll(rows);
+        csvWriter.close();
+
+        // Share the CSV file using Intent
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/csv");
+        Uri fileUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", csvFile);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+        startActivity(Intent.createChooser(shareIntent, "Export CSV"));
+
+    } catch (IOException e) {
+        e.printStackTrace();
+        Toast.makeText(EmployeeRecord.this, "Failed to export data to CSV.", Toast.LENGTH_SHORT).show();
+    }
+}
+
+
+     */
+
+
 
 
 
