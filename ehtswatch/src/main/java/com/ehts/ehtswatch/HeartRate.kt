@@ -36,7 +36,7 @@ class HeartRate : Activity(), SensorEventListener {
         private const val NOTIFICATION_ID = 1
         private const val SERVICE_ID = 1
         private const val STOP_ACTION = "StopRecordingAction"
-        private const val TIMER_INTERVAL = 2 * 60 * 1000 // 5 minutes in milliseconds
+        private const val TIMER_INTERVAL = 5 * 60 * 1000 // 5 minutes in milliseconds
     }
 
     private lateinit var sensorManager: SensorManager
@@ -147,13 +147,32 @@ class HeartRate : Activity(), SensorEventListener {
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
         // Do nothing
     }
-
     private fun calculateHeartRateMetrics() {
         if (heartRateData.isNotEmpty()) {
             var sum = 0.0
-            //var min = heartRateData[0]
             var min = Double.MAX_VALUE
             var max = heartRateData[0]
+            // Calculate the minimum heart rate excluding zero values
+            val filteredHeartRateData = heartRateData.filter { it != 0.0 }
+            if (filteredHeartRateData.isNotEmpty()) {
+                min = filteredHeartRateData.minOrNull() ?: min
+            }
+            for (heartRate in heartRateData) {
+                sum += heartRate
+                if (heartRate > max) {
+                    max = heartRate
+                }
+            }
+            restingHeartRate = sum / heartRateData.size
+            lowHeartRate = min
+            maxHeartRate = max
+        /*
+        if (heartRateData.isNotEmpty()) {
+            var sum = 0.0
+            var min = Double.MAX_VALUE
+            var max = heartRateData[0]
+
+
             for (heartRate in heartRateData) {
                 sum += heartRate
                 if (heartRate < min) {
@@ -167,32 +186,55 @@ class HeartRate : Activity(), SensorEventListener {
             lowHeartRate = min
             maxHeartRate = max
 
+
+         */
             val recordingStartTimestamp = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault())
                 .format(Date(recordingStartTime))
             val recordingStopTimestamp = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault())
                 .format(Date())
 
-            // Get the timestamp of the recording
-/*
-            val recordingStartTimestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-                .apply {
-                    timeZone = TimeZone.getTimeZone("UTC")
+            // Check if lowHeartRate is zero
+            if (lowHeartRate != 0.0) {
+                val data = SensorsData(restingHeartRate, lowHeartRate, maxHeartRate, recordingStartTimestamp, recordingStopTimestamp)
+                // Store the heart rate data in your database
+                val userId = FirebaseAuth.getInstance().currentUser?.uid
+                val myRef = FirebaseDatabase.getInstance().reference.child("users").child(userId ?: "")
+                    .child("employees").child(empId ?: "")
+                    .child("sensors_record").child(empId ?: "")
+                val uniqueKey: String? = myRef.push().key
+                userId?.let {
+                    FirebaseDatabase.getInstance().reference.child("users").child(it)
+                        .child("employees").child(empId ?: "")
+                        .child("sensors_record").child(empId ?: "").child(uniqueKey ?: Random().toString())
+                        .setValue(data)
+                        .addOnSuccessListener {
+                            Toast.makeText(this@HeartRate, "Saved", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(this@HeartRate, "Failed to save data", Toast.LENGTH_SHORT).show()
+                        }
                 }
-                .format(Date(recordingStartTime))
-            val recordingStopTimestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-                .apply {
-                    timeZone = TimeZone.getTimeZone("UTC")
+            } else {
+                // Only push the other data values to the database
+                val data = SensorsData(restingHeartRate, null, maxHeartRate, recordingStartTimestamp, recordingStopTimestamp)
+                val userId = FirebaseAuth.getInstance().currentUser?.uid
+                val myRef = FirebaseDatabase.getInstance().reference.child("users").child(userId ?: "")
+                    .child("employees").child(empId ?: "")
+                    .child("sensors_record").child(empId ?: "")
+                val uniqueKey: String? = myRef.push().key
+                userId?.let {
+                    FirebaseDatabase.getInstance().reference.child("users").child(it)
+                        .child("employees").child(empId ?: "")
+                        .child("sensors_record").child(empId ?: "").child(uniqueKey ?: Random().toString())
+                        .setValue(data)
+                        .addOnSuccessListener {
+                            Toast.makeText(this@HeartRate, "Saved", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(this@HeartRate, "Failed to save data", Toast.LENGTH_SHORT).show()
+                        }
                 }
-                .format(Date())
-
- */
-
-
-
-            // Store the heart rate data in your database
-
-            val data = SensorsData(restingHeartRate, lowHeartRate, maxHeartRate, recordingStartTimestamp, recordingStopTimestamp)
-
+            }
 
             // Print the heart rate metrics and recording timestamp
             val heartRateText = String.format(
@@ -201,28 +243,9 @@ class HeartRate : Activity(), SensorEventListener {
                 restingHeartRate, lowHeartRate, maxHeartRate, recordingStartTimestamp, recordingStopTimestamp
             )
             textHeartRate.text = heartRateText
-
-            // Get the user ID
-            val userId = FirebaseAuth.getInstance().currentUser?.uid
-            val myRef = FirebaseDatabase.getInstance().reference.child("users").child(userId?:"")
-                .child("employees").child(empId?:"")
-                .child("sensors_record").child(empId?:"")
-            val uniqueKey: String? = myRef.push().key
-            userId?.let {
-                FirebaseDatabase.getInstance().reference.child("users").child(it)
-                    .child("employees").child(empId?:"")
-                    .child("sensors_record").child(empId?:"").child(uniqueKey ?: Random().toString()).setValue(data)
-                    .addOnSuccessListener {
-                        Toast.makeText(this@HeartRate, "Saved", Toast.LENGTH_SHORT).show()
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(this@HeartRate, "Failed to save data", Toast.LENGTH_SHORT).show()
-                    }
-
-            }
-
         }
     }
+
 
     private fun startHeartRateRecording() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
