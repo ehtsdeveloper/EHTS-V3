@@ -36,7 +36,7 @@ class HeartRate : Activity(), SensorEventListener {
         private const val NOTIFICATION_ID = 1
         private const val SERVICE_ID = 1
         private const val STOP_ACTION = "StopRecordingAction"
-        private const val TIMER_INTERVAL = 5 * 60 * 1000 // 5 minutes in milliseconds
+        private const val TIMER_INTERVAL = 1 * 60 * 1000 // 5 minutes in milliseconds
     }
 
     private lateinit var sensorManager: SensorManager
@@ -188,10 +188,11 @@ class HeartRate : Activity(), SensorEventListener {
 
 
          */
-            val recordingStartTimestamp = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault())
+            val recordingStartTimestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                 .format(Date(recordingStartTime))
-            val recordingStopTimestamp = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault())
+            val recordingStopTimestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                 .format(Date())
+
 
             // Check if lowHeartRate is zero
             if (lowHeartRate != 0.0) {

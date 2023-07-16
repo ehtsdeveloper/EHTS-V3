@@ -70,6 +70,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 
 //displaying employees test results and sending over the bluetooth data to this screen to the specific employee that was tested
@@ -94,6 +95,7 @@ public class EmployeeRecord extends AppCompatActivity {
     CardView profileCard;
 
     LineChart lineChart;
+    Button refreshGraph;
 
     Button exportData;
  //  BarChart barChart;
@@ -138,6 +140,7 @@ public class EmployeeRecord extends AppCompatActivity {
 
         //barChart = findViewById(R.id.chart);
         lineChart = findViewById(R.id.chart);
+        refreshGraph = findViewById(R.id.refreshGraph);
 
        // btnToday = findViewById(R.id.btnToday);
        // btnMonth = findViewById(R.id.btnMonth);
@@ -643,282 +646,144 @@ public class EmployeeRecord extends AppCompatActivity {
     }
 
  */
+private void fetchHeartRateData() {
+    String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    DatabaseReference heartRateRef = FirebaseDatabase.getInstance().getReference("users")
+            .child(userId).child("employees").child(empId).child("sensors_record").child(empId);
 
+    Query query = heartRateRef.orderByChild("recordingStartTime");
+    query.addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot snapshot) {
+            ArrayList<Entry> lowEntries = new ArrayList<>();
+            ArrayList<Entry> restingEntries = new ArrayList<>();
+            ArrayList<Entry> maxEntries = new ArrayList<>();
 
-    /*
-    Line Graph
+            long minutesSinceStart;
+            long minutesGraphStart = 10160;
 
-     */
-    private void fetchHeartRateData() {
+            for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                String recordingStartTimestamp = childSnapshot.child("recordingStartTime").getValue(String.class);
+                String recordingStopTimestamp = childSnapshot.child("recordingStopTime").getValue(String.class);
+                Integer low = childSnapshot.child("low").getValue(Integer.class);
+                Integer resting = childSnapshot.child("resting").getValue(Integer.class);
+                Integer max = childSnapshot.child("max").getValue(Integer.class);
 
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference heartRateRef = FirebaseDatabase.getInstance().getReference("users")
-                .child(userId).child("employees").child(empId).child("sensors_record").child(empId);
+                try {
+                    minutesSinceStart = convertToHoursSinceCustomEpoch(recordingStartTimestamp);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
 
+                if (minutesSinceStart >= minutesGraphStart) {
+                    if (low != null) {
+                        try {
+                            lowEntries.add(new Entry(minutesSinceStart, low.intValue()));
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
 
-        Query query = heartRateRef.orderByChild("recordingStartTime");
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<Entry> lowEntries = new ArrayList<>();
-                ArrayList<Entry> restingEntries = new ArrayList<>();
-                ArrayList<Entry> maxEntries = new ArrayList<>();
-
-                long minutesSinceStart;
-                long minutesGraphStart=10160;
-
-                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                    String recordingStartTimestamp = childSnapshot.child("recordingStartTime").getValue(String.class);
-                    String recordingStopTimestamp = childSnapshot.child("recordingStopTime").getValue(String.class);
-                    Integer low = childSnapshot.child("low").getValue(Integer.class);
-                    Integer resting = childSnapshot.child("resting").getValue(Integer.class);
-                    Integer max = childSnapshot.child("max").getValue(Integer.class);
-
-                    try {
-                        minutesSinceStart = convertToHoursSinceCustomEpoch(recordingStartTimestamp);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
                     }
 
-                    if(minutesSinceStart>=minutesGraphStart) {
-                        if (low != null) {
-                            try {
-                                lowEntries.add(new Entry(minutesSinceStart, low.intValue()));
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-
+                    if (resting != null) {
+                        try {
+                            restingEntries.add(new Entry(minutesSinceStart, resting.intValue()));
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
                         }
 
-                        if (resting != null) {
-                            try {
-                                restingEntries.add(new Entry(minutesSinceStart, resting.intValue()));
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
+                    }
 
-                        }
-
-                        if (max != null) {
-                            try {
-                                maxEntries.add(new Entry(minutesSinceStart, max.intValue()));
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
+                    if (max != null) {
+                        try {
+                            maxEntries.add(new Entry(minutesSinceStart, max.intValue()));
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
                         }
                     }
                 }
-                // Calculate the average resting heart rate
-                float avgRestingHeartRate = calculateAverage(restingEntries);
+            }
+            // Calculate the average resting heart rate
+            float avgRestingHeartRate = calculateAverage(restingEntries);
 
-                // Create a LimitLine for the average resting heart rate
-                LimitLine avgRestingLine = new LimitLine(avgRestingHeartRate, "Avg Resting HR");
-                avgRestingLine.setLineColor(Color.BLUE);
-                avgRestingLine.setLineWidth(2f);
+            // Create a new LimitLine for the average resting heart rate
+            LimitLine avgRestingLine = new LimitLine(avgRestingHeartRate, "Avg Resting HR");
+            avgRestingLine.setLineColor(Color.BLUE);
+            avgRestingLine.setLineWidth(2f);
 
-                // Configure the low line chart
-                LineDataSet dataSetLow = new LineDataSet(lowEntries, "Low HR");
-                dataSetLow.setColor(Color.YELLOW);
-                dataSetLow.setLineWidth(2f);
-                LineData lineDataLow = new LineData(dataSetLow);
+            // Clear the existing LimitLines from the chart
+            lineChart.getAxisLeft().removeAllLimitLines();
 
-                // Configure the resting line chart
-                LineDataSet dataSetResting = new LineDataSet(restingEntries, "Resting HR");
-                dataSetResting.setColor(Color.GREEN);
-                dataSetResting.setLineWidth(2f);
-                LineData lineDataResting = new LineData(dataSetResting);
+            // Add the new average resting line to the chart
+            lineChart.getAxisLeft().addLimitLine(avgRestingLine);
 
-                // Configure the Max line chart
-                LineDataSet dataSetMax = new LineDataSet(maxEntries, "Max HR");
-                dataSetMax.setColor(Color.RED);
-                dataSetMax.setLineWidth(2f);
-                LineData lineDataMax = new LineData(dataSetMax);
+            // Configure the low line chart
+            LineDataSet dataSetLow = new LineDataSet(lowEntries, "Low HR");
+            dataSetLow.setColor(Color.YELLOW);
+            dataSetLow.setLineWidth(2f);
+            LineData lineDataLow = new LineData(dataSetLow);
 
-                //                // Set the data for the line chart
-                //                lineChart.setData(lineDataLow);
-                //                lineChart.setData(lineDataResting);
-                //                lineChart.setData(lineDataMax);
+            // Configure the resting line chart
+            LineDataSet dataSetResting = new LineDataSet(restingEntries, "Resting HR");
+            dataSetResting.setColor(Color.GREEN);
+            dataSetResting.setLineWidth(2f);
+            LineData lineDataResting = new LineData(dataSetResting);
 
-                // Merge the three LineData objects into a single LineData object
-                LineData combinedLineData = new LineData();
-                combinedLineData.addDataSet(dataSetLow);
-                combinedLineData.addDataSet(dataSetResting);
-                combinedLineData.addDataSet(dataSetMax);
+            // Configure the Max line chart
+            LineDataSet dataSetMax = new LineDataSet(maxEntries, "Max HR");
+            dataSetMax.setColor(Color.RED);
+            dataSetMax.setLineWidth(2f);
+            LineData lineDataMax = new LineData(dataSetMax);
 
-                // Set the combined LineData as the data for the line chart
-                lineChart.setData(combinedLineData);
+            // Merge the three LineData objects into a single LineData object
+            LineData combinedLineData = new LineData();
+            combinedLineData.addDataSet(dataSetLow);
+            combinedLineData.addDataSet(dataSetResting);
+            combinedLineData.addDataSet(dataSetMax);
+
+            // Set the combined LineData as the data for the line chart
+            lineChart.setData(combinedLineData);
 
             /*
             Configure graph axis
              */
-                YAxis yAxis = lineChart.getAxisLeft();
-                yAxis.setAxisMaximum(0f);
-                yAxis.setAxisMaximum(150f);
-                yAxis.setAxisLineWidth(1f);
-                yAxis.setAxisLineColor(Color.BLACK);
-                yAxis.setLabelCount(10);
+            YAxis yAxis = lineChart.getAxisLeft();
+            yAxis.setAxisMaximum(0f);
+            yAxis.setAxisMaximum(150f);
+            yAxis.setAxisLineWidth(1f);
+            yAxis.setAxisLineColor(Color.BLACK);
+            yAxis.setLabelCount(10);
 
-                lineChart.getDescription().setEnabled(false);
-                lineChart.setBackgroundColor(Color.WHITE);
-                lineChart.getXAxis().setTextColor(Color.BLACK);
-                lineChart.getAxisLeft().setTextColor(Color.BLACK);
-                lineChart.getAxisRight().setEnabled(false);
+            lineChart.getDescription().setEnabled(false);
+            lineChart.setBackgroundColor(Color.WHITE);
+            lineChart.getXAxis().setTextColor(Color.BLACK);
+            lineChart.getAxisLeft().setTextColor(Color.BLACK);
+            lineChart.getAxisRight().setEnabled(false);
 
-                // Add the average resting line to the chart
-                lineChart.getAxisLeft().addLimitLine(avgRestingLine);
+            lineChart.invalidate();
 
-                lineChart.invalidate();
+            lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(getXAxisLabels()));
+            lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
 
-                lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(getXAxisLabels()));
-                lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+            lineChart.getXAxis().setGranularity(1f);
+            lineChart.getXAxis().setGranularityEnabled(true);
+        }
 
-                lineChart.getXAxis().setGranularity(1f);
-                lineChart.getXAxis().setGranularityEnabled(true);
+        @Override
+        public void onCancelled(@NonNull DatabaseError error) {
+            Toast.makeText(EmployeeRecord.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    });
 
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(EmployeeRecord.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-
-
-    //LINE GRAPH
-//    private void fetchHeartRateData() {
-//        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//        DatabaseReference heartRateRef = FirebaseDatabase.getInstance().getReference("users")
-//                .child(userId).child("employees").child(empId).child("sensors_record").child(empId);
-//
-//        Query query = heartRateRef.orderByChild("recordingStartTime");
-//        query.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                ArrayList<Entry> lowEntries = new ArrayList<>();
-//                ArrayList<Entry> restingEntries = new ArrayList<>();
-//                ArrayList<Entry> highEntries = new ArrayList<>();
-//
-//                /*
-//
-//                 */
-//                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-//                    String recordingStartTimestamp = childSnapshot.child("recordingStartTime").getValue(String.class);
-//                    String recordingStopTimestamp = childSnapshot.child("recordingStopTime").getValue(String.class);
-//                    Integer low = childSnapshot.child("low").getValue(Integer.class);
-//                    Integer resting = childSnapshot.child("resting").getValue(Integer.class);
-//                    Integer max = childSnapshot.child("max").getValue(Integer.class);
-//
-//                    if (low != null) {
-//                        try {
-//                            lowEntries.add(new Entry(convertToHoursSinceCustomEpoch(recordingStartTimestamp), low.intValue()));
-//                        } catch (Exception e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                        try {
-//                            lowEntries.add(new Entry(convertToHoursSinceCustomEpoch(recordingStopTimestamp), low.intValue()));
-//                        } catch (Exception e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                    }
-//
-//                    if (resting != null) {
-//                        try {
-//                            restingEntries.add(new Entry(convertToHoursSinceCustomEpoch(recordingStartTimestamp), resting.intValue()));
-//                        } catch (Exception e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                        try {
-//                            restingEntries.add(new Entry(convertToHoursSinceCustomEpoch(recordingStopTimestamp), resting.intValue()));
-//                        } catch (Exception e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                    }
-//
-//                    if (max != null) {
-//                        try {
-//                            highEntries.add(new Entry(convertToHoursSinceCustomEpoch(recordingStartTimestamp), max.intValue()));
-//                        } catch (Exception e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                        try {
-//                            highEntries.add(new Entry(convertToHoursSinceCustomEpoch(recordingStopTimestamp), max.intValue()));
-//                        } catch (Exception e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                    }
-//                }
-//
-//                // Calculate the average resting heart rate
-//                float avgRestingHeartRate = calculateAverage(restingEntries);
-//
-//                // Create a LimitLine for the average resting heart rate
-//                LimitLine avgRestingLine = new LimitLine(avgRestingHeartRate, "Avg Resting HR ");
-//                avgRestingLine.setLineColor(Color.BLUE);
-//                avgRestingLine.setLineWidth(2f);
-//
-//
-//                // Configure the low line chart
-//                LineDataSet dataSet = new LineDataSet(lowEntries, "Low HR ");
-//                dataSet.setColor(Color.YELLOW);
-//                dataSet.setLineWidth(2f);
-//
-//                LineData lineData = new LineData(dataSet);
-//
-//                lineChart.setData(lineData);
-//
-//                // Configure the low line chart
-//                LineDataSet dataSet2 = new LineDataSet(restingEntries, "Resting HR ");
-//                dataSet2.setColor(Color.GREEN);
-//                dataSet2.setLineWidth(2f);
-//
-//                LineData lineData2 = new LineData(dataSet2);
-//                lineChart.setData(lineData2);
-//
-//                // Configure the low line chart
-//                LineDataSet dataSet3 = new LineDataSet(highEntries, "High HR");
-//                dataSet3.setColor(Color.RED);
-//                dataSet3.setLineWidth(2f);
-//
-//                LineData lineData3 = new LineData(dataSet3);
-//                lineChart.setData(lineData3);
-//
-//
-//                /*
-//                Configure graph axis
-//                 */
-//                YAxis yAxis = lineChart.getAxisLeft();
-//                yAxis.setAxisMaximum(0f);
-//                yAxis.setAxisMaximum(150f);
-//                yAxis.setAxisLineWidth(1f);
-//                yAxis.setAxisLineColor(Color.BLACK);
-//                yAxis.setLabelCount(10);
-//
-//                lineChart.getDescription().setEnabled(false);
-//                lineChart.setBackgroundColor(Color.WHITE);
-//                lineChart.getXAxis().setTextColor(Color.BLACK);
-//                lineChart.getAxisLeft().setTextColor(Color.BLACK);
-//                lineChart.getAxisRight().setEnabled(false);
-//
-//                // Add the average resting line to the chart
-//                lineChart.getAxisLeft().addLimitLine(avgRestingLine);
-//
-//                lineChart.invalidate();
-//
-//                lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(getXAxisLabels()));
-//                lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-//
-//                lineChart.getXAxis().setGranularity(1f);
-//                lineChart.getXAxis().setGranularityEnabled(true);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Toast.makeText(EmployeeRecord.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
+    refreshGraph.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            fetchHeartRateData();
+            // Display a toast message
+            Toast.makeText(EmployeeRecord.this, "Graph Refreshed", Toast.LENGTH_SHORT).show();
+        }
+    });
+}
 
 
 
@@ -1314,6 +1179,7 @@ csv final
             SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
             Date date = inputFormat.parse(timestamp);
             SimpleDateFormat outputFormat = new SimpleDateFormat("MM/dd/yy hh:mm a", Locale.US);
+            outputFormat.setTimeZone(TimeZone.getDefault()); // Set the correct timezone
             return outputFormat.format(date);
         } catch (ParseException e) {
             e.printStackTrace();

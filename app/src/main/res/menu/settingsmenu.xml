@@ -9,9 +9,12 @@
         android:title="Add Employees"
         android:icon="@drawable/baseline_add_24_black"/>
 
-    <item android:id="@+id/bleSettings"
-        android:title="@string/bluetooth"
-        android:icon="@drawable/baseline_bluetooth_24"/>
+    <!-- Commented out Bluetooth settings item
+   <item
+       android:id="@+id/bleSettings"
+       android:title="@string/bluetooth"
+       android:icon="@drawable/baseline_bluetooth_24" />
+   -->
 
     <item android:id="@+id/Logoutbtn"
     android:title="@string/logout"/>

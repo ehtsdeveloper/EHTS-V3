@@ -124,12 +124,14 @@ public class TopNavBar extends AppCompatActivity {
                    Intent employeesIntent = new Intent(TopNavBar.this, Upload_Profile.class);
                    loadActivity(employeesIntent);
 
-               }else if (id == R.id.bleSettings) {
-                   Toast.makeText(TopNavBar.this, "Bluetooth Settings", Toast.LENGTH_SHORT).show();
-                   Intent bleSettingsIntent = new Intent(TopNavBar.this, BluetoothSettings.class);
-                   loadActivity(bleSettingsIntent);
+               }
+               //else if (id == R.id.bleSettings) {
+                 //  Toast.makeText(TopNavBar.this, "Bluetooth Settings", Toast.LENGTH_SHORT).show();
+                //   Intent bleSettingsIntent = new Intent(TopNavBar.this, BluetoothSettings.class);
+                //   loadActivity(bleSettingsIntent);
 
-               }  else if (id == R.id.Logoutbtn) {
+            //   }
+                else if (id == R.id.Logoutbtn) {
                 Toast.makeText(TopNavBar.this, "Logout Successful", Toast.LENGTH_SHORT).show();
                 logoutUser();
             }
