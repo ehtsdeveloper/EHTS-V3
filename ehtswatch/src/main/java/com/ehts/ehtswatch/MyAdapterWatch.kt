@@ -25,7 +25,7 @@ class MyAdapterWatch(private val context: Context, private val dataList: List<Pr
         //   Glide.with(context).load(data.dataImage).into(holder.recImage)
         holder.recName.text = data.dataName
         holder.recEmpID.text = data.dataEmpID
-        holder.recDeviceID.text = data.dataEmpID
+        holder.recgender.text = data.dataEmpID
         //  val age = data.dataAge.toString()
         //val height = data.dataHeight.toString()
         //val weight = data.dataWeight.toString()
@@ -42,7 +42,7 @@ class MyAdapterWatch(private val context: Context, private val dataList: List<Pr
 //                //  putExtra("Age", age)
 //                //   putExtra("Height (in)", height)
 //                //   putExtra("Weight (lb)", weight)
-//                putExtra("Device ID", data.dataDeviceID)
+//                putExtra("Gender", data.datagender)
 //                putExtra("Key", data.key)
 //            }
 //            context.startActivity(intent)
@@ -73,7 +73,7 @@ class MyViewHolderWatch(itemView: View) : RecyclerView.ViewHolder(itemView) {
     //val recAge: TextView = itemView.findViewById(R.id.recage)
     // val recHeight: TextView = itemView.findViewById(R.id.recHeight)
     // val recWeight: TextView = itemView.findViewById(R.id.recWeight)
-    val recDeviceID: TextView = itemView.findViewById(R.id.recDeviceID)
+    val recgender: TextView = itemView.findViewById(R.id.recgender)
 //  val goToBtn: ImageButton = itemView.findViewById(R.id.recViewProfile)
 
 

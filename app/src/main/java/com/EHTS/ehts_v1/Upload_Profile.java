@@ -46,7 +46,7 @@ public class Upload_Profile extends AppCompatActivity {
 
     Button saveButton;
 
-    EditText dataName, dataEmpID, dataAge, dataHeight, dataWeight, dataDeviceID;
+    EditText dataName, dataEmpID, dataAge, dataHeight, dataWeight, datagender;
 
     Uri selectedImageUri;
 
@@ -93,7 +93,7 @@ public class Upload_Profile extends AppCompatActivity {
         dataAge = findViewById(R.id.uploadAge);
         dataHeight = findViewById(R.id.uploadHeight);
         dataWeight = findViewById(R.id.uploadWeight);
-        dataDeviceID = findViewById(R.id.uploadDeviceID);
+        datagender = findViewById(R.id.uploadgender);
 
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,7 +121,12 @@ public class Upload_Profile extends AppCompatActivity {
             final int age;
             final int height;
             final int weight;
-            final String deviceID = dataDeviceID.getText().toString();
+            final String gender = datagender.getText().toString();
+
+            if (!isValidGender(gender)) {
+                Toast.makeText(Upload_Profile.this, "Incorrect entry for gender. Please enter Male, Female, or Other.", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             try {
                 age = Integer.parseInt(dataAge.getText().toString());
@@ -132,6 +137,19 @@ public class Upload_Profile extends AppCompatActivity {
                 Toast.makeText(Upload_Profile.this, "Invalid input for age, height, or weight", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+           /*
+            try {
+                age = Integer.parseInt(dataAge.getText().toString());
+                height = Integer.parseInt(dataHeight.getText().toString());
+                weight = Integer.parseInt(dataWeight.getText().toString());
+            } catch (NumberFormatException e) {
+                // Handle the case when the input cannot be parsed as an integer
+                Toast.makeText(Upload_Profile.this, "Invalid input for age, height, or weight", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            */
 
             String imageFileName = UUID.randomUUID().toString(); // Generate a unique filename for the image
             StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("images/" + imageFileName);
@@ -150,7 +168,7 @@ public class Upload_Profile extends AppCompatActivity {
                                 public void onSuccess(Uri downloadUri) {
 
                                     // Create a new Profile_Data object with the download URL and other data
-                                    Profile_Data data = new Profile_Data(name, empId, age, height, weight, deviceID, downloadUri.toString());
+                                    Profile_Data data = new Profile_Data(name, empId, age, height, weight, gender, downloadUri.toString());
 
                                     //We are changing the child from empid to currentDate, (may have an issue here comeback!!!!)
                                     // because we will be updating empid as well and it may affect child value.
@@ -178,7 +196,7 @@ public class Upload_Profile extends AppCompatActivity {
                                                     dataAge.setText("");
                                                     dataHeight.setText("");
                                                     dataWeight.setText("");
-                                                    dataDeviceID.setText("");
+                                                    datagender.setText("");
                                                     dataImage.setImageResource(R.drawable.baseline_add_a_photo_24);
                                                 }
                                             })
@@ -204,7 +222,9 @@ public class Upload_Profile extends AppCompatActivity {
             Toast.makeText(Upload_Profile.this, "Please select an image", Toast.LENGTH_SHORT).show();
         }
     }
-
+    private boolean isValidGender(String gender) {
+        return gender.equalsIgnoreCase("Male") || gender.equalsIgnoreCase("Female") || gender.equalsIgnoreCase("Other");
+    }
 
 
 }

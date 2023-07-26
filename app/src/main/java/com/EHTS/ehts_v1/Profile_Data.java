@@ -8,17 +8,17 @@ public class Profile_Data {
     private int dataAge;
     private int dataHeight;
     private int dataWeight;
-    private String dataDeviceID;
+    private String datagender;
     private String dataImage;
     private String key;
 
-    public Profile_Data(String dataName, String dataEmpID, int dataAge, int dataHeight, int dataWeight, String dataDeviceID, String dataImage) {
+    public Profile_Data(String dataName, String dataEmpID, int dataAge, int dataHeight, int dataWeight, String datagender, String dataImage) {
         this.dataName = dataName;
         this.dataEmpID = dataEmpID;
         this.dataAge = dataAge;
         this.dataHeight = dataHeight;
         this.dataWeight = dataWeight;
-        this.dataDeviceID = dataDeviceID;
+        this.datagender = datagender;
         this.dataImage = dataImage;
 
     }
@@ -50,8 +50,8 @@ public class Profile_Data {
         return dataWeight;
     }
 
-    public String getDataDeviceID() {
-        return dataDeviceID;
+    public String getDatagender() {
+        return datagender;
     }
 
     public String getDataImage() {

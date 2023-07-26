@@ -119,12 +119,12 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:id="@+id/uploadDeviceID"
+                android:id="@+id/uploadgender"
                 android:backgroundTint="@color/white"
                 android:background="@drawable/darkgrayborder"
                 android:layout_marginTop="10dp"
                 android:padding="10dp"
-                android:hint="@string/device_id"
+                android:hint="Male, Female, Other"
                 android:gravity="start|center_vertical"
                 android:textColor="@color/black"/>
 

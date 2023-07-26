@@ -65,7 +65,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/recDeviceID"
+                android:id="@+id/recgender"
                 android:text="Emp ID: "
                 android:textColor="@color/blackC"
                 android:textSize="9sp"

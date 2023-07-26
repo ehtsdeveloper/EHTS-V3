@@ -1,6 +1,6 @@
 package com.EHTS.ehts_v1;
 
-import static android.provider.Telephony.Mms.Part.FILENAME;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,14 +22,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 //import com.github.mikephil.charting.charts.BarChart;
-//import com.github.mikephil.charting.charts.BarChart;
+
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-//import com.github.mikephil.charting.data.BarData;
-//import com.github.mikephil.charting.data.BarDataSet;
-//import com.github.mikephil.charting.data.BarEntry;
+
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -72,18 +70,20 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-
-//displaying employees test results and sending over the bluetooth data to this screen to the specific employee that was tested
 public class EmployeeRecord extends AppCompatActivity {
 
     ImageButton backButton;
-    TextView empNameRec, empIddata, agedata, heightdata, weightdata, deviceIDdata;
+    TextView empNameRec, empIddata, agedata, heightdata, weightdata, genderdata;
     ImageView imageRec;
 
     TextView tvLow, tvResting, tvMax;
     TextView AvgtvLow, AvgtvResting, AvgtvMax;
 
     TextView tvFinalResult;
+    Button ModerateTest;
+    Button IntenseTest;
+    private boolean isModerateTestSelected = false;
+    private boolean isIntenseTestSelected = false;
     CardView cardFinalResult;
 
     // TextView  editProfile;
@@ -120,7 +120,7 @@ public class EmployeeRecord extends AppCompatActivity {
         heightdata = findViewById(R.id.heightData);
         weightdata = findViewById(R.id.weightData);
 
-        deviceIDdata = findViewById(R.id.deviceIdData);
+        genderdata = findViewById(R.id.genderData);
         profileCard = findViewById(R.id.profileCard);
 
         deleteProfile = findViewById(R.id.deleteProfile);
@@ -137,6 +137,9 @@ public class EmployeeRecord extends AppCompatActivity {
 
         tvFinalResult = findViewById(R.id.tvFinalResult);
         cardFinalResult = findViewById(R.id.cardFinalResult);
+        ModerateTest = findViewById(R.id.ModerateTest);
+        IntenseTest= findViewById(R.id.IntenseTest);
+
 
         //barChart = findViewById(R.id.chart);
         lineChart = findViewById(R.id.chart);
@@ -153,6 +156,7 @@ public class EmployeeRecord extends AppCompatActivity {
 
         backButton = findViewById(R.id.backButton);
 
+
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
 
@@ -162,7 +166,7 @@ public class EmployeeRecord extends AppCompatActivity {
             agedata.setText(bundle.getString("Age"));
             heightdata.setText(bundle.getString("Height (in)"));
             weightdata.setText(bundle.getString("Weight (lb)"));
-            deviceIDdata.setText(bundle.getString("Device ID"));
+            genderdata.setText(bundle.getString("Gender"));
 
 
             key = bundle.getString("Key");
@@ -170,8 +174,9 @@ public class EmployeeRecord extends AppCompatActivity {
             Glide.with(this).load(bundle.getString("images/")).into(imageRec);
         }
 
+
         fetchSensorsData();
-        fetchSensorsData2();
+       // fetchSensorsData2();
         fetchHeartRateData();
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,7 +222,7 @@ public class EmployeeRecord extends AppCompatActivity {
 
 
 /*
-//work in progress - provided the link to the youtube video I followed for this in the design document
+//Don't need - provided the link to the youtube video I followed for this in the design document
 
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -229,7 +234,7 @@ public class EmployeeRecord extends AppCompatActivity {
                         .putExtra("Age", agedata.getText().toString())
                         .putExtra("Height (in)", heightdata.getText().toString())
                         .putExtra("Weight (lb)", weightdata.getText().toString())
-                        .putExtra("Device ID", deviceIDdata.getText().toString())
+                        .putExtra("Gender", genderdata.getText().toString())
                         .putExtra("Key", key);
 
 
@@ -239,6 +244,27 @@ public class EmployeeRecord extends AppCompatActivity {
 
 
  */
+        //pass/fail test types
+        // Add the OnClickListener for the ModerateTest button
+        ModerateTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isModerateTestSelected = true;
+                // Determine the final result and update the UI accordingly
+                updateFinalResultUI();
+            }
+        });
+
+// Add the OnClickListener for the IntenseTest button
+        IntenseTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isIntenseTestSelected = true;
+                // Determine the final result and update the UI accordingly
+                updateFinalResultUI();
+            }
+        });
+
 
         /*
         btnToday.setOnClickListener(new View.OnClickListener() {
@@ -293,6 +319,8 @@ public class EmployeeRecord extends AppCompatActivity {
     }
 
 
+
+
     private void fetchSensorsData() {
         //fetch latest test results data of Low, max, and resting hr
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -325,6 +353,8 @@ public class EmployeeRecord extends AppCompatActivity {
                     if (data.getMax() != null) {
                         tvMax.setText(String.valueOf(data.getMax().intValue()));
                     }
+                    // Call fetchSensorsData2() after updating the views
+                    fetchSensorsData2();
                 }
             }
 
@@ -378,7 +408,49 @@ public class EmployeeRecord extends AppCompatActivity {
                     AvgtvLow.setText(String.valueOf(avgLow));
                     AvgtvResting.setText(String.valueOf(avgResting));
                     AvgtvMax.setText(String.valueOf(avgMax));
+/*
+                    // Calculate the target heart rate ranges based on age
+                    int age = Integer.parseInt(agedata.getText().toString());
+                    int maxAgeRelatedHR = 220 - age;
+                    int moderateIntensityLowerLimit = (int) (maxAgeRelatedHR * 0.64);
+                    int moderateIntensityUpperLimit = (int) (maxAgeRelatedHR * 0.76);
+                    int vigorousIntensityLowerLimit = (int) (maxAgeRelatedHR * 0.77);
+                    int vigorousIntensityUpperLimit = (int) (maxAgeRelatedHR * 0.93);
 
+                    // Initialize restingHR and maxHR variables
+                    int restingHR = Integer.parseInt(AvgtvResting.getText().toString());
+                    int maxHR = Integer.parseInt(AvgtvMax.getText().toString());
+
+                    // Calculate the target heart rate range based on the selected test
+                    int targetLowerLimit;
+                    int targetUpperLimit;
+
+                    if (isModerateTestSelected) {
+                        targetLowerLimit = moderateIntensityLowerLimit;
+                        targetUpperLimit = moderateIntensityUpperLimit;
+                    } else if (isIntenseTestSelected) {
+                        targetLowerLimit = vigorousIntensityLowerLimit;
+                        targetUpperLimit = vigorousIntensityUpperLimit;
+                    } else {
+                        // If no test is selected, handle the situation accordingly (e.g., display a message)
+                        return;
+                    }
+
+                    // Check if the resting and max heart rates are within the target range
+                    boolean isRestingHRWithinRange = restingHR >= targetLowerLimit && restingHR <= targetUpperLimit;
+                    boolean isMaxHRWithinRange = maxHR >= targetLowerLimit && maxHR <= targetUpperLimit;
+
+                    // Determine the final result and update the UI accordingly
+                    if (isRestingHRWithinRange && isMaxHRWithinRange) {
+                        tvFinalResult.setText("Employee passed EHTS Exam");
+                        cardFinalResult.setCardBackgroundColor(Color.GREEN);
+                    } else {
+                        tvFinalResult.setText("Employee failed EHTS Exam");
+                        cardFinalResult.setCardBackgroundColor(Color.parseColor("#AD2424"));
+                    }
+
+
+                    /*
                     // Determine if the employee passed or failed the EHTS Exam -- this equation still needs work
                     int age = Integer.parseInt(agedata.getText().toString());
                     int restingHR = avgResting;
@@ -403,7 +475,12 @@ public class EmployeeRecord extends AppCompatActivity {
                         tvFinalResult.setText("Employee failed EHTS Exam");
                         cardFinalResult.setCardBackgroundColor(Color.parseColor("#AD2424"));
                     }
+
+ */
+
+
                 }
+
             }
 
             @Override
@@ -412,6 +489,58 @@ public class EmployeeRecord extends AppCompatActivity {
             }
         });
     }
+
+    private void updateFinalResultUI() {
+        // Calculate the target heart rate ranges based on age
+        int age = Integer.parseInt(agedata.getText().toString());
+        int maxAgeRelatedHR = 220 - age;
+        int moderateIntensityLowerLimit = (int) (maxAgeRelatedHR * 0.64);
+        int moderateIntensityUpperLimit = (int) (maxAgeRelatedHR * 0.76);
+        int vigorousIntensityLowerLimit = (int) (maxAgeRelatedHR * 0.77);
+        int vigorousIntensityUpperLimit = (int) (maxAgeRelatedHR * 0.93);
+
+        // Initialize restingHR and maxHR variables
+        int restingHR = Integer.parseInt(AvgtvResting.getText().toString());
+        int maxHR = Integer.parseInt(AvgtvMax.getText().toString());
+
+        // Calculate the target heart rate range based on the selected test
+        int targetLowerLimit;
+        int targetUpperLimit;
+        String testType;
+
+        if (isModerateTestSelected) {
+            targetLowerLimit = moderateIntensityLowerLimit;
+            targetUpperLimit = moderateIntensityUpperLimit;
+            testType = "Moderate";
+        } else if (isIntenseTestSelected) {
+            targetLowerLimit = vigorousIntensityLowerLimit;
+            targetUpperLimit = vigorousIntensityUpperLimit;
+            testType = "Intense";
+        } else {
+            // If no test is selected, handle the situation accordingly (e.g., display a message)
+            return;
+        }
+
+        // Check if either the resting or max heart rate is within the target range
+        boolean isRestingHRWithinRange = (restingHR >= targetLowerLimit && restingHR <= targetUpperLimit);
+        boolean isMaxHRWithinRange = (maxHR >= targetLowerLimit && maxHR <= targetUpperLimit);
+
+    // Determine the final result and update the UI accordingly
+        String finalResultMessage;
+        if (isRestingHRWithinRange || isMaxHRWithinRange) {
+            finalResultMessage = "Employee Passed the " + testType + " EHTS Exam";
+            tvFinalResult.setText(finalResultMessage);
+            cardFinalResult.setCardBackgroundColor(Color.GREEN);
+        } else {
+            finalResultMessage = "Employee Failed the " + testType + " EHTS Exam";
+            tvFinalResult.setText(finalResultMessage);
+            cardFinalResult.setCardBackgroundColor(Color.parseColor("#AD2424"));
+        }
+
+        // Display a toast message with the final result message
+        Toast.makeText(EmployeeRecord.this, finalResultMessage, Toast.LENGTH_SHORT).show();
+    }
+
 /*
 
     private void fetchHeartRateData() {
@@ -779,6 +908,8 @@ private void fetchHeartRateData() {
         @Override
         public void onClick(View v) {
             fetchHeartRateData();
+            fetchSensorsData();
+            updateFinalResultUI();
             // Display a toast message
             Toast.makeText(EmployeeRecord.this, "Graph Refreshed", Toast.LENGTH_SHORT).show();
         }
@@ -1037,7 +1168,7 @@ csv final
         String age = agedata.getText().toString();
         String height = heightdata.getText().toString();
         String weight = weightdata.getText().toString();
-        String deviceId = deviceIDdata.getText().toString();
+        String gender = genderdata.getText().toString();
 
         // Retrieve the sensor data
         String low = tvLow.getText().toString();
@@ -1062,7 +1193,7 @@ csv final
         rows.add(new String[]{"Age:", age});
         rows.add(new String[]{"Height (IN):", height});
         rows.add(new String[]{"Weight (LB):", weight});
-        rows.add(new String[]{"Device ID:", deviceId});
+        rows.add(new String[]{"Gender:", gender});
         rows.add(new String[]{});
         rows.add(new String[]{"Last Heart Rate Results"});
         rows.add(new String[]{"Low:", low});
@@ -1108,27 +1239,6 @@ csv final
                         testNo++;
                     }
 
-                    /*
-                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                        String recordingStartTimestamp = childSnapshot.child("recordingStartTime").getValue(String.class);
-                        String recordingStopTimestamp = childSnapshot.child("recordingStopTime").getValue(String.class);
-                        Integer low = childSnapshot.child("low").getValue(Integer.class);
-                        Integer resting = childSnapshot.child("resting").getValue(Integer.class);
-                        Integer max = childSnapshot.child("max").getValue(Integer.class);
-
-                        rows.add(new String[]{
-                                String.valueOf(testNo),
-                                recordingStartTimestamp,
-                                recordingStopTimestamp,
-                                String.valueOf(low),
-                                String.valueOf(resting),
-                                String.valueOf(max)
-                        });
-
-                        testNo++;
-                    }
-
-                     */
 
                     // Generate a unique filename for the CSV file
                  //   String filename = "employee_data_" + System.currentTimeMillis() + ".csv";
@@ -1197,7 +1307,7 @@ public void exportDataToCSV(View view) {
     String age = agedata.getText().toString();
     String height = heightdata.getText().toString();
     String weight = weightdata.getText().toString();
-    String deviceId = deviceIDdata.getText().toString();
+    String gender = genderdata.getText().toString();
 
     // Retrieve the sensor data
     String low = tvLow.getText().toString();
@@ -1222,7 +1332,7 @@ public void exportDataToCSV(View view) {
     rows.add(new String[]{"Age:", age});
     rows.add(new String[]{"Height (IN):", height});
     rows.add(new String[]{"Weight (LB):", weight});
-    rows.add(new String[]{"Device ID:", deviceId});
+    rows.add(new String[]{"Gender:", gender});
     rows.add(new String[]{});
     rows.add(new String[]{"Last Heart Rate Results"});
     rows.add(new String[]{"Low:", low});

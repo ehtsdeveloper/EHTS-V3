@@ -65,7 +65,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
                 intent.putExtra("Age", age);
                 intent.putExtra("Height (in)", height);
                 intent.putExtra("Weight (lb)", weight);
-                intent.putExtra("Device ID", dataList.get(holder.getAdapterPosition()).getDataDeviceID());
+                intent.putExtra("Gender", dataList.get(holder.getAdapterPosition()).getDatagender());
                 intent.putExtra("Key",dataList.get(holder.getAdapterPosition()).getKey());
 
                  // context.startActivity(intent);
@@ -95,7 +95,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         holder.ageData.setText(dataList.get(position).getDataAge());
         holder.heightData.setText(dataList.get(position).getDataHeight());
         holder.weightData.setText(dataList.get(position).getDataWeight());
-        holder.deviceIDData.setText(dataList.get(position).getDataDeviceID());
+        holder.genderData.setText(dataList.get(position).getDatagender());
 
         holder.recCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +108,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
                 intent.putExtra("Age", dataList.get(holder.getAdapterPosition()).getDataAge());
                 intent.putExtra("Height", dataList.get(holder.getAdapterPosition()).getDataHeight());
                 intent.putExtra("Weight", dataList.get(holder.getAdapterPosition()).getDataWeight());
-                intent.putExtra("Device ID", dataList.get(holder.getAdapterPosition()).getDataDeviceID());
+                intent.putExtra("Gender", dataList.get(holder.getAdapterPosition()).getDatagender());
                 context.startActivity(intent);
             }
         });
@@ -127,7 +127,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
 class MyViewHolder extends RecyclerView.ViewHolder {
     ImageView recImage;
-    TextView recName, recEmpID, recAge, recheight, recweight, deviceIDData;;
+    TextView recName, recEmpID, recAge, recheight, recweight, genderData;;
     CardView recCard;
     ImageButton goTobtn;
 
@@ -141,13 +141,13 @@ class MyViewHolder extends RecyclerView.ViewHolder {
         recAge = itemView.findViewById(R.id.recage);
         recheight = itemView.findViewById(R.id.recHeight);
         recweight = itemView.findViewById(R.id.recWeight);
-        deviceIDData = itemView.findViewById(R.id.deviceIdData);
+        genderData = itemView.findViewById(R.id.genderData);
 
         goTobtn = itemView.findViewById(R.id.recViewProfile);
     }
 
     /*
-    empIdData, ageData, heightData, weightData, deviceIDData;
+    empIdData, ageData, heightData, weightData, genderData;
 
     CardView recCard;
 
@@ -159,7 +159,7 @@ class MyViewHolder extends RecyclerView.ViewHolder {
         ageData = itemView.findViewById(R.id.AgeData);
         heightData = itemView.findViewById(R.id.heightData);
         weightData = itemView.findViewById(R.id.weightData);
-        deviceIDData = itemView.findViewById(R.id.deviceIdData);
+       genderData = itemView.findViewById(R.id.genderData);
     }
 
      */

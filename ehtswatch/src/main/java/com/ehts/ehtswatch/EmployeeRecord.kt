@@ -16,7 +16,7 @@ class EmployeeRecord : Activity() {
    // private lateinit var agedata: TextView
    // private lateinit var heightdata: TextView
    // private lateinit var weightdata: TextView
-    private lateinit var deviceIDdata: TextView
+    private lateinit var genderdata: TextView
    // private lateinit var imageRec: ImageView
     private lateinit var startTestbtn: Button
    // private lateinit var profileCard: CardView
@@ -34,7 +34,7 @@ class EmployeeRecord : Activity() {
      //   agedata = findViewById(R.id.AgeData)
     //    heightdata = findViewById(R.id.heightData)
     //    weightdata = findViewById(R.id.weightData)
-        deviceIDdata = findViewById(R.id.DeviceIdData)
+        genderdata = findViewById(R.id.genderData)
    //  profileCard = findViewById(R.id.recCard)
       startTestbtn = findViewById(R.id.startTest)
         backButton = findViewById(R.id.gobackbtn)
@@ -46,7 +46,7 @@ class EmployeeRecord : Activity() {
          //   agedata.text = bundle.getString("Age")
           //  heightdata.text = bundle.getString("Height (in)")
         //    weightdata.text = bundle.getString("Weight (lb)")
-            deviceIDdata.text = bundle.getString("Device ID")
+            genderdata.text = bundle.getString("Gender")
 
             key = bundle.getString("Key")!!
          //   imageUrl = bundle.getString("images/")!!

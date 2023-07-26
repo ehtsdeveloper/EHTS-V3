@@ -1,59 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightGrayBG"
-    tools:context=".Home_Employee">
+  >
 
-<include layout="@layout/hometoolbar"/>
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
-    <ScrollView
+        <!-- Replace 'hometoolbar' with the ID of your custom Toolbar layout -->
+        <include layout="@layout/hometoolbar" />
+
+        <!-- SearchView -->
+        <androidx.appcompat.widget.SearchView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:id="@+id/search"
+            app:iconifiedByDefault="false"
+            app:searchHintIcon="@null"
+            app:queryHint="Search..."
+            android:backgroundTint="@color/white"
+            android:focusable="false"
+            app:closeIcon="@drawable/baseline_clear_24"
+            app:searchIcon="@drawable/baseline_search_24"
+            android:background="@drawable/darkgrayborderround"
+            app:layout_scrollFlags="scroll|enterAlways"
+            />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="66dp"
-        android:fillViewport="true"
-        android:layout_below="@+id/toolbar"
-      >
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.SearchView
+            <!-- Your content here -->
+
+            <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
-                android:id="@+id/search"
-                app:iconifiedByDefault="false"
-                app:searchHintIcon="@null"
-                app:queryHint="Search..."
-                android:backgroundTint="@color/white"
-                android:focusable="false"
-                app:closeIcon="@drawable/baseline_clear_24"
-                app:searchIcon="@drawable/baseline_search_24"
-                android:background="@drawable/darkgrayborderround"
-                />
-
-          <androidx.recyclerview.widget.RecyclerView
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:id="@+id/recyclerview"
-              android:scrollbars="vertical">
-
-
-
-
-
-          </androidx.recyclerview.widget.RecyclerView>
+                android:id="@+id/recyclerview"
+                android:scrollbars="vertical" />
 
         </LinearLayout>
 
-    </ScrollView>
-</RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

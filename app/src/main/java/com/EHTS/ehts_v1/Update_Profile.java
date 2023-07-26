@@ -46,7 +46,7 @@ public class Update_Profile extends AppCompatActivity {
 
     Button updateButton;
 
-    EditText updateName, updateEmpID, updateAge, updateHeight, updateWeight, updateDeviceID;
+    EditText updateName, updateEmpID, updateAge, updateHeight, updateWeight, updategender;
 
     Uri updateImageUri;
 
@@ -56,7 +56,7 @@ public class Update_Profile extends AppCompatActivity {
     String key = "";
     String oldImageURL;
     String imageUrl = "";
-   // String name, age, height, weight, deviceID;
+   // String name, age, height, weight, gender;
     private ActivityResultLauncher<Intent> galleryLauncher;
 
     @Override
@@ -88,7 +88,7 @@ public class Update_Profile extends AppCompatActivity {
         updateAge = findViewById(R.id.updateAge);
         updateHeight = findViewById(R.id.updateHeight);
         updateWeight = findViewById(R.id.updateWeight);
-        updateDeviceID = findViewById(R.id.updateDeviceID);
+        updategender = findViewById(R.id.updategender);
 
 //comeback if any issues
         galleryLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -116,7 +116,7 @@ public class Update_Profile extends AppCompatActivity {
             updateAge.setText(bundle.getString("Age"));
             updateHeight.setText(bundle.getString("Height (in)"));
             updateWeight.setText(bundle.getString("Weight (lb)"));
-            updateDeviceID.setText(bundle.getString("Device ID"));
+            updategender.setText(bundle.getString("Gender"));
 
 
             key = bundle.getString("Key");
@@ -154,7 +154,7 @@ public class Update_Profile extends AppCompatActivity {
 
 
         });
-       // EditText updateName, updateEmpID, updateAge, updateHeight, updateWeight, updateDeviceID;
+       // EditText updateName, updateEmpID, updateAge, updateHeight, updateWeight, updategender;
     }
     private void saveData() {
 
@@ -164,7 +164,7 @@ public class Update_Profile extends AppCompatActivity {
             final int age;
             final int height;
             final int weight;
-            final String deviceID = updateDeviceID.getText().toString();
+            final String gender = updategender.getText().toString();
 
             try {
                 age = Integer.parseInt(updateAge.getText().toString());
@@ -196,7 +196,7 @@ public class Update_Profile extends AppCompatActivity {
                                     imageUrl = downloadUri.toString();
 
                                     // Create a new Profile_Data object with the download URL and other data
-                                    Profile_Data data = new Profile_Data(name, empId, age, height, weight, deviceID, imageUrl);
+                                    Profile_Data data = new Profile_Data(name, empId, age, height, weight, gender, imageUrl);
 
                                     //We are changing the child from empid to currentDate, (may have an issue here comeback!!!!)
                                     // because we will be updating empid as well and it may affect child value.
@@ -238,7 +238,7 @@ public class Update_Profile extends AppCompatActivity {
                                                    // updateAge.setText("");
                                                    // updateHeight.setText("");
                                                    // updateWeight.setText("");
-                                                   // updateDeviceID.setText("");
+                                                   // updategender.setText("");
                                                    // updateImage.setImageResource(R.drawable.baseline_add_a_photo_24);
                                                 }
                                             })

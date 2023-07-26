@@ -7,7 +7,7 @@ data class ProfileData(
     var dataAge: Int = 0,
     var dataHeight: Int = 0,
     var dataWeight: Int = 0,
-    var dataDeviceID: String? = null,
+    var datagender: String? = null,
     var dataImage: String? = null,
     var key: String? = null
 )
