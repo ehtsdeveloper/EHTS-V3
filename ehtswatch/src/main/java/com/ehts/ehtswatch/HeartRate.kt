@@ -1,5 +1,6 @@
 package com.ehts.ehtswatch
 
+
 import android.Manifest
 import android.app.Activity
 import android.app.NotificationChannel
@@ -36,12 +37,14 @@ class HeartRate : Activity(), SensorEventListener {
         private const val NOTIFICATION_ID = 1
         private const val SERVICE_ID = 1
         private const val STOP_ACTION = "StopRecordingAction"
-        private const val TIMER_INTERVAL = 1 * 60 * 1000 // 5 minutes in milliseconds
+        private const val TIMER_INTERVAL = 1 * 60 * 1000 // 1 minute in milliseconds THIS CAN BE ADJUSTED TO ANY TIME
     }
 
     private lateinit var sensorManager: SensorManager
     private var heartRateSensor: Sensor? = null
     private var heartRateData: MutableList<Double> = ArrayList()
+    private var isTestRunning = false
+    private var recordedHeartRateDataList: MutableList<Double> = ArrayList()
     private var recordingStartTime: Long = 0L
     private var recordingStopTime: Long = 0L
     private var restingHeartRate = 0.0
@@ -94,7 +97,8 @@ class HeartRate : Activity(), SensorEventListener {
             unregisterHeartRateSensorListener()
 
             stopHeartRateRecordingService()
-         //   calculateHeartRateMetrics()
+            calculateHeartRateMetrics() // Calculate heart rate metrics one final time
+            timerHandler.removeCallbacksAndMessages(null) // Stop the timer completely
             stopButton.visibility = Button.INVISIBLE
             Toast.makeText(this, "Test Ended", Toast.LENGTH_SHORT).show() // Display a toast message
         }
@@ -138,9 +142,10 @@ class HeartRate : Activity(), SensorEventListener {
     }
 
     override fun onSensorChanged(event: SensorEvent) {
-        if (event.sensor.type == Sensor.TYPE_HEART_RATE) {
+        if (isTestRunning && event.sensor.type == Sensor.TYPE_HEART_RATE) {
             val heartRateValue = event.values[0].toDouble()
             heartRateData.add(heartRateValue)
+            //recordedHeartRateDataList.add(heartRateValue)
         }
     }
 
@@ -166,28 +171,8 @@ class HeartRate : Activity(), SensorEventListener {
             restingHeartRate = sum / heartRateData.size
             lowHeartRate = min
             maxHeartRate = max
-        /*
-        if (heartRateData.isNotEmpty()) {
-            var sum = 0.0
-            var min = Double.MAX_VALUE
-            var max = heartRateData[0]
 
 
-            for (heartRate in heartRateData) {
-                sum += heartRate
-                if (heartRate < min) {
-                    min = heartRate
-                }
-                if (heartRate > max) {
-                    max = heartRate
-                }
-            }
-            restingHeartRate = sum / heartRateData.size
-            lowHeartRate = min
-            maxHeartRate = max
-
-
-         */
             val recordingStartTimestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                 .format(Date(recordingStartTime))
             val recordingStopTimestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
@@ -244,30 +229,30 @@ class HeartRate : Activity(), SensorEventListener {
                 restingHeartRate, lowHeartRate, maxHeartRate, recordingStartTimestamp, recordingStopTimestamp
             )
             textHeartRate.text = heartRateText
+            // Clear the heartRateData list after processing its contents
+          //  recordedHeartRateDataList.clear()
+            heartRateData.clear()
+
+
         }
+
+
+
+
     }
 
 
     private fun startHeartRateRecording() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            val channel = NotificationChannel(
-                NOTIFICATION_CHANNEL_ID,
-                "Heart Rate",
-                NotificationManager.IMPORTANCE_LOW
-            )
-            notificationManager.createNotificationChannel(channel)
-        }
+        val notificationString = "EHTS Recording" // Customize the notification text as needed
 
-        val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(R.drawable.loginlogo)
-            .build()
-
-        val serviceIntent = Intent(this, HeartRateRecordingService::class.java)
-        serviceIntent.putExtra(HeartRateRecordingService.NOTIFICATION_EXTRA, notification)
-        ContextCompat.startForegroundService(this, serviceIntent)
+        val serviceIntent = Intent(this, HeartRateForegroundService::class.java)
+        serviceIntent.putExtra(HeartRateForegroundService.NOTIFICATION_EXTRA, notificationString)
+        startService(serviceIntent)
 
         recordingStartTime = System.currentTimeMillis()
+
+        isTestRunning = true
+        recordedHeartRateDataList.clear() // Clear the list before starting a new test
 
         // Delay the calculation of heart rate metrics
         timerHandler.postDelayed({
@@ -276,11 +261,13 @@ class HeartRate : Activity(), SensorEventListener {
         }, TIMER_INTERVAL.toLong())
 
         startTimer()
+
     }
 
     private fun stopHeartRateRecordingService() {
-        val serviceIntent = Intent(this, HeartRateRecordingService::class.java)
-        serviceIntent.action = STOP_ACTION
+        val serviceIntent = Intent(this, HeartRateForegroundService::class.java)
+        serviceIntent.action = HeartRateForegroundService.STOP_ACTION
+        isTestRunning = false
         stopService(serviceIntent)
         recordingStopTime = System.currentTimeMillis()
         timerHandler.removeCallbacks(timerRunnable!!)
@@ -289,7 +276,7 @@ class HeartRate : Activity(), SensorEventListener {
         timerRunnable = object : Runnable {
             override fun run() {
                 if (heartRateData.size > 0) {
-                  //  calculateHeartRateMetrics()
+                     // calculateHeartRateMetrics()
                 }
             }
         }
@@ -299,7 +286,10 @@ class HeartRate : Activity(), SensorEventListener {
     /**
      * Foreground service for heart rate recording
      */
+/*
     class HeartRateRecordingService : Service() {
+
+
         override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
             if (intent?.action == STOP_ACTION) {
                 stopForeground(Service.STOP_FOREGROUND_REMOVE)
@@ -311,6 +301,7 @@ class HeartRate : Activity(), SensorEventListener {
                     .setContentText(notificationString)
                     .build()
                 startForeground(NOTIFICATION_ID, notification)
+
             }
             return START_STICKY
         }
@@ -323,4 +314,7 @@ class HeartRate : Activity(), SensorEventListener {
             const val NOTIFICATION_EXTRA = "notification"
         }
     }
+
+ */
+
 }
