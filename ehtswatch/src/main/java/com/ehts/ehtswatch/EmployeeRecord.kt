@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 
 //displays which user we are testing and allows you to start the test specifically for that user
+//didn't work instead it was trying to overwrite data - you can delete any activity you don't end up using
+//kept these just in case next team decides they want to add them or work on imporving the wearOS UI
 class EmployeeRecord : Activity() {
 
     private lateinit var backButton: Button

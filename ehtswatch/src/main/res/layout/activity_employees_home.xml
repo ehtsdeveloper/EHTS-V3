@@ -9,9 +9,29 @@
     tools:context=".EmployeesHome"
     tools:deviceIds="wear">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+        <Button
+            android:id="@+id/gobackMain"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="14dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:background="@drawable/redbutton"
+            android:text="Go Back"
+            android:textColor="@color/whiteC"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="40dp"
        >
 
 

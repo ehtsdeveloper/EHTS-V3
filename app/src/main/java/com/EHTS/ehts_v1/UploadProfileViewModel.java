@@ -11,8 +11,9 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-//don't need this unless i change my activities to fragments
-//this class passes data from a fragment to firebase
+//don't need this unless you the activities to fragments
+//this class passes data from a fragment to firebase - was still working on this so not sure if it works
+//can delete if your not changing the activities to fragements
 public class UploadProfileViewModel extends AndroidViewModel {
 
     private DatabaseReference databaseReference;

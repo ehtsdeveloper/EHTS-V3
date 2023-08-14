@@ -16,7 +16,7 @@ class MainActivity : Activity() {
 
         private var auth: FirebaseAuth? = null
         private var logoutbtn: Button? = null
-        //private var homeBtn: Button? = null
+
         private var hrbtn: Button? = null
         private var textView: TextView? = null
         private var user: FirebaseUser? = null
@@ -28,7 +28,6 @@ class MainActivity : Activity() {
             // Initialize Firebase Authentication
             auth = FirebaseAuth.getInstance()
             hrbtn = findViewById(R.id.gotoHr)
-          //  homeBtn = findViewById(R.id.empmain)
             logoutbtn = findViewById(R.id.logoutbtn)
             textView = findViewById(R.id.userdetails)
             user = auth?.currentUser
@@ -41,21 +40,12 @@ class MainActivity : Activity() {
                 textView?.text = user?.email
             }
             hrbtn?.setOnClickListener {
-              //  FirebaseAuth.getInstance().signOut()
 
                 val intent = Intent(applicationContext, EmployeesHome::class.java)
                 startActivity(intent)
                 finish()
             }
-            /*
-            homeBtn?.setOnClickListener {
-                //FirebaseAuth.getInstance().signOut()
-//                val intent = Intent(applicationContext, EmployeesHome::class.java)
-//                startActivity(intent)
-//                finish()
-            }
 
-             */
             logoutbtn?.setOnClickListener {
                 FirebaseAuth.getInstance().signOut()
                 val intent = Intent(applicationContext, loginwatch::class.java)

@@ -7,6 +7,8 @@ import android.widget.Button
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 
+//didn't work instead it was trying to overwrite data - you can delete any activity you don't end up using
+//kept these just in case next team decides they want to add them or work on imporving the wearOS UI
 class EMPStartTest : Activity() {
     private var auth: FirebaseAuth? = null
 

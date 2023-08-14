@@ -24,6 +24,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import java.util.Set;
+//no longer need this class unless in the future you want to implement Bluetooth.
 
 //this class needs to allow users to connect to a bluetooth device that's nearby the on and off buttons permissions work
 //but pair and make device discoverable are not working need to fix this to allow user to send over the heart rate data

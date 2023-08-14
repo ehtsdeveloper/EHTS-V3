@@ -138,19 +138,6 @@ public class Upload_Profile extends AppCompatActivity {
                 return;
             }
 
-           /*
-            try {
-                age = Integer.parseInt(dataAge.getText().toString());
-                height = Integer.parseInt(dataHeight.getText().toString());
-                weight = Integer.parseInt(dataWeight.getText().toString());
-            } catch (NumberFormatException e) {
-                // Handle the case when the input cannot be parsed as an integer
-                Toast.makeText(Upload_Profile.this, "Invalid input for age, height, or weight", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            */
-
             String imageFileName = UUID.randomUUID().toString(); // Generate a unique filename for the image
             StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("images/" + imageFileName);
 
@@ -170,18 +157,12 @@ public class Upload_Profile extends AppCompatActivity {
                                     // Create a new Profile_Data object with the download URL and other data
                                     Profile_Data data = new Profile_Data(name, empId, age, height, weight, gender, downloadUri.toString());
 
-                                    //We are changing the child from empid to currentDate, (may have an issue here comeback!!!!)
-                                    // because we will be updating empid as well and it may affect child value.
-                                  //  String currentDate = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
-
 
                                     // Retrieve the current user's ID
                                     String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                                     // Get the employee ID
                                     String employeeId = dataEmpID.getText().toString();
 
-                                    // references "employees" node in database
-                                   // databaseReference.child("users").child(userId).child("employees").child(employeeId).child(currentDate).setValue(data)
 
                                     databaseReference.child("users").child(userId).child("employees").child(dataEmpID.getText().toString()).setValue(data)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {

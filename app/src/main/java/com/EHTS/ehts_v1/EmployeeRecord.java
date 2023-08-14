@@ -21,22 +21,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-//import com.github.mikephil.charting.charts.BarChart;
+
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -47,24 +43,17 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.single.PermissionListener;
+
 import com.opencsv.CSVWriter;
 
 import java.io.File;
-import java.io.FileOutputStream;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -98,11 +87,10 @@ public class EmployeeRecord extends AppCompatActivity {
     Button refreshGraph;
 
     Button exportData;
- //  BarChart barChart;
-    private Button btnToday, btnMonth, btnYear;
+
+
     private TextView period;
 
-    // private List<String> xValues = Arrays.asList("8am", "9am", "10am", "11am", "12am", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm");
     DatabaseReference databaseReference;
     ValueEventListener eventListener;
 
@@ -141,13 +129,11 @@ public class EmployeeRecord extends AppCompatActivity {
         IntenseTest= findViewById(R.id.IntenseTest);
 
 
-        //barChart = findViewById(R.id.chart);
+
         lineChart = findViewById(R.id.chart);
         refreshGraph = findViewById(R.id.refreshGraph);
 
-       // btnToday = findViewById(R.id.btnToday);
-       // btnMonth = findViewById(R.id.btnMonth);
-      //  btnYear = findViewById(R.id.btnYear);
+
         period = findViewById(R.id.period);
         exportData = findViewById(R.id.exportData);
 
@@ -176,7 +162,6 @@ public class EmployeeRecord extends AppCompatActivity {
 
 
         fetchSensorsData();
-       // fetchSensorsData2();
         fetchHeartRateData();
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,6 +208,7 @@ public class EmployeeRecord extends AppCompatActivity {
 
 /*
 //Don't need - provided the link to the youtube video I followed for this in the design document
+// kept if you want to add this feature later on still needs some work.
 
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -255,7 +241,7 @@ public class EmployeeRecord extends AppCompatActivity {
             }
         });
 
-// Add the OnClickListener for the IntenseTest button
+        // Add the OnClickListener for the IntenseTest button
         IntenseTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -264,57 +250,6 @@ public class EmployeeRecord extends AppCompatActivity {
                 updateFinalResultUI();
             }
         });
-
-
-        /*
-        btnToday.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Get the current date and format it
-                SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, MMMM dd", Locale.getDefault());
-                String todayDate = dateFormat.format(new Date());
-
-                // Set the period TextView to display today's date
-                period.setText("Today's date: " + todayDate);
-
-                // Call the method to fetch and display the data for today
-                fetchDataForToday();
-            }
-        });
-
-        btnMonth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Get the current month and year
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
-                String currentMonthYear = dateFormat.format(new Date());
-
-                // Set the period TextView to display the current month and year
-                period.setText(currentMonthYear);
-
-                // Call the method to fetch and display the data for the current month
-                fetchDataForCurrentMonth();
-            }
-        });
-
-        btnYear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Get the current year
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
-                String currentYear = dateFormat.format(new Date());
-
-                // Set the period TextView to display the current year
-                period.setText("Year " + currentYear);
-
-                // Call the method to fetch and display the data for the current year
-                fetchDataForCurrentYear();
-            }
-        });
-        */
-
-
-
 
     }
 
@@ -365,8 +300,7 @@ public class EmployeeRecord extends AppCompatActivity {
         });
     }
     private void fetchSensorsData2() {
-        // retrieves the avg of all test results low, max, and resting also determines pass/fail test
-        //could just make pass/fail results a manual input?
+        // retrieves the avg of all test results
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId)
                 .child("employees").child(empId).child("sensors_record").child(empId);
@@ -408,76 +342,6 @@ public class EmployeeRecord extends AppCompatActivity {
                     AvgtvLow.setText(String.valueOf(avgLow));
                     AvgtvResting.setText(String.valueOf(avgResting));
                     AvgtvMax.setText(String.valueOf(avgMax));
-/*
-                    // Calculate the target heart rate ranges based on age
-                    int age = Integer.parseInt(agedata.getText().toString());
-                    int maxAgeRelatedHR = 220 - age;
-                    int moderateIntensityLowerLimit = (int) (maxAgeRelatedHR * 0.64);
-                    int moderateIntensityUpperLimit = (int) (maxAgeRelatedHR * 0.76);
-                    int vigorousIntensityLowerLimit = (int) (maxAgeRelatedHR * 0.77);
-                    int vigorousIntensityUpperLimit = (int) (maxAgeRelatedHR * 0.93);
-
-                    // Initialize restingHR and maxHR variables
-                    int restingHR = Integer.parseInt(AvgtvResting.getText().toString());
-                    int maxHR = Integer.parseInt(AvgtvMax.getText().toString());
-
-                    // Calculate the target heart rate range based on the selected test
-                    int targetLowerLimit;
-                    int targetUpperLimit;
-
-                    if (isModerateTestSelected) {
-                        targetLowerLimit = moderateIntensityLowerLimit;
-                        targetUpperLimit = moderateIntensityUpperLimit;
-                    } else if (isIntenseTestSelected) {
-                        targetLowerLimit = vigorousIntensityLowerLimit;
-                        targetUpperLimit = vigorousIntensityUpperLimit;
-                    } else {
-                        // If no test is selected, handle the situation accordingly (e.g., display a message)
-                        return;
-                    }
-
-                    // Check if the resting and max heart rates are within the target range
-                    boolean isRestingHRWithinRange = restingHR >= targetLowerLimit && restingHR <= targetUpperLimit;
-                    boolean isMaxHRWithinRange = maxHR >= targetLowerLimit && maxHR <= targetUpperLimit;
-
-                    // Determine the final result and update the UI accordingly
-                    if (isRestingHRWithinRange && isMaxHRWithinRange) {
-                        tvFinalResult.setText("Employee passed EHTS Exam");
-                        cardFinalResult.setCardBackgroundColor(Color.GREEN);
-                    } else {
-                        tvFinalResult.setText("Employee failed EHTS Exam");
-                        cardFinalResult.setCardBackgroundColor(Color.parseColor("#AD2424"));
-                    }
-
-
-                    /*
-                    // Determine if the employee passed or failed the EHTS Exam -- this equation still needs work
-                    int age = Integer.parseInt(agedata.getText().toString());
-                    int restingHR = avgResting;
-                    int maxHR = avgMax;
-
-                    // Calculate the target heart rate ranges based on age
-                    int maxAgeRelatedHR = 220 - age;
-                    int moderateIntensityLowerLimit = (int) (maxAgeRelatedHR * 0.64);
-                    int moderateIntensityUpperLimit = (int) (maxAgeRelatedHR * 0.76);
-                    int vigorousIntensityLowerLimit = (int) (maxAgeRelatedHR * 0.77);
-                    int vigorousIntensityUpperLimit = (int) (maxAgeRelatedHR * 0.93);
-
-                    // Check if the resting and max heart rates are within the target ranges
-                    boolean isRestingHRWithinRange = restingHR >= moderateIntensityLowerLimit && restingHR <= moderateIntensityUpperLimit;
-                    boolean isMaxHRWithinRange = maxHR >= vigorousIntensityLowerLimit && maxHR <= vigorousIntensityUpperLimit;
-
-                    // Determine the final result and update the UI accordingly
-                    if (isRestingHRWithinRange && isMaxHRWithinRange) {
-                        tvFinalResult.setText("Employee passed EHTS Exam");
-                        cardFinalResult.setCardBackgroundColor(Color.GREEN);
-                    } else {
-                        tvFinalResult.setText("Employee failed EHTS Exam");
-                        cardFinalResult.setCardBackgroundColor(Color.parseColor("#AD2424"));
-                    }
-
- */
-
 
                 }
 
@@ -490,6 +354,8 @@ public class EmployeeRecord extends AppCompatActivity {
         });
     }
 
+    //This feature still needs be fixed
+    //allow users to retrive the last 24 hour tests and ask user moderate vs intense then determine if they passed or failed
     private void updateFinalResultUI() {
         // Calculate the target heart rate ranges based on age
         int age = Integer.parseInt(agedata.getText().toString());
@@ -541,240 +407,9 @@ public class EmployeeRecord extends AppCompatActivity {
         Toast.makeText(EmployeeRecord.this, finalResultMessage, Toast.LENGTH_SHORT).show();
     }
 
-/*
-
-    private void fetchHeartRateData() {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference heartRateRef = FirebaseDatabase.getInstance().getReference("users")
-                .child(userId).child("employees").child(empId).child("sensors_record");
-
-        eventListener = heartRateRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<BarEntry> entries = new ArrayList<>();
-
-                for (DataSnapshot childSnapshot : snapshot.child(empId).getChildren()) {
-                    String recordingTimeStamp = childSnapshot.child("recordingTimeStamp").getValue(String.class);
-                    Integer low = childSnapshot.child("low").getValue(Integer.class);
-                    Integer resting = childSnapshot.child("resting").getValue(Integer.class);
-                    Integer max = childSnapshot.child("max").getValue(Integer.class);
-
-                    if (low != null) {
-                        entries.add(new BarEntry(entries.size(), low.intValue(), recordingTimeStamp));
-                    }
-
-                    if (resting != null) {
-                        entries.add(new BarEntry(entries.size(), resting.intValue(), recordingTimeStamp));
-                    }
-
-                    if (max != null) {
-                        entries.add(new BarEntry(entries.size(), max.intValue(), recordingTimeStamp));
-                    }
-                }
-
-                BarDataSet dataSet = new BarDataSet(entries, "Heart Rate (BPM)");
-                dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-
-                BarData barData = new BarData(dataSet);
-                barChart.setData(barData);
-
-                YAxis yAxis = barChart.getAxisLeft();
-                yAxis.setAxisMaximum(0f);
-                yAxis.setAxisMaximum(150f);
-                yAxis.setAxisLineWidth(1f);
-                yAxis.setAxisLineColor(Color.WHITE);
-                yAxis.setLabelCount(10);
-
-                barChart.getDescription().setEnabled(false);
-                barChart.setBackgroundColor(Color.BLACK);
-                barChart.getXAxis().setTextColor(Color.WHITE);
-                barChart.getAxisLeft().setTextColor(Color.WHITE);
-                barChart.getAxisRight().setEnabled(false);
-                barChart.invalidate();
-
-                barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(getTimestamps(entries)));
-                barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-
-                barChart.getXAxis().setGranularity(1f);
-                barChart.getXAxis().setGranularityEnabled(true);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(EmployeeRecord.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-
- */
-
-
-/*
-    private void updateBarChart(ArrayList<BarEntry> entries) {
-        BarDataSet dataSet = new BarDataSet(entries, "Heart Rate (BPM)");
-        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-
-        BarData barData = new BarData(dataSet);
-        barChart.setData(barData);
-
-        YAxis yAxis = barChart.getAxisLeft();
-        yAxis.setAxisMaximum(0f);
-        yAxis.setAxisMaximum(150f);
-        yAxis.setAxisLineWidth(1f);
-        yAxis.setAxisLineColor(Color.BLACK);
-        yAxis.setLabelCount(10);
-
-        barChart.getDescription().setEnabled(false);
-        barChart.setBackgroundColor(Color.WHITE);
-        barChart.getXAxis().setTextColor(Color.BLACK);
-        barChart.getAxisLeft().setTextColor(Color.BLACK);
-        barChart.getAxisRight().setEnabled(false);
-        barChart.invalidate();
-
-        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(getTimestamps(entries)));
-        barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-
-        barChart.getXAxis().setGranularity(1f);
-        barChart.getXAxis().setGranularityEnabled(true);
-    }
-
-
-    private void fetchDataForToday() {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference("users")
-                .child(userId).child("employees").child(empId).child("sensors_record").child(empId);
-
-        // Query the database to fetch the data for today's date
-        Query query = dataRef.orderByChild("recordingStartTime");
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<BarEntry> entries = new ArrayList<>();
-
-                for (DataSnapshot nodeSnapshot : snapshot.getChildren()) {
-                    for (DataSnapshot childSnapshot : nodeSnapshot.getChildren()) {
-                        String recordingStartTimestamp = childSnapshot.child("recordingStartTime").getValue(String.class);
-                        String recordingStopTimestamp = childSnapshot.child("recordingStopTime").getValue(String.class);
-                        Integer low = childSnapshot.child("low").getValue(Integer.class);
-                        Integer resting = childSnapshot.child("resting").getValue(Integer.class);
-                        Integer max = childSnapshot.child("max").getValue(Integer.class);
-
-                        // Add the heart rate values to the entries list
-                        if (low != null) {
-                            entries.add(new BarEntry(entries.size(), low.intValue(), recordingStartTimestamp + " - " + recordingStopTimestamp));
-                        }
-                        if (resting != null) {
-                            entries.add(new BarEntry(entries.size(), resting.intValue(), recordingStartTimestamp + " - " + recordingStopTimestamp));
-                        }
-                        if (max != null) {
-                            entries.add(new BarEntry(entries.size(), max.intValue(), recordingStartTimestamp + " - " + recordingStopTimestamp));
-                        }
-                    }
-                }
-
-                // Update the bar chart with the fetched data
-                updateBarChart(entries);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(EmployeeRecord.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
 
 
-    private void fetchDataForCurrentMonth() {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference("users")
-                .child(userId).child("employees").child(empId).child("sensors_record").child(empId);
-
-        // Query the database to fetch the data for the current month
-        Query query = dataRef.orderByChild("recordingStartTime");
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<BarEntry> entries = new ArrayList<>();
-
-                for (DataSnapshot nodeSnapshot : snapshot.getChildren()) {
-                    for (DataSnapshot childSnapshot : nodeSnapshot.getChildren()) {
-                        String recordingStartTimestamp = childSnapshot.child("recordingStartTime").getValue(String.class);
-                        String recordingStopTimestamp = childSnapshot.child("recordingStopTime").getValue(String.class);
-                        Integer low = childSnapshot.child("low").getValue(Integer.class);
-                        Integer resting = childSnapshot.child("resting").getValue(Integer.class);
-                        Integer max = childSnapshot.child("max").getValue(Integer.class);
-
-                        // Add the heart rate values to the entries list
-                        if (low != null) {
-                            entries.add(new BarEntry(entries.size(), low.intValue(), recordingStartTimestamp + " - " + recordingStopTimestamp));
-                        }
-                        if (resting != null) {
-                            entries.add(new BarEntry(entries.size(), resting.intValue(), recordingStartTimestamp + " - " + recordingStopTimestamp));
-                        }
-                        if (max != null) {
-                            entries.add(new BarEntry(entries.size(), max.intValue(), recordingStartTimestamp + " - " + recordingStopTimestamp));
-                        }
-                    }
-                }
-
-                // Update the bar chart with the fetched data
-                updateBarChart(entries);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(EmployeeRecord.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void fetchDataForCurrentYear() {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference("users")
-                .child(userId).child("employees").child(empId).child("sensors_record").child(empId);
-
-        // Query the database to fetch the data for the current year
-        Query query = dataRef.orderByChild("recordingStartTime");
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<BarEntry> entries = new ArrayList<>();
-
-                for (DataSnapshot nodeSnapshot : snapshot.getChildren()) {
-                    for (DataSnapshot childSnapshot : nodeSnapshot.getChildren()) {
-                        String recordingStartTimestamp = childSnapshot.child("recordingStartTime").getValue(String.class);
-                        String recordingStopTimestamp = childSnapshot.child("recordingStopTime").getValue(String.class);
-                        Integer low = childSnapshot.child("low").getValue(Integer.class);
-                        Integer resting = childSnapshot.child("resting").getValue(Integer.class);
-                        Integer max = childSnapshot.child("max").getValue(Integer.class);
-
-                        // Add the heart rate values to the entries list
-                        if (low != null) {
-                            entries.add(new BarEntry(entries.size(), low.intValue(), recordingStartTimestamp + " - " + recordingStopTimestamp));
-                        }
-                        if (resting != null) {
-                            entries.add(new BarEntry(entries.size(), resting.intValue(), recordingStartTimestamp + " - " + recordingStopTimestamp));
-                        }
-                        if (max != null) {
-                            entries.add(new BarEntry(entries.size(), max.intValue(), recordingStartTimestamp + " - " + recordingStopTimestamp));
-                        }
-                    }
-                }
-
-                // Update the bar chart with the fetched data
-                updateBarChart(entries);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(EmployeeRecord.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
- */
 private void fetchHeartRateData() {
     String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     DatabaseReference heartRateRef = FirebaseDatabase.getInstance().getReference("users")
@@ -799,7 +434,7 @@ private void fetchHeartRateData() {
                 Integer max = childSnapshot.child("max").getValue(Integer.class);
 
                 try {
-                    minutesSinceStart = convertToHoursSinceCustomEpoch(recordingStartTimestamp);
+                    minutesSinceStart = convertToMinutesSinceCustomEpoch(recordingStartTimestamp);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -909,7 +544,6 @@ private void fetchHeartRateData() {
         public void onClick(View v) {
             fetchHeartRateData();
             fetchSensorsData();
-            updateFinalResultUI();
             // Display a toast message
             Toast.makeText(EmployeeRecord.this, "Graph Refreshed", Toast.LENGTH_SHORT).show();
         }
@@ -918,7 +552,7 @@ private void fetchHeartRateData() {
 
 
 
-    public static long convertToHoursSinceCustomEpoch(String dateTime) throws Exception {
+    public static long convertToMinutesSinceCustomEpoch(String dateTime) throws Exception {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
         Date date = format.parse(dateTime);
 
@@ -926,8 +560,8 @@ private void fetchHeartRateData() {
         Date customEpoch = format.parse("2023-07-01 00:00:00");
 
         long diffInMilli = date.getTime() - customEpoch.getTime();
-        long hoursSinceCustomEpoch = diffInMilli / 1000 / 60; // / 60;
-        return hoursSinceCustomEpoch;
+        long MinutesSinceCustomEpoch = diffInMilli / 1000 / 60; // / 60;
+        return MinutesSinceCustomEpoch;
     }
     private String[] getXAxisLabels() {
         String[] labels = new String[9];
@@ -962,204 +596,6 @@ private void fetchHeartRateData() {
         }
         return sum / entries.size();
     }
-
-
-
-
-
-
-
-/*
-
-
-//bar
-// right now this works retrieving all the data from the database and displays them on the graph to the correct employee
-//but the top code has a problem displaying certain periods based on the timestamps need to fix this
-
-    private void fetchHeartRateData() {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference heartRateRef = FirebaseDatabase.getInstance().getReference("users")
-                .child(userId).child("employees").child(empId).child("sensors_record").child(empId);
-
-        Query query = heartRateRef.orderByChild("recordingStartTime");
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<BarEntry> entries = new ArrayList<>();
-
-                int lowSum = 0;
-                int restingSum = 0;
-                int maxSum = 0;
-                int entryCount = 0;
-
-                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                    String recordingStartTimestamp = childSnapshot.child("recordingStartTime").getValue(String.class);
-                    String recordingStopTimestamp = childSnapshot.child("recordingStopTime").getValue(String.class);
-                    Integer low = childSnapshot.child("low").getValue(Integer.class);
-                    Integer resting = childSnapshot.child("resting").getValue(Integer.class);
-                    Integer max = childSnapshot.child("max").getValue(Integer.class);
-
-                    if (low != null) {
-                        entries.add(new BarEntry(entries.size(), low.intValue(), recordingStartTimestamp));
-                        lowSum += low.intValue();
-                        entryCount++;
-                    }
-
-                    if (resting != null) {
-                        entries.add(new BarEntry(entries.size(), resting.intValue(), recordingStartTimestamp));
-                        restingSum += resting.intValue();
-                        entryCount++;
-                    }
-
-                    if (max != null) {
-                        entries.add(new BarEntry(entries.size(), max.intValue(), recordingStartTimestamp));
-                        maxSum += max.intValue();
-                        entryCount++;
-                    }
-                }
-
-                // Calculate the average resting heart rate
-                float avgRestingHeartRate = restingSum / (float) entryCount;
-
-                // Create a LimitLine for the average resting heart rate
-                LimitLine avgRestingLine = new LimitLine(avgRestingHeartRate, "Avg Resting HR");
-                avgRestingLine.setLineColor(Color.RED);
-                avgRestingLine.setLineWidth(2f);
-
-                // Configure the bar chart
-                BarDataSet dataSet = new BarDataSet(entries, "Heart Rate (BPM)");
-                dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-
-                BarData barData = new BarData(dataSet);
-                barChart.setData(barData);
-
-                YAxis yAxis = barChart.getAxisLeft();
-                yAxis.setAxisMaximum(0f);
-                yAxis.setAxisMaximum(150f);
-                yAxis.setAxisLineWidth(1f);
-                yAxis.setAxisLineColor(Color.BLACK);
-                yAxis.setLabelCount(10);
-
-                barChart.getDescription().setEnabled(false);
-                barChart.setBackgroundColor(Color.WHITE);
-                barChart.getXAxis().setTextColor(Color.BLACK);
-                barChart.getAxisLeft().setTextColor(Color.BLACK);
-                barChart.getAxisRight().setEnabled(false);
-
-                // Add the average resting line to the chart
-                barChart.getAxisLeft().addLimitLine(avgRestingLine);
-
-                barChart.invalidate();
-
-                barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(getTimestamps(entries)));
-                barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-
-                barChart.getXAxis().setGranularity(1f);
-                barChart.getXAxis().setGranularityEnabled(true);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(EmployeeRecord.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-
-
-    private String[] getTimestamps(ArrayList<BarEntry> entries) {
-        String[] timestamps = new String[entries.size()];
-        for (int i = 0; i < entries.size(); i++) {
-            String data = entries.get(i).getData().toString();
-            String[] parts = data.split(" - ");
-            timestamps[i] = parts[0]; // Extract only the recording start time
-        }
-        return timestamps;
-    }
-
-
-
-
-
- */
-
-
-/*
-    private String[] getTimestamps(ArrayList<BarEntry> entries) {
-        String[] timestamps = new String[entries.size()];
-        for (int i = 0; i < entries.size(); i++) {
-            timestamps[i] = entries.get(i).getData().toString();
-        }
-        return timestamps;
-    }
-
- */
-
-
-
-
-
-/*
-
-    private void fetchSensorsData2() {
-    //only fetches avgs of all test results (displays avg of low, max, resting)
-    //ignore this
-
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId)
-                .child("employees").child(empId).child("sensors_record").child(empId);
-
-        eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                long childrenCount = snapshot.getChildrenCount();
-                int lowSum = 0;
-                int restingSum = 0;
-                int maxSum = 0;
-
-                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                    // Access the data of each child node
-                    SensorsData data = childSnapshot.getValue(SensorsData.class);
-
-                    // Add heart rate values to the sums
-                    if (data != null) {
-                        if (data.getLow() != null) {
-                            lowSum += data.getLow().intValue();
-                        }
-
-                        if (data.getResting() != null) {
-                            restingSum += data.getResting().intValue();
-                        }
-
-                        if (data.getMax() != null) {
-                            maxSum += data.getMax().intValue();
-                        }
-                    }
-                }
-
-                // Calculate and display the averages
-                if (childrenCount > 0) {
-                    int avgLow = lowSum / (int) childrenCount;
-                    int avgResting = restingSum / (int) childrenCount;
-                    int avgMax = maxSum / (int) childrenCount;
-
-                    AvgtvLow.setText(String.valueOf(avgLow));
-                    AvgtvResting.setText(String.valueOf(avgResting));
-                    AvgtvMax.setText(String.valueOf(avgMax));
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(EmployeeRecord.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
- */
-/*
-csv final
- */
 
     public void exportDataToCSV(View view) {
         // Retrieve the employee data
@@ -1240,9 +676,6 @@ csv final
                     }
 
 
-                    // Generate a unique filename for the CSV file
-                 //   String filename = "employee_data_" + System.currentTimeMillis() + ".csv";
-
                     String timestamp = new SimpleDateFormat("yyyy_MM_dd_hh_mm", Locale.US).format(new Date());
                     String filename = "employee_data_" + timestamp + ".csv";
 
@@ -1297,89 +730,6 @@ csv final
         return "";
     }
 
-
-
-    /*
-public void exportDataToCSV(View view) {
-    // Retrieve the employee data
-    String empName = empNameRec.getText().toString();
-    String empId = empIddata.getText().toString();
-    String age = agedata.getText().toString();
-    String height = heightdata.getText().toString();
-    String weight = weightdata.getText().toString();
-    String gender = genderdata.getText().toString();
-
-    // Retrieve the sensor data
-    String low = tvLow.getText().toString();
-    String resting = tvResting.getText().toString();
-    String max = tvMax.getText().toString();
-
-    String avgLow = AvgtvLow.getText().toString();
-    String avgResting = AvgtvResting.getText().toString();
-    String avgMax = AvgtvMax.getText().toString();
-
-    // Determine the pass/fail test result
-    String passFailResult = "Employee Failed E.H.T.S Exam"; // Set the initial result as failed
-    if (cardFinalResult.getCardBackgroundColor().getDefaultColor() == Color.GREEN) {
-        passFailResult = "Employee Passed E.H.T.S Exam";
-    }
-
-    // Create a CSV record using OpenCSV library
-    List<String[]> rows = new ArrayList<>();
-    rows.add(new String[]{"EHTS TEST RESULTS"});
-    rows.add(new String[]{"Employee Name:", empName});
-    rows.add(new String[]{"Employee ID:", empId});
-    rows.add(new String[]{"Age:", age});
-    rows.add(new String[]{"Height (IN):", height});
-    rows.add(new String[]{"Weight (LB):", weight});
-    rows.add(new String[]{"Gender:", gender});
-    rows.add(new String[]{});
-    rows.add(new String[]{"Last Heart Rate Results"});
-    rows.add(new String[]{"Low:", low});
-    rows.add(new String[]{"Resting:", resting});
-    rows.add(new String[]{"Max:", max});
-    rows.add(new String[]{
-,
-    });
-    rows.add(new String[]{"Avg. Heart Rate Results of All Tests"});
-    rows.add(new String[]{"Low:", avgLow});
-    rows.add(new String[]{"Resting:", avgResting});
-    rows.add(new String[]{"Max:", avgMax});
-    rows.add(new String[]{
-,
-
-    });
-    rows.add(new String[]{"Pass/Fail Test Results:", passFailResult});
-
-    // Generate a unique filename for the CSV file
-    String filename = "employee_data_" + System.currentTimeMillis() + ".csv";
-
-    try {
-        // Create the CSV file in the app's cache directory
-        File cacheDir = getCacheDir();
-        File csvFile = new File(cacheDir, filename);
-
-        // Write the data to the CSV file
-        FileWriter writer = new FileWriter(csvFile);
-        CSVWriter csvWriter = new CSVWriter(writer);
-        csvWriter.writeAll(rows);
-        csvWriter.close();
-
-        // Share the CSV file using Intent
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/csv");
-        Uri fileUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", csvFile);
-        shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
-        startActivity(Intent.createChooser(shareIntent, "Export CSV"));
-
-    } catch (IOException e) {
-        e.printStackTrace();
-        Toast.makeText(EmployeeRecord.this, "Failed to export data to CSV.", Toast.LENGTH_SHORT).show();
-    }
-}
-
-
-     */
 
 
 

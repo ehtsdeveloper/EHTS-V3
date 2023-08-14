@@ -18,7 +18,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
-//This class is to fill my recycler view with employee cards
+//This class is to fill the recycler view with employee cards
 
 public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     private Context context;
@@ -68,9 +68,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
                 intent.putExtra("Gender", dataList.get(holder.getAdapterPosition()).getDatagender());
                 intent.putExtra("Key",dataList.get(holder.getAdapterPosition()).getKey());
 
-                 // context.startActivity(intent);
-                //intent.putExtra("Key",dataList.get(holder.getAdapterPosition()).getKey());
-
 
                 context.startActivity(intent);
             }
@@ -85,35 +82,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         });
 }
 
-    /*
 
-    @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Glide.with(context).load(dataList.get(position).getDataImage()).into(holder.recImage);
-        holder.recName.setText(dataList.get(position).getDataName());
-        holder.empIdData.setText(dataList.get(position).getDataEmpID());
-        holder.ageData.setText(dataList.get(position).getDataAge());
-        holder.heightData.setText(dataList.get(position).getDataHeight());
-        holder.weightData.setText(dataList.get(position).getDataWeight());
-        holder.genderData.setText(dataList.get(position).getDatagender());
-
-        holder.recCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, EmployeeRecord.class);
-                intent.putExtra("Image", dataList.get(holder.getAdapterPosition()).getDataImage());
-                intent.putExtra("Employee Name", dataList.get(holder.getAdapterPosition()).getDataEmpID());
-                intent.putExtra("Employee ID", dataList.get(holder.getAdapterPosition()).getDataEmpID());
-                intent.putExtra("Key",dataList.get(holder.getAdapterPosition()).getKey());
-                intent.putExtra("Age", dataList.get(holder.getAdapterPosition()).getDataAge());
-                intent.putExtra("Height", dataList.get(holder.getAdapterPosition()).getDataHeight());
-                intent.putExtra("Weight", dataList.get(holder.getAdapterPosition()).getDataWeight());
-                intent.putExtra("Gender", dataList.get(holder.getAdapterPosition()).getDatagender());
-                context.startActivity(intent);
-            }
-        });
-    }
-*/
     @Override
     public int getItemCount() {
         return dataList.size();
@@ -145,23 +114,5 @@ class MyViewHolder extends RecyclerView.ViewHolder {
 
         goTobtn = itemView.findViewById(R.id.recViewProfile);
     }
-
-    /*
-    empIdData, ageData, heightData, weightData, genderData;
-
-    CardView recCard;
-
-    public MyViewHolder(@NonNull View itemView) {
-        super(itemView);
-        recImage = itemView.findViewById(R.id.recImage);
-        recName = itemView.findViewById(R.id.recName);
-        empIdData = itemView.findViewById(R.id.EmpIDData);
-        ageData = itemView.findViewById(R.id.AgeData);
-        heightData = itemView.findViewById(R.id.heightData);
-        weightData = itemView.findViewById(R.id.weightData);
-       genderData = itemView.findViewById(R.id.genderData);
-    }
-
-     */
 
 }

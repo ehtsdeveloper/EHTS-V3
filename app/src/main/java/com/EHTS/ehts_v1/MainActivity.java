@@ -3,7 +3,7 @@ package com.EHTS.ehts_v1;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+//no longer need if you want to delete this activity you can wont affect the program
 public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth auth;

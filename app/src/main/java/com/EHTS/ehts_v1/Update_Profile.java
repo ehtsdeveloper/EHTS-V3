@@ -35,6 +35,9 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.UUID;
 
+//never completed this feature - it was an extra feature I personally wanted to add not important
+//allows user to edit their profiles within the employee record screeen
+
 public class Update_Profile extends AppCompatActivity {
 
     private final int GALLERY_REQ_CODE = 1000;

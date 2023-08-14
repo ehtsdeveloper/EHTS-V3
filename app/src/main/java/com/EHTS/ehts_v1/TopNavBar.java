@@ -20,8 +20,10 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+
+//if you want to convert the activities to fragements for a more seamless navigation bar you can
+//just ran into issue pushing data to firebase from within a fragement -there may be a work around just didn't have time to look into it.
+//I forced the nav drawer to stay open here
 
 public class TopNavBar extends AppCompatActivity {
 

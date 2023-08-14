@@ -65,7 +65,7 @@ public class Home_Employee extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
 
-        // databaseReference = FirebaseDatabase.getInstance().getReference("employees");
+
         // Get the user ID
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId).child("employees");
@@ -123,7 +123,6 @@ public class Home_Employee extends AppCompatActivity {
                 startActivity(addEmployeeIntent);
             }
         });
-
 
 
     }

@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
+
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -107,15 +107,11 @@ public class Login extends AppCompatActivity {
                                     startActivity(intent);
                                     finish();
 
-                                 //   Log.d(TAG, "signInWithEmail:success");
-                                //    FirebaseUser user = mAuth.getCurrentUser();
-                                   // updateUI(user);
                                 } else {
                                     // If sign in fails, display a message to the user.
-                                   // Log.w(TAG, "signInWithEmail:failure", task.getException());
                                     Toast.makeText(Login.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
-                                  //  updateUI(null);
+
                                 }
                             }
                         });

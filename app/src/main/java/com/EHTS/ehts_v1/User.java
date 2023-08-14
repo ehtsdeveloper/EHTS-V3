@@ -1,5 +1,6 @@
 package com.EHTS.ehts_v1;
 
+//this class hold the users data
 public class User {
         private String fullName;
         private String email;
