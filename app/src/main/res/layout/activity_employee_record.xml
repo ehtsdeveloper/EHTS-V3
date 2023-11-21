@@ -1,0 +1,972 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/ProfileGray"
+    tools:context=".EmployeeRecord">
+
+    <include layout="@layout/pagestoolbar_backbtn" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
+
+        android:layout_below="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/profileCard"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:backgroundTint="@color/lightGrayBG"
+        app:cardElevation="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:background="@drawable/darkgrayborder"
+            android:id="@+id/imagelayout">
+
+            <ImageView
+                android:layout_width="102dp"
+                android:layout_height="100dp"
+                android:src="@drawable/baseline_add_a_photo_24"
+                android:id="@+id/ImageData"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:scaleType="fitXY"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/EditProfile"
+                android:paddingStart="9dp"
+                android:text="Edit Profile"
+                android:layout_gravity="center"
+                android:textSize="14sp"
+                android:textColor="@color/blue"
+                android:visibility="invisible"/>
+
+            <LinearLayout
+                android:id="@+id/NameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/NameLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:paddingStart="5dp"
+                    android:text="Name:   "
+                    android:textColor="@color/black"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <TextView
+                        android:id="@+id/EmpNameData"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/darkgrayborder"
+                        android:backgroundTint="@color/white"
+                        android:padding="10dp"
+                        android:hint="@string/employee_full_name"
+                        android:gravity="start|center_vertical"
+                        android:textColor="@color/black" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/EmpIDLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/EmpIDLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:paddingStart="5dp"
+                    android:text="Emp ID: "
+                    android:textColor="@color/black"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <TextView
+                        android:id="@+id/EmpIDData"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/darkgrayborder"
+                        android:backgroundTint="@color/white"
+                        android:padding="10dp"
+                        android:hint="Employee ID"
+                        android:gravity="start|center_vertical"
+                        android:textColor="@color/black" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/AgeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/AgeLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:paddingStart="5dp"
+                    android:text="Age:       "
+                    android:textColor="@color/black"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <TextView
+                        android:id="@+id/AgeData"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/darkgrayborder"
+                        android:backgroundTint="@color/white"
+                        android:padding="10dp"
+                        android:hint="Age"
+                        android:gravity="start|center_vertical"
+                        android:textColor="@color/black" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/HeightLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/HeightLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:paddingStart="5dp"
+                    android:text="Height (IN):  "
+                    android:textColor="@color/black"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <TextView
+                        android:id="@+id/heightData"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/darkgrayborder"
+                        android:backgroundTint="@color/white"
+                        android:padding="10dp"
+                        android:hint="Height (in)"
+                        android:gravity="start|center_vertical"
+                        android:textColor="@color/black" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/WeightLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/WeightLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:paddingStart="5dp"
+                    android:text="Weight (LB): "
+                    android:textColor="@color/black"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <TextView
+                        android:id="@+id/weightData"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/darkgrayborder"
+                        android:backgroundTint="@color/white"
+                        android:padding="10dp"
+                        android:hint="Weight (lb)"
+                        android:gravity="start|center_vertical"
+                        android:textColor="@color/black" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/genderLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/genderLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:paddingStart="5dp"
+                    android:text="Gender:           "
+                    android:textColor="@color/black"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <TextView
+                        android:id="@+id/genderData"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/darkgrayborder"
+                        android:backgroundTint="@color/white"
+                        android:padding="10dp"
+                        android:hint="Male, Female, Other"
+                        android:gravity="start|center_vertical"
+                        android:textColor="@color/black" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/deleteProfile"
+                android:paddingStart="10dp"
+                android:layout_marginTop="50dp"
+                android:layout_gravity="center"
+                android:text="Delete Profile"
+                android:textSize="10sp"
+                android:backgroundTint="@color/red"
+                android:textColor="@color/white"/>
+
+        </LinearLayout>
+
+
+
+
+    </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/exportData"
+                android:layout_width="178dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+
+                android:layout_marginTop="10dp"
+                android:padding="15dp"
+                android:text="Export Data to CSV"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:background="@drawable/roundbutton"/>
+            <TextView
+               android:id="@+id/hrtextview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+
+                android:gravity="start|center_vertical"
+                android:text="HEARTRATE RESULTS FROM LAST TEST: "
+                android:padding="15dp"
+                android:layout_marginBottom="-25dp"
+                android:textColor="@color/DarkHeaderGray"
+                android:textStyle="bold"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="190dp"
+                android:id="@+id/HeartRateCard"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:backgroundTint="@color/NavyBlue"
+                app:cardElevation="20dp"
+                android:paddingBottom="150dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/circles">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/yellowcircle"
+                        android:layout_below="@id/hrTestReslut">
+
+                        <ImageView
+                            android:layout_width="130dp"
+                            android:layout_height="110dp"
+                            android:paddingTop="6dp"
+                            android:id="@+id/imageyellow"
+                            android:src="@drawable/baseline_circle_yellow" />
+
+                        <TextView
+                            android:id="@+id/tv_low"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="30dp"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="40dp"
+                            android:textStyle="bold" />
+
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/greencircle"
+                        android:layout_below="@id/hrTestReslut">
+
+                        <ImageView
+                            android:layout_width="130dp"
+                            android:layout_height="110dp"
+                            android:paddingTop="6dp"
+                            android:src="@drawable/baseline_circle_24" />
+
+                        <TextView
+                            android:id="@+id/tv_resting"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginEnd="30dp"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="40dp"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/redcircle"
+                        android:layout_below="@id/hrTestReslut">
+
+                        <ImageView
+                            android:layout_width="130dp"
+                            android:layout_height="110dp"
+                            android:paddingTop="6dp"
+                            android:src="@drawable/baseline_circle_red" />
+
+                        <TextView
+                            android:id="@+id/tv_max"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:layout_marginEnd="30dp"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="40dp"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="30dp"
+
+                    android:id="@+id/labels"
+                    android:layout_below="@id/circles"
+                    android:layout_gravity="center">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:id="@+id/low">
+
+                        <TextView
+                            android:id="@+id/lowHr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="-12dp"
+                            android:layout_marginEnd="38dp"
+                            android:layout_marginBottom="-15dp"
+                            android:gravity="start|center_vertical"
+                            android:padding="14dp"
+                            android:text="LOW"
+                            android:textSize="18dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/RestingHr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/lowHr"
+                            android:layout_marginEnd="6dp"
+                            android:layout_marginStart="1dp"
+                            android:layout_marginBottom="-15dp"
+                            android:gravity="start|center_vertical"
+                            android:padding="14dp"
+                            android:paddingLeft="17dp"
+                            android:text="RESTING"
+                            android:textSize="16dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/MaxHr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/RestingHr"
+                            android:layout_marginEnd="-1dp"
+                            android:layout_marginStart="21dp"
+                            android:layout_marginBottom="-5dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingLeft="10dp"
+                            android:padding="15dp"
+                            android:text="MAX"
+                            android:textSize="15dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="70dp"
+                    android:layout_marginStart="3dp"
+                    android:id="@+id/bpm"
+                    android:layout_below="@id/labels"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:id="@+id/bpmhr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+
+                        android:layout_marginBottom="-10dp"
+                        android:gravity="center"
+
+                        android:padding="15dp"
+                        android:text="Beats Per Minute (BPM)"
+                        android:textSize="14dp"
+                        android:textColor="@color/DarkGray"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/Avghrtextview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+
+                android:gravity="start|center_vertical"
+                android:text="AVERAGE HEARTRATE RESULTS FROM ALL TESTS: "
+                android:padding="15dp"
+                android:layout_marginBottom="-25dp"
+                android:textColor="@color/DarkHeaderGray"
+                android:textStyle="bold"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="190dp"
+                android:id="@+id/AvgHeartRateCard"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:backgroundTint="@color/NavyBlue"
+                app:cardElevation="20dp"
+                android:paddingBottom="150dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/Avgcircles">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/Avgyellowcircle"
+                        android:layout_below="@id/hrTestReslut">
+
+                        <ImageView
+                            android:layout_width="130dp"
+                            android:layout_height="110dp"
+                            android:paddingTop="6dp"
+                            android:id="@+id/Avgimageyellow"
+                            android:src="@drawable/baseline_circle_yellow" />
+
+                        <TextView
+                            android:id="@+id/Avgtv_low"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="30dp"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="40dp"
+                            android:textStyle="bold" />
+
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/Avggreencircle"
+                        android:layout_below="@id/hrTestReslut">
+
+                        <ImageView
+                            android:layout_width="130dp"
+                            android:layout_height="110dp"
+                            android:paddingTop="6dp"
+                            android:src="@drawable/baseline_circle_24" />
+
+                        <TextView
+                            android:id="@+id/Avgtv_resting"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginEnd="30dp"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="40dp"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/Avgredcircle"
+                        android:layout_below="@id/hrTestReslut">
+
+                        <ImageView
+                            android:layout_width="130dp"
+                            android:layout_height="110dp"
+                            android:paddingTop="6dp"
+                            android:src="@drawable/baseline_circle_red" />
+
+                        <TextView
+                            android:id="@+id/Avgtv_max"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:layout_marginEnd="30dp"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="40dp"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="30dp"
+
+                    android:id="@+id/Avglabels"
+                    android:layout_below="@id/circles"
+                    android:layout_gravity="center">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:id="@+id/Avglow">
+
+                        <TextView
+                            android:id="@+id/AvglowHr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="-12dp"
+                            android:layout_marginEnd="38dp"
+                            android:layout_marginBottom="-15dp"
+                            android:gravity="start|center_vertical"
+                            android:padding="14dp"
+                            android:text="LOW"
+                            android:textSize="18dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/AvgRestingHr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/AvglowHr"
+                            android:layout_marginEnd="6dp"
+                            android:layout_marginStart="1dp"
+                            android:layout_marginBottom="-15dp"
+                            android:gravity="start|center_vertical"
+                            android:padding="14dp"
+                            android:paddingLeft="17dp"
+                            android:text="RESTING"
+                            android:textSize="16dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/AvgMaxHr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/AvgRestingHr"
+                            android:layout_marginEnd="-1dp"
+                            android:layout_marginStart="21dp"
+                            android:layout_marginBottom="-5dp"
+                            android:gravity="start|center_vertical"
+                            android:paddingLeft="10dp"
+                            android:padding="15dp"
+                            android:text="MAX"
+                            android:textSize="15dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="70dp"
+                    android:layout_marginStart="3dp"
+                    android:id="@+id/Avgbpm"
+                    android:layout_below="@id/labels"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:id="@+id/Avgbpmhr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+
+                        android:layout_marginBottom="-10dp"
+                        android:gravity="center"
+
+                        android:padding="15dp"
+                        android:text="Beats Per Minute (BPM)"
+                        android:textSize="14dp"
+                        android:textColor="@color/DarkGray"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/chooseTest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+
+                android:gravity="start|center_vertical"
+                android:text="What Test was Administered Last? "
+                android:padding="15dp"
+                android:layout_marginBottom="-25dp"
+                android:textColor="@color/DarkHeaderGray"
+                android:textStyle="bold"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center">
+
+
+                <Button
+                    android:id="@+id/ModerateTest"
+                    android:layout_width="147dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_weight="5"
+                    android:autofillHints="refresh"
+                    android:background="@drawable/roundbuttonyellow"
+                    android:contentDescription="@string/back"
+                    android:padding="5dp"
+                    android:text="Moderate Test"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/IntenseTest"
+                    android:layout_width="147dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+
+                    android:layout_marginStart="13dp"
+                    android:layout_marginEnd="31dp"
+                    android:layout_toEndOf="@id/ModerateTest"
+                    android:layout_weight="2"
+                    android:autofillHints="refresh"
+                    android:background="@drawable/roundbuttonred"
+                    android:padding="3dp"
+                    android:text="Intense Test"
+                    android:textColor="@color/white" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/hrTestReslut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+
+                android:gravity="start|center_vertical"
+                android:text="Pass/Fail LATEST TEST RESULTS: "
+                android:padding="15dp"
+                android:layout_marginBottom="-25dp"
+                android:textColor="@color/DarkHeaderGray"
+                android:textStyle="bold"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cardFinalResult"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+
+                app:cardElevation="20dp"
+                android:paddingBottom="280dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/PASSFAIL">
+
+                    <TextView
+                        android:id="@+id/tvFinalResult"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+
+                        android:layout_marginBottom="-10dp"
+                        android:gravity="center"
+
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+                        android:text="Waiting For Test Results..."
+                        android:textSize="21dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/graphLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="-25dp"
+                    android:layout_centerVertical="true"
+                    android:text="Timeline HeartRate Graph: "
+                    android:textColor="@color/DarkHeaderGray"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/refreshGraph"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="15dp"
+                    android:autofillHints="refresh"
+                    android:textColor="@color/white"
+                    android:text="REFRESH GRAPH"
+
+                    android:background="@drawable/roundbuttonblue"
+                    android:padding="3dp"
+                    android:layout_toEndOf="@id/graphLayout"
+
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:id="@+id/padding"
+                android:layout_width="match_parent"
+                android:layout_height="800dp"
+                android:padding="50px"
+                android:layout_below="@id/buttonContainer"
+
+                android:layout_toRightOf="@+id/imagelayout"
+                android:orientation="vertical">
+
+
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+
+
+
+
+            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/buttonContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:orientation="horizontal"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:visibility="invisible"
+                >
+                <Button
+                    android:id="@+id/btnCurrent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Current"
+                    android:layout_marginEnd="5dp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/roundbutton"
+                    android:visibility="invisible"
+                    />
+                <Button
+                    android:id="@+id/btnlastSeven"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Last 7"
+                    android:layout_marginEnd="5dp"
+                    android:layout_toEndOf="@id/btnCurrent"
+                    android:textColor="@color/white"
+                    android:background="@drawable/roundbutton"
+                    android:visibility="invisible"
+                    />
+
+                <Button
+                    android:id="@+id/btnLastThirty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Last 30"
+                    android:layout_toEndOf="@id/btnlastSeven"
+                    android:layout_marginEnd="5dp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/roundbutton"
+                    android:visibility="invisible"
+                    />
+
+                <Button
+                    android:id="@+id/btnLast90"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Last 90"
+                    android:layout_toEndOf="@id/btnLastThirty"
+                    android:textColor="@color/white"
+                    android:background="@drawable/roundbutton"
+                    android:visibility="invisible"
+                    />
+            </RelativeLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/graphTitle"
+            android:layout_width="match_parent"
+            android:layout_height="100px"
+
+            android:orientation="horizontal"  >
+
+            <TextView
+                android:id="@+id/period"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:gravity="center"
+
+                android:text="Select a Period: "
+                android:padding="15dp"
+                android:layout_marginBottom="-25dp"
+                android:textColor="@color/DarkHeaderGray"
+                android:textStyle="bold"
+                android:visibility="invisible"/>
+
+
+        </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

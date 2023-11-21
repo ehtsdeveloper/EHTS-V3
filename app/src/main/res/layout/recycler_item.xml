@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/recCard"
+    android:layout_marginStart="12dp"
+    android:layout_marginEnd="12dp"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="10dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="8dp">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativelay">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/recImage"
+            android:src="@drawable/baseline_add_a_photo_24"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/roundedImageViewRounded"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/recName"
+            android:text="Employee Name"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@id/recImage"
+            android:layout_toStartOf="@+id/recViewProfile"
+             />
+
+        <TextView
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/recEmpID"
+            android:text="EmpID: "
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:layout_toEndOf="@id/recImage"
+            android:layout_below="@id/recName"
+            android:layout_marginStart="20dp"
+            android:maxLines="1"
+            android:layout_marginBottom="12dp"
+            android:layout_toStartOf="@+id/recViewProfile"/>
+
+        <ImageButton
+            android:id="@+id/recViewProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="view profile"
+            android:padding="12dp"
+            android:src="@drawable/baseline_keyboard_arrow_right_24" />
+        <TextView
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/recage"
+            android:text="age: "
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:layout_toEndOf="@id/recImage"
+            android:layout_marginStart="20dp"
+            android:maxLines="1"
+            android:layout_marginBottom="12dp"
+            android:layout_toStartOf="@+id/recViewProfile"
+            android:visibility="invisible" /> <!-- Set the visibility to invisible -->
+        <TextView
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/recHeight"
+            android:text="height: "
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:layout_toEndOf="@id/recImage"
+            android:layout_marginStart="20dp"
+            android:maxLines="1"
+            android:layout_marginBottom="12dp"
+            android:layout_toStartOf="@+id/recViewProfile"
+            android:visibility="invisible" /> <!-- Set the visibility to invisible -->
+        <TextView
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/recWeight"
+            android:text="weight: "
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:layout_toEndOf="@id/recImage"
+            android:layout_marginStart="20dp"
+            android:maxLines="1"
+            android:layout_marginBottom="12dp"
+            android:layout_toStartOf="@+id/recViewProfile"
+            android:visibility="invisible" /> <!-- Set the visibility to invisible -->
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

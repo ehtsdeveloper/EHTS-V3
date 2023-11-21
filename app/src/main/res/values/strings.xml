@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">EHTS</string>
+    <string name="login">LOGIN</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="Reset">Reset Now</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="LoginNow">Already Have an Account? Login Now</string>
+    <string name="logout">LOGOUT</string>
+    <string name="bluetooth">Bluetooth Settings</string>
+    <string name="Close">Close Menu</string>
+    <string name="Open">Open Menu</string>
+    <string name="HelloUser">Hello, </string>
+
+    <string name="EMPLOYEES">EMPLOYEES</string>
+    <string name="BleSettings">Bluetooth Settings</string>
+
+    <string name="height">Height (Inches)</string>
+    <string name="ADD_employee_info">Add Employee Info</string>
+    <string name="employee_full_name">Employee Full Name</string>
+    <string name="employee_id">Employee ID</string>
+    <string name="age">Age</string>
+    <string name="weight">Weight (lbs)</string>
+    <string name="device_id">Device ID</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="back">back</string>
+    <string name="signupnow">Don\'t have an account yet? SignUp Now</string>
+    <string name="editprofile">Edit Employee Profile</string>
+</resources>

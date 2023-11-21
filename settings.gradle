@@ -1,0 +1,23 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+        maven {
+            url = "https://maven.google.com"
+            url 'https://jitpack.io'
+        }
+    }
+}
+rootProject.name = "EHTS-V1"
+include ':app'
+include ':ehtswatch'
