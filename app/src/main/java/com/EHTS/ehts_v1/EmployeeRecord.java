@@ -360,10 +360,11 @@ public class EmployeeRecord extends AppCompatActivity {
         // Calculate the target heart rate ranges based on age
         int age = Integer.parseInt(agedata.getText().toString());
         int maxAgeRelatedHR = 220 - age;
-        int moderateIntensityLowerLimit = (int) (maxAgeRelatedHR * 0.64);
-        int moderateIntensityUpperLimit = (int) (maxAgeRelatedHR * 0.76);
-        int vigorousIntensityLowerLimit = (int) (maxAgeRelatedHR * 0.77);
-        int vigorousIntensityUpperLimit = (int) (maxAgeRelatedHR * 0.93);
+        //RK: I changed percentages of maximum heart rate for moderate and intense activity.
+        int moderateIntensityLowerLimit = (int) (maxAgeRelatedHR * 0.50);
+        int moderateIntensityUpperLimit = (int) (maxAgeRelatedHR * 0.70);
+        int vigorousIntensityLowerLimit = (int) (maxAgeRelatedHR * 0.70);
+        int vigorousIntensityUpperLimit = (int) (maxAgeRelatedHR * 0.85);
 
         // Initialize restingHR and maxHR variables
         int restingHR = Integer.parseInt(AvgtvResting.getText().toString());
